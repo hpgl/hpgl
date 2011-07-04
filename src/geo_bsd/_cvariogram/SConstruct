@@ -1,0 +1,25 @@
+
+common_src = Split("ellipsoid.cpp variograms.cpp")
+
+test_src = common_src + ["test.cpp"]
+py_module_src = common_src + ["py_wrap.cpp"]
+
+SharedLibrary(
+	"_cvariogram",	
+        py_module_src,
+        CPPPATH = '/usr/include/python2.5',
+        CXXFLAGS = '-ggdb',
+        LIBS = ["boost_python-mt"],
+	SHLIBPREFIX="",		
+        )
+Program(
+	"test", 
+	test_src, 
+	CXXFLAGS = '-ggdb',
+	LIBS = ["cppunit"])
+
+test = Command("test.log", "test", "./test | tee test.log")
+AlwaysBuild(test)
+
+tags = Command("TAGS", "", "etags *")
+AlwaysBuild(tags)

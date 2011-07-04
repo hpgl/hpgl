@@ -1,11 +1,4 @@
 #
-#   Copyright 2009 HPGL Team
-#   This file is part of HPGL (High Perfomance Geostatistics Library).
-#   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
-#   You should have received a copy of the BSD License along with HPGL.
-#
-
-#
 #	Solved Problems in Geostatistics
 #
 # ------------------------------------------------
@@ -42,7 +35,7 @@ dict = load_gslib_file("DBHdata.txt")
 
 x_coord = dict['X']
 y_coord = dict['Y']
-z_coord = zeros((len(x_coord)), dtype = 'uint8')
+z_coord = zeros((len(x_coord)), order = 'F', dtype = 'uint8')
 
 # property
 value = "Por"
@@ -62,10 +55,10 @@ threshold_value = 10.5
 array_grid = Grid(0, 0, 0, i_max, j_max, k_max, nx, ny, nz)
 
 prop_ijk = zeros((i_max, j_max, k_max))
-prop_ijk = require(prop_ijk, dtype=float32, requirements=['F'])
+prop_ijk = require(prop_ijk, dtype = float32, requirements = ['F'])
 
 array_defined = zeros((i_max, j_max, k_max))
-array_defined = require(array_defined, dtype=uint8, requirements=['F'])
+array_defined = require(array_defined, dtype = uint8, requirements = ['F'])
 
 # Get_sum_cell_value with arithmetic averaging
 for i in xrange(i_max):
@@ -83,7 +76,7 @@ print "Arithmetic variance:", var_arithmetic
 
 # Get_sum_cell_value with geometric averaging
 prop_geometric = zeros((i_max, j_max, k_max))
-prop_geometric = require(prop_geometric, dtype=float32, requirements=['F'])
+prop_geometric = require(prop_geometric, dtype = float32, requirements = ['F'])
 for i in xrange(i_max):
 	for j in xrange(j_max):
 		for k in xrange(k_max):
@@ -97,7 +90,7 @@ print "Geometric variance:", var_geometric
 
 # Get_sum_cell_value with harmonic averaging
 prop_harmonic = zeros((i_max, j_max, k_max))
-prop_harmonic = require(prop_harmonic, dtype=float32, requirements=['F'])
+prop_harmonic = require(prop_harmonic, dtype = float32, requirements = ['F'])
 for i in xrange(i_max):
 	for j in xrange(j_max):
 		for k in xrange(k_max):

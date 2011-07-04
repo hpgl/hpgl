@@ -1,11 +1,4 @@
 #
-#   Copyright 2009 HPGL Team
-#   This file is part of HPGL (High Perfomance Geostatistics Library).
-#   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
-#   You should have received a copy of the BSD License along with HPGL.
-#
-
-#
 #	Solved problems in Geostatistics
 #
 # ------------------------------------------------
@@ -30,7 +23,7 @@ from gslib import *
 
 # Weight calculation function
 def calculate_weights(points, x, n):
-	weights = zeros( (x), dtype = float)
+	weights = zeros( (x), order = 'F', dtype = float)
 	for i in xrange(x):
 		for j in xrange(n):
 			weights[i] = weights[i]+points[i,j]
@@ -39,13 +32,14 @@ def calculate_weights(points, x, n):
 print "---------------------------------------------------"
 print "Loading data and initializing..."
 
-# Loading data set
 x = 15
 y = 3
 
+# Loading data set
 dict = load_gslib_file("dataset.txt")
 dataset_east = dict["East"]
 dataset_north = dict["North"]
+
 # Number of closest data to take in account
 n = 4 
 
@@ -55,7 +49,6 @@ print "Done."
 print "---------------------------------------------------"
 
 # Creating values vector
-
 values = dict["Grade"]
 
 # Original mean and variance
@@ -67,7 +60,7 @@ print "Original data variance is: ", original_var
 print "---------------------------------------------------"
 
 # Calculating distances between points
-distances_v = zeros( (x,x), dtype = float)
+distances_v = zeros( (x,x), order = 'F', dtype = float)
 
 for i in xrange(x):
 	for j in xrange(x):

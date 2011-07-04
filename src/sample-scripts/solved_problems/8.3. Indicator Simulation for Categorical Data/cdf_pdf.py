@@ -1,11 +1,4 @@
 #
-#   Copyright 2009 HPGL Team
-#   This file is part of HPGL (High Perfomance Geostatistics Library).
-#   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
-#   You should have received a copy of the BSD License along with HPGL.
-#
-
-#
 #	Solved Problems in Geostatistics
 #
 # ------------------------------------------------
@@ -32,7 +25,7 @@ rock_type = array([2, 2, 3, 3, 1])
 # number of realizations
 n = 100
 
-array_hist = zeros( (n), dtype = int)
+array_hist = zeros( (n), order = 'F', dtype = int)
 
 for i in xrange(n):
 	index = random.randint(0, len(rock_type), 1)

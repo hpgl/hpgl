@@ -1,11 +1,4 @@
 #
-#   Copyright 2009 HPGL Team
-#   This file is part of HPGL (High Perfomance Geostatistics Library).
-#   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
-#   You should have received a copy of the BSD License along with HPGL.
-#
-
-#
 #	Solved Problems in Geostatistics
 #
 # ------------------------------------------------
@@ -42,7 +35,7 @@ dict = load_gslib_file("welldata.txt")
 print "Done."
 print "----------------------------------------------------"
 
-array3 = zeros( (len(dict['X'])), dtype = float)
+array3 = zeros( (len(dict['X'])), order = 'F', dtype = float)
 PointSet = (dict['X'], dict['Y'], array3)
 
 nx = 10 + (max(dict['X']) - min(dict['X']))/dx
@@ -61,7 +54,7 @@ w_cell = get_weights_cell(array_grid, PointSet)
 w_cell = stand_weight(w_cell, (len(dict['X'])))
 
 #Calculate porosity mean
-por_mean = calc_mean_array(array4)
+por_mean = array4.mean()
 print "Porosity mean =", por_mean
 
 # Calculate porosity standard deviation

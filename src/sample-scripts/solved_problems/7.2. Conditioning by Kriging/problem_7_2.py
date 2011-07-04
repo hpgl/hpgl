@@ -1,11 +1,4 @@
 #
-#   Copyright 2009 HPGL Team
-#   This file is part of HPGL (High Perfomance Geostatistics Library).
-#   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
-#   You should have received a copy of the BSD License along with HPGL.
-#
-
-#
 #	Solved Problems in Geostatistics
 #
 # ------------------------------------------------
@@ -74,14 +67,14 @@ for q in xrange(len(x_coord)):
 	array_defined[i] = 1
 	x_val[i] = x_coord[q]
 
-#Generate a kriged field of estimates by performing SK on the Gaussian-transformed dataset in transect.txt
+# Generate a kriged field of estimates by performing SK on the Gaussian-transformed dataset in transect.txt
 prop1 = (float32(array_val), array_defined)
 variogram1 = CovarianceModel(type=covariance.exponential, ranges = (5, 1, 1), sill = 1)
 
-prop_result1 = simple_kriging(prop = prop1, grid = grid, radiuses =(5, 1, 1), max_neighbours = 2, cov_model = variogram1)
+prop_result1 = simple_kriging(prop = prop1, grid = grid, radiuses = (5, 1, 1), max_neighbours = 2, cov_model = variogram1)
 print "SK result:", prop_result1[0]
 
-#Generate an unconditional Gaussian simulation, retaining the values at the data locations
+# Generate an unconditional Gaussian simulation, retaining the values at the data locations
 prop = (float32(prop_val), prop_defined)
 variogram2 = CovarianceModel(type=covariance.exponential, ranges = (5, 1, 1), sill = 1)
 
@@ -95,13 +88,13 @@ for i in xrange(i_max):
 		array_for_sk[i] = sgs_result[0][i]
 		sgsed_harddata = append(sgsed_harddata, sgs_result[0][i])
 
-#Perform a second simple kriging using these values
+# Perform a second simple kriging using these values
 prop2 = (float32(array_for_sk), array_defined)
 
-prop_result2 = simple_kriging(prop = prop2, grid = grid, radiuses =(5, 1, 1), max_neighbours = 2, cov_model = variogram1 )
+prop_result2 = simple_kriging(prop = prop2, grid = grid, radiuses = (5, 1, 1), max_neighbours = 2, cov_model = variogram1 )
 print "Simple Kriging result:", prop_result2[0]
 
-#Take the difference between the fields of SGS and second SK and the result to kriged field from first SK
+# Take the difference between the fields of SGS and second SK and the result to kriged field from first SK
 diff = array([])
 final_diff = array([])
 diff = prop_result2[0] - sgs_result[0]

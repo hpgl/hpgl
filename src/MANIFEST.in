@@ -1,0 +1,4 @@
+include geo_bsd/*.pyd
+include geo_bsd/*.dll
+include geo_bsd/*.so
+include geo_bsd/*.py

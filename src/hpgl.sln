@@ -1,75 +1,28 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hpgl", "bs_gstl\bs_gstl.vcproj", "{2560CF39-976A-4E09-9106-8B7E7CD37816}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "geo_testing", "geo_testing\geo_testing.vcproj", "{269CA6EB-2B6A-46BA-973F-69B00B176334}"
-	ProjectSection(ProjectDependencies) = postProject
-		{880956D7-BE53-46E0-A198-C98278E53CA1} = {880956D7-BE53-46E0-A198-C98278E53CA1}
-		{880956D7-BE53-46E0-A198-C98278E53CA1} = {880956D7-BE53-46E0-A198-C98278E53CA1}
-	EndProjectSection
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "python_pkg", "python_pkg\python_pkg.vcproj", "{37A2F67D-DE60-4C8C-A3AE-01FF142E0AE2}"
-	ProjectSection(ProjectDependencies) = postProject
-		{2560CF39-976A-4E09-9106-8B7E7CD37816} = {2560CF39-976A-4E09-9106-8B7E7CD37816}
-	EndProjectSection
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hpgl.pyd", "hpgl.pyd\hpgl.pyd.vcproj", "{880956D7-BE53-46E0-A198-C98278E53CA1}"
-	ProjectSection(ProjectDependencies) = postProject
-		{2560CF39-976A-4E09-9106-8B7E7CD37816} = {2560CF39-976A-4E09-9106-8B7E7CD37816}
-	EndProjectSection
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CB602A57-BEE3-415A-AEEF-E1584D8C4C45}"
 	ProjectSection(SolutionItems) = preProject
 		hpgl.vsmdi = hpgl.vsmdi
 		localtestrun.testrunconfig = localtestrun.testrunconfig
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hpgl_test", "hpgl_test\hpgl_test.vcproj", "{CE330CFA-91A3-4AC6-8766-DB993913EF47}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cvariogram", "msvc\cvariogram.vcproj", "{FDF030EA-03F1-4EF2-9D6C-375B29E1EB24}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hpgl-gpl", "msvc\hpgl-gpl.vcproj", "{6A8F0309-17A4-440D-8FC0-F6DC7E82BD23}"
 EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = hpgl.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2560CF39-976A-4E09-9106-8B7E7CD37816}.Debug|Win32.ActiveCfg = Debug|Win32
-		{2560CF39-976A-4E09-9106-8B7E7CD37816}.Debug|Win32.Build.0 = Debug|Win32
-		{2560CF39-976A-4E09-9106-8B7E7CD37816}.Release|Win32.ActiveCfg = Release|Win32
-		{2560CF39-976A-4E09-9106-8B7E7CD37816}.Release|Win32.Build.0 = Release|Win32
-		{269CA6EB-2B6A-46BA-973F-69B00B176334}.Debug|Win32.ActiveCfg = Debug|Win32
-		{269CA6EB-2B6A-46BA-973F-69B00B176334}.Debug|Win32.Build.0 = Debug|Win32
-		{269CA6EB-2B6A-46BA-973F-69B00B176334}.Release|Win32.ActiveCfg = Release|Win32
-		{269CA6EB-2B6A-46BA-973F-69B00B176334}.Release|Win32.Build.0 = Release|Win32
-		{37A2F67D-DE60-4C8C-A3AE-01FF142E0AE2}.Debug|Win32.ActiveCfg = Debug|Win32
-		{37A2F67D-DE60-4C8C-A3AE-01FF142E0AE2}.Release|Win32.ActiveCfg = Release|Win32
-		{880956D7-BE53-46E0-A198-C98278E53CA1}.Debug|Win32.ActiveCfg = Debug|Win32
-		{880956D7-BE53-46E0-A198-C98278E53CA1}.Debug|Win32.Build.0 = Debug|Win32
-		{880956D7-BE53-46E0-A198-C98278E53CA1}.Release|Win32.ActiveCfg = Release|Win32
-		{880956D7-BE53-46E0-A198-C98278E53CA1}.Release|Win32.Build.0 = Release|Win32
-		{CE330CFA-91A3-4AC6-8766-DB993913EF47}.Debug|Win32.ActiveCfg = Debug|Win32
-		{CE330CFA-91A3-4AC6-8766-DB993913EF47}.Debug|Win32.Build.0 = Debug|Win32
-		{CE330CFA-91A3-4AC6-8766-DB993913EF47}.Release|Win32.ActiveCfg = Release|Win32
-		{CE330CFA-91A3-4AC6-8766-DB993913EF47}.Release|Win32.Build.0 = Release|Win32
+		{FDF030EA-03F1-4EF2-9D6C-375B29E1EB24}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FDF030EA-03F1-4EF2-9D6C-375B29E1EB24}.Debug|Win32.Build.0 = Debug|Win32
+		{FDF030EA-03F1-4EF2-9D6C-375B29E1EB24}.Release|Win32.ActiveCfg = Release|Win32
+		{FDF030EA-03F1-4EF2-9D6C-375B29E1EB24}.Release|Win32.Build.0 = Release|Win32
+		{6A8F0309-17A4-440D-8FC0-F6DC7E82BD23}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6A8F0309-17A4-440D-8FC0-F6DC7E82BD23}.Release|Win32.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

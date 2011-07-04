@@ -1,11 +1,4 @@
 #
-#   Copyright 2009 HPGL Team
-#   This file is part of HPGL (High Perfomance Geostatistics Library).
-#   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
-#   You should have received a copy of the BSD License along with HPGL.
-#
-
-#
 #	Solved Problems in Geostatistics
 #
 # ------------------------------------------------
@@ -34,10 +27,8 @@ from scipy.interpolate import *
 #	Now consider that the data are spatially correlated and that this correlation is modeled by a spherical variogram with a range of 8500 m in the N-S direction and 6500 m in the E-W direction with a 10% nugget contribution. Mathematically, this correlation model is written in function cov(h), where h is the Euclidean distance vector between data pairs standardized be the range - function get_distance(x1, y1, x2, y2, a_x, a_y)
 #
 # ----------------------------------------------------
-
 print "----------------------------------------------------"
 
-	
 # -------------------------------------------------------------------
 # Spatial Bootstrap functions
 # -------------------------------------------------------------------
@@ -66,18 +57,14 @@ def spatial_bootstrap(x_num, y_num, poro_values, l):
 			h = get_distance(x_coord[i], y_coord[i], x_coord[j], y_coord[j], a_x, a_y)
 			A[i,j] = cov(h)
 
-	#print "A = ", A
-
 #Calculate lower triangular matrix by a Cholesky LU decomposition
 	L = cholesky(A, lower = 1, overwrite_a = 0)
-	#print "L = ", L
 
 #Vector of independent Gaussian values
 	w = random.randn(x_num)
 	
 #Matrix multiplication
 	y = dot(L, w)
-	#print "Y = ", y
 	
 	to_delete = []
 	for i in xrange(len(y)):
@@ -93,15 +80,10 @@ def spatial_bootstrap(x_num, y_num, poro_values, l):
 	
 	for i in xrange(len(x)):
 		x_float[i] =  float(x[i]) / x_num
-	#print x_float
-	y1 = delete(y1, [0])
-	#print "y = ", y1
 	
-	#hist(poro_values, 15, normed=True)
-	#show()
-
+	y1 = delete(y1, [0])
+	
 	x_min = x_float.min()
-	#print x_min
 
 #Calculate p (n by 1 vector of probability values [0,1]) with standard normal distribution
 	to_delete = []
@@ -109,22 +91,18 @@ def spatial_bootstrap(x_num, y_num, poro_values, l):
 	for i in xrange(l):
 		p[i] = abs(normal_score(y[i]))
 		if(p[i] > 1.0):
-			#p[i] = 1.0
 			to_delete.append(i)
 		if( p[i] <  x_min):
-			#p[i] = x_min
 			to_delete.append(i)
-	#print "P = ", p
-
+	
 	p = delete(p, to_delete)
 	
-	z = zeros( (len(p)), dtype = float)
+	z = zeros( (len(p)), order = 'F', dtype = float)
 
 #Interpolation
 	int_obj = interp1d(x_float, y1)
 	for i in xrange(len(p)):
 		z[i] = int_obj(p[i])
-	#print "z = ", z
 	return z
 	
 # -------------------------------------------------------------------
@@ -166,7 +144,6 @@ for i in xrange(n):
 	z_mas = spatial_bootstrap(x_num, y_num, poro_values, l)
 	z_mean.append(calc_mean_array(z_mas))
 
-#print z_mean
 print "Done!"
 print "Drawing histogram..."
 

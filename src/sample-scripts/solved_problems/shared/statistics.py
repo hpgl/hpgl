@@ -1,11 +1,4 @@
 #
-#   Copyright 2009 HPGL Team
-#   This file is part of HPGL (High Perfomance Geostatistics Library).
-#   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
-#   You should have received a copy of the BSD License along with HPGL.
-#
-
-#
 #	Solved Problems in Geostatistics
 #
 # ------------------------------------------------
@@ -18,8 +11,8 @@
 from numpy import *
 
 # Standartize the array
-def stand(z,mean,st_dev):
-	z = (z-mean)/st_dev
+def stand(z, mean, st_dev):
+	z = (z - mean) / st_dev
 	return z
 
 # Calculate weighted variance
@@ -27,7 +20,7 @@ def w_var(weights, data, w_mean):
 	var = 0.0
 	weights = norm(weights)
 	for i in xrange(len(data)):
-		var = var + weights[i]*(data[i]-w_mean)**2
+		var = var + weights[i] * (data[i]-w_mean)**2
 	var = sqrt(var/weights.sum())
 	return var
 
@@ -51,18 +44,13 @@ def calc_quadr_var(array,mean):
 
 # Calculate mean
 def calc_mean_array(array):
-	sum = 0.0
 	size = len(array)
-	for i in xrange(size):
-		sum = sum + array[i]
-	sum = sum/size
+	sum = array.sum() / size
 	return sum
 
 # Normalize array
 def norm(array):
-	sum = 0.0
-	for i in xrange(len(array)):
-		sum = array[i]+sum
+	sum = array.sum()
 	for i in xrange(len(array)):
 		array[i] = array[i]/sum
 	return array
@@ -70,14 +58,13 @@ def norm(array):
 # Calculate corellation coefficient
 def corr_coef(x,y):
 	coef = 0.0
-	mean_x = calc_mean_array(x)
+	mean_x = x.mean()
 	var_x = calc_quadr_var(x,mean_x)
-	mean_y = calc_mean_array(y)
+	mean_y = y.mean()
 	var_y = calc_quadr_var(y,mean_y)
 	var = var_x * var_y
 	for i in xrange(len(x)):
 		coef = coef + x[i]*y[i]
-	#print coef
 	coef = (coef - len(x)*mean_x*mean_y) / ((len(x)-1)* var)
 	return coef
 

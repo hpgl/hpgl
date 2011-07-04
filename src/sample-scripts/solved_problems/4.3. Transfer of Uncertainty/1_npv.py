@@ -1,11 +1,4 @@
 #
-#   Copyright 2009 HPGL Team
-#   This file is part of HPGL (High Perfomance Geostatistics Library).
-#   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
-#   You should have received a copy of the BSD License along with HPGL.
-#
-
-#
 #	Solved Problems in Geostatistics
 #
 # ------------------------------------------------
@@ -48,7 +41,7 @@ n = 5
 # Number of realizations.
 l = 1000
 
-# A formula for calculating NPV:
+# Function for calculating NPV:
 def npv_calculate(R, C, r, n):
 	npv = 0.0
 	for i in xrange(n):
@@ -61,11 +54,9 @@ npv_array = []
 for i in xrange(l):
 	#Simulate random R
 	R = random.normal(mean_R, sqrt(var_R), n)
-	#print R
 
 	#Simulate random C
 	C = random.normal(mean_C, sqrt(var_C), n)
-	#print C
 
 	npv_array.append(npv_calculate(R, C, r, n))
 print "NPV", npv_array
@@ -75,12 +66,11 @@ print "NPV", npv_array
 for i in xrange(l-1):
 	array_bins[i+1] = array_bins[i+1] + array_bins[i]
 
-array_bin = zeros( (l), dtype = float)
+array_bin = zeros( (l), order = 'F', dtype = float)
 
 for i in xrange(l):
 	array_bin[i] =  float(array_bins[i]) / l
 
-#print array_bin
 array_hist = delete(array_hist, [0])
 z = []
 

@@ -1,10 +1,3 @@
-#
-#   Copyright 2009 HPGL Team
-#   This file is part of HPGL (High Perfomance Geostatistics Library).
-#   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
-#   You should have received a copy of the BSD License along with HPGL.
-#
-
 import sys
 sys.path.append(r'../shared')
 
@@ -56,6 +49,7 @@ for q in xrange(5):
 	IndicatorData = []
 	IndicatorData.append(prop_ijk)
 	
+	# Lets make a PointSet 
 	PointSet = {}
 	PointSet['X'] = i_coord
 	PointSet['Y'] = j_coord
@@ -65,7 +59,8 @@ for q in xrange(5):
 	Params = {'HardData':IndicatorData}
 	Function = CalcVariogramFunction
 	
-	#Suggested Parameters for Variogram
+	#Suggested Parameters for Variogram:
+	
 	#Azimuth = 0 (Azimut)
 	#Dip = 0 (Dip)
 	#Lag Distance = (i_max[q]/2) m (LagWidth, LagSeparation)

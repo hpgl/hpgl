@@ -1,11 +1,4 @@
 #
-#   Copyright 2009 HPGL Team
-#   This file is part of HPGL (High Perfomance Geostatistics Library).
-#   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
-#   You should have received a copy of the BSD License along with HPGL.
-#
-
-#
 #	Solved Problems in Geostatistics
 #
 # ------------------------------------------------
@@ -22,7 +15,7 @@ from matplotlib import *
 from pylab import *
 from scipy import *
 from gslib import *
-from variogram_routines import *
+from geo.variogram import *
 
 # ---------------------------------------------------
 #	Problem:
@@ -39,6 +32,7 @@ z_coord = dict['Z(m)']
 poro_values = dict['Por']
 y_coord = zeros((len(x_coord)), dtype = float32)
 
+# Lets make a PointSet
 PointSet = {}
 PointSet['X'] = x_coord
 PointSet['Y'] = y_coord
@@ -51,7 +45,8 @@ IndicatorData.append(poro_values)
 Params = {'HardData':IndicatorData}
 Function = CalcVariogramFunction
 
-#Suggested Parameters for Vertical Variogram.
+#Suggested Parameters for Vertical Variogram:
+
 #Azimuth = 0 (Azimut)
 #Dip = 90 (Dip)
 #Lag Distance = 4 m (LagWidth, LagSeparation)
@@ -63,7 +58,6 @@ XVariogram, XLagDistance = PointSetScanContStyle(TVVariogramSearchTemplate(
     LagWidth = 4, LagSeparation = 4, TolDistance = 4, NumLags = 8, 
     Ellipsoid = TVEllipsoid(R1 = 1, R2 = 0.1, R3 = 0.1, Azimut = 0, Dip = 90, Rotation = 0)
 ), PointSet, Function, Params)
-#print XVariogram
 
 Variogram_x = XVariogram[:, 0]
 print "Vertical semivariogram:", Variogram_x
@@ -76,7 +70,8 @@ xlabel("Distance")
 ylabel("Gamma")
 title("Experimental vertical semivariogram")
 
-#Suggested Parameters for Horizontal Variogram.
+#Suggested Parameters for Horizontal Variogram:
+
 #Azimuth = 0 (Azimut)
 #Dip = 0 (Dip)
 #Lag Distance = 1000 m (LagWidth, LagSeparation)
@@ -88,7 +83,6 @@ XVariogram, XLagDistance = PointSetScanContStyle(TVVariogramSearchTemplate(
     LagWidth = 1000, LagSeparation = 1000, TolDistance = 1000, NumLags = 3, 
     Ellipsoid = TVEllipsoid(R1 = 1, R2 = 0.1, R3 = 4.5, Azimut = 0, Dip = 0, Rotation = 0)
 ), PointSet, Function, Params)
-#print XVariogram
 
 Variogram_z = XVariogram[:, 0]
 print "Horizontal semovariogram:", Variogram_z

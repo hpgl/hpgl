@@ -1,10 +1,3 @@
-#
-#   Copyright 2009 HPGL Team
-#   This file is part of HPGL (High Perfomance Geostatistics Library).
-#   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
-#   You should have received a copy of the BSD License along with HPGL.
-#
-
 import sys
 sys.path.append(r'../shared')
 
@@ -13,8 +6,9 @@ from geo import *
 from matplotlib import *
 from pylab import *
 
+# Inverse distance weighting calculation
 def w_idw(Grid, PointSet, c, nx, ny, nz):
-	widw = zeros( (len(PointSet[0])), dtype = float)
+	widw = zeros( (len(PointSet[0])), order = 'F', dtype = float)
 	for i in xrange(Grid.i_max):
 		for j in xrange(Grid.j_max):
 			for k in xrange(Grid.k_max):
@@ -24,19 +18,7 @@ def w_idw(Grid, PointSet, c, nx, ny, nz):
 					widw[q] = widw[q] + ww_idw[q]
 	return widw
 
-
-# Inverse distance weighting calculation
-# def w_idw(array_grid, x, dx, dy, c):
-	# array_grid.get_center_points()
-	# widw = zeros( (x), dtype = float)
-	# for i in xrange(dx*dy):
-		# x_center, y_center = array_grid.get_center_num(i)
-		# w_idw = array_grid.get_weights_idw(x_center, y_center, c)
-		# for j in xrange(x):
-			# widw[j] = widw[j] + w_idw[j]
-	# return widw
-
-#Kriging weights calculation
+# Kriging weights calculation
 def w_kriging(Grid, PointSet):
 	n_x = []
 	n_y = []
@@ -45,7 +27,7 @@ def w_kriging(Grid, PointSet):
 		n_x.append(PointSet[0][i])
 		n_y.append(PointSet[1][i])
 		n_z.append(PointSet[2][i])
-	wsk = zeros( (len(PointSet[0])), dtype = float)
+	wsk = zeros( (len(PointSet[0])), order = 'F', dtype = float32)
 	for i in xrange(Grid.i_max):
 		for j in xrange(Grid.j_max):
 			for k in xrange(Grid.k_max):
@@ -82,17 +64,17 @@ def w_kriging(Grid, PointSet):
 	# return wp
 
 #Drawing bar
-# def bar_show(wp, w_cell, wsk, widw, x):
-	# ind = arange(x)
-	# for i in xrange(len(wp)):
-		# p1 = bar(i,wp[i], color = 'y', width = 0.2)
-		# p2 = bar(i+0.2,w_cell[i], width = 0.2)
-		# p3 = bar(i+0.4,wsk[i],color = 'r', width = 0.2)
-		# p4 = bar(i+0.6,widw[i],color = 'g', width = 0.2)
-		# bar(i+0.8,0.0, color='w',width = 0.2)
-	# legend( (p1[0], p2[0], p3[0], p4[0]), ('Polygonal', 'Cell', 'Kriging', 'Idw'))
-	# xlabel("Number of data")
-	# ylabel("Standardized weights")
-	# title("Comparison of Declustering Methods")
-	# xticks(ind+0.4, ('1','2','3','4','5','6','7','8','9','10','11','12','13','14'))
-	# show()
+def bar_show(w_cell, wsk, widw, x):
+	ind = arange(x)
+	for i in xrange(len(wsk)):
+		p1 = bar(i, widw[i], color = 'y', width = 0.3)
+		p2 = bar(i+0.3, w_cell[i], width = 0.3)
+		p3 = bar(i+0.6, wsk[i], color = 'r', width = 0.3)
+		# p4 = bar(i+0.6, wp[i], color = 'g', width = 0.2)
+		bar(i+0.8, 0.0, color = 'w', width = 0.2)
+	legend( (p1[0], p2[0], p3[0]), ('IDW', 'Cell', 'Kriging'), 'upper left')
+	xlabel("Number of data")
+	ylabel("Standardized weights")
+	title("Comparison of Declustering Methods")
+	xticks(ind+0.4, ('1','2','3','4','5','6','7','8','9','10','11','12','13','14'))
+	show()

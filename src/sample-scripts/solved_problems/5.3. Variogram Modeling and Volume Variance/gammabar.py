@@ -1,11 +1,4 @@
 #
-#   Copyright 2009 HPGL Team
-#   This file is part of HPGL (High Perfomance Geostatistics Library).
-#   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
-#   You should have received a copy of the BSD License along with HPGL.
-#
-
-#
 #	Solved Problems in Geostatistics
 #
 # ------------------------------------------------
@@ -66,6 +59,7 @@ for i in xrange(i_max):
 				k_coord = append(k_coord, k)
 				prop_ijk = append(prop_ijk, arithmetic_mean)
 
+# Lets make a PointSet
 PointSet = {}
 PointSet['X'] = i_coord
 PointSet['Y'] = j_coord

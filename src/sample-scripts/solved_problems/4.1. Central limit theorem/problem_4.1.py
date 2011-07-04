@@ -1,11 +1,4 @@
 #
-#   Copyright 2009 HPGL Team
-#   This file is part of HPGL (High Perfomance Geostatistics Library).
-#   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
-#   You should have received a copy of the BSD License along with HPGL.
-#
-
-#
 #	Solved problems in Geostatistics
 #
 # ------------------------------------------------
@@ -33,7 +26,7 @@ import matplotlib.pyplot
 
 # Function to generate random uniform values
 def get_random_uniform_values(n):
-	x = zeros( (n), dtype = float)
+	x = zeros( (n), order = 'F', dtype = float)
 	for i in xrange(n):
 		x[i] = uniform(0,1)
 	return x
@@ -62,7 +55,7 @@ print "---------------------------------------------------"
 # Calculating summary mean/var for S realizations
 
 # Vector with S realizations
-summary_vec = zeros( (S_num), dtype = float)
+summary_vec = zeros( (S_num), order = 'F', dtype = float)
 
 for j in xrange(S_num):
 	random_variables = get_random_uniform_values(n)

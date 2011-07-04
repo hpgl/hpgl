@@ -1,11 +1,4 @@
 #
-#   Copyright 2009 HPGL Team
-#   This file is part of HPGL (High Perfomance Geostatistics Library).
-#   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
-#   You should have received a copy of the BSD License along with HPGL.
-#
-
-#
 #	Solved Problems in Geostatistics
 #
 # ------------------------------------------------
@@ -56,6 +49,7 @@ y_coord = dict['Y']
 z_coord = dict['Z']
 poro_values = dict['Por']
 
+# Lets make a PointSet
 PointSet = {}
 PointSet['X'] = x_coord
 PointSet['Y'] = y_coord
@@ -68,7 +62,8 @@ IndicatorData.append(poro_values)
 Params = {'HardData':IndicatorData}
 Function = CalcVariogramFunction
 
-#Suggested Parameters for Horizontal Variogram 1.
+#Suggested Parameters for Horizontal Variogram 1:
+
 #Azimuth = 320 (Azimut)
 #Dip = 0 (Dip)
 #Lag Distance = 550 m (LagWidth, LagSeparation)
@@ -85,7 +80,8 @@ Variogram_hor1 = XVariogram[:, 0]
 print "Horizontal XVariogram 1:"
 print Variogram_hor1
 
-#Suggested Parameters for Horizontal Variogram 2.
+#Suggested Parameters for Horizontal Variogram 2:
+
 #Azimuth = 230 (Azimut)
 #Dip = 0 (Dip)
 #Lag Distance = 550 m (LagWidth, LagSeparation)
@@ -119,7 +115,8 @@ xlabel("Distance")
 ylabel("Gamma")
 title("Experimental horizontal semivariogram")
 
-#Suggested Parameters for Vertical Variogram.
+#Suggested Parameters for Vertical Variogram:
+
 #Azimuth = 0 (Azimut)
 #Dip = 90 (Dip)
 #Lag Distance = 4 m (LagWidth, LagSeparation)
@@ -135,7 +132,6 @@ XVariogram, XLagDistance = PointSetScanContStyle(TVVariogramSearchTemplate(
 Variogram_ver = XVariogram[:, 0]
 print "Vertical Variogram:"
 print Variogram_ver
-print "XLagDistance: ", XLagDistance
 
 #Calculate Gamma for vertical semivariogram
 Gamma = exp_var(sill_ver, nugget, var_range_ver, range(min(XLagDistance), max(XLagDistance), 1))

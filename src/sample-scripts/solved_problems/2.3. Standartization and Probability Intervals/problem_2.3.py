@@ -1,11 +1,4 @@
 #
-#   Copyright 2009 HPGL Team
-#   This file is part of HPGL (High Perfomance Geostatistics Library).
-#   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
-#   You should have received a copy of the BSD License along with HPGL.
-#
-
-#
 #	Solved Problems in Geostatistics
 #
 # ------------------------------------------------
@@ -59,14 +52,14 @@ data_points_northing = dict["Northing"]
 p = 0.95
 
 # Calculating quantiles
-quantiles = zeros( (2), dtype = float)
+quantiles = zeros( (2), order = 'F', dtype = float32)
 # 1: 0.025 quantile
 quantiles[0] = (1-p)/2
 # 2: 0.975 quantile
 quantiles[1] = (1+p)/2
 
 # Retrieving probability intervals
-probs = zeros( (2), dtype = float)
+probs = zeros( (2), order = 'F', dtype = float32)
 probs[0] = inverse_normal_score(quantiles[0], mean, var)
 probs[1] = inverse_normal_score(quantiles[1], mean, var)
 
@@ -84,7 +77,7 @@ for i in xrange(x):
 	data_points_variable = stand(data_points_variable, mean, st_dev)
 	
 # Retrieving probability intervals of transformed data
-probs_trans = zeros( (2), dtype = float)
+probs_trans = zeros( (2), order = 'F', dtype = float32)
 probs_trans[0] = inverse_normal_score(quantiles[0])
 probs_trans[1] = inverse_normal_score(quantiles[1])
 
@@ -102,7 +95,7 @@ def calc_cov(h):
 	return cov_h
 	
 # Calculating covariance matrix
-cov_h = zeros( (x,x), dtype = float)
+cov_h = zeros( (x,x), order = 'F', dtype = float32)
 
 for i in xrange(x):
 	for j in xrange(x):
@@ -128,7 +121,7 @@ var_cov = cov_h.mean()
 print "Variance of standartized data in presense of corellation is: ", var_cov
 
 # Retrieving probability intervals for corellated data
-probs_cov = zeros( (2), dtype = float)
+probs_cov = zeros( (2), order = 'F', dtype = float32)
 probs_cov[0] = inverse_normal_score(quantiles[0], var_cov, var)
 probs_cov[1] = inverse_normal_score(quantiles[1], var_cov, var)
 
@@ -138,11 +131,11 @@ print "----------------------------------------------------"
 # 2. Original variable 
 
 # Calculating variance of the mean
-var_cov_orig = cov_h.mean() * 16
+var_cov_orig = cov_h.mean() * var
 print "Variance of data in presense of corellation is: ", var_cov_orig
 
 # Retrieving probability intervals for corellated data
-probs_cov = zeros( (2), dtype = float)
+probs_cov = zeros( (2), order = 'F', dtype = float32)
 probs_cov[0] = inverse_normal_score(quantiles[0], var_cov_orig, var)
 probs_cov[1] = inverse_normal_score(quantiles[1], var_cov_orig, var)
 
@@ -150,9 +143,3 @@ print "Probability interval for data in presense of corellation is: [", probs_co
 
 # Print covariance matrix
 # print "Covariance matrix: \n", cov_h
-
-
-
-
-
-

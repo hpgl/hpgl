@@ -1,10 +1,3 @@
-#
-#   Copyright 2009 HPGL Team
-#   This file is part of HPGL (High Perfomance Geostatistics Library).
-#   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
-#   You should have received a copy of the BSD License along with HPGL.
-#
-
 from numpy import *
 
 class TVEllipsoid:
@@ -15,9 +8,9 @@ class TVEllipsoid:
     R2 = 1
     R3 = 1
     def __init__(self, R1, R2, R3, Azimut = 0, Dip = 0, Rotation = 0):
-        Azimut = deg2rad(Azimut)
-        Dip = deg2rad(Dip)
-        Rotation = deg2rad(Rotation);
+        Azimut = radians(Azimut)
+        Dip = radians(Dip)
+        Rotation = radians(Rotation);
         
         A = matrix([
              [cos(Azimut), -sin(Azimut), 0],

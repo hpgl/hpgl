@@ -1,0 +1,5 @@
+hpgl-bsd (0.9.7) unstable; urgency=low
+
+  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- Konstantin <konstantin@unknown>  Thu, 03 Dec 2009 11:51:36 +0500

@@ -1,10 +1,3 @@
-#
-#   Copyright 2009 HPGL Team
-#   This file is part of HPGL (High Perfomance Geostatistics Library).
-#   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
-#   You should have received a copy of the BSD License along with HPGL.
-#
-
 from numpy import *
 from geo import *
 from scipy import *
@@ -24,6 +17,7 @@ class Grid:
 		self.ny = ny
 		self.nz = nz
 	
+	# Function to get ijk by (x,y,z)
 	def get_ijk(self, x, y, z):
 		if (x <= self.x_max) and (y <= self.y_max) and (z <= self.z_max):
 			i = int((x - self.x0) / self.nx)
@@ -33,17 +27,20 @@ class Grid:
 		else:
 			return -1, -1, -1
 	
+	# Function to get index of cell by ijk
 	def get_cell_num(self, i, j, k):
 		index = 0
 		index = j * self.i_max + i + k * self.j_max * self.i_max
 		return index
 	
+	# Function to get ijk by index of cell
 	def get_ijk_cell(self, index):
 		i = mod(index, self.i_max)
 		j = mod(index, self.j_max * self.i_max) / self.i_max
 		k = index / (self.j_max * self.i_max)
 		return i, j, k
-	
+
+# Function to get number of points, lying in n-index cell
 def get_point_num(Grid, n, PointSet):
 	N = 0
 	for i in xrange(len(PointSet[0])):
@@ -52,7 +49,18 @@ def get_point_num(Grid, n, PointSet):
 		if (index == n):
 			N = N + 1
 	return N
-	
+
+# Function to get center points by using ijk, cells length (nnx, nny, nnz), x_min, y_min, z_min 
+def get_center_points(i, j, k, nnx, nny, nnz, x_min, y_min, z_min):
+	x_center = 0.0
+	y_center = 0.0
+	z_center = 0.0
+	x_center = i * nnx + nnx/2 + x_min
+	y_center = j * nny + nny/2 + y_min
+	z_center = k * nnz + nnz/2 + z_min
+	return x_center, y_center, z_center
+
+# Function to get weights by cell declustering
 def get_weights_cell(Grid, PointSet):
 	w = zeros( (len(PointSet[0])), dtype = float)
 	n = 0
@@ -64,37 +72,30 @@ def get_weights_cell(Grid, PointSet):
 		w[q] = 1.0 / float(n)
 	return w
 
-def get_center_points(i, j, k, nnx, nny, nnz, x_min, y_min, z_min):
-	x_center = 0.0
-	y_center = 0.0
-	z_center = 0.0
-	x_center = i * nnx + nnx/2 + x_min
-	y_center = j * nny + nny/2 + y_min
-	z_center = k * nnz + nnz/2 + z_min
-	return x_center, y_center, z_center
-
+# Function to get weights for IDW declustering
 def get_weights_idw(Grid, x_center, y_center, z_center, PointSet, c):
-	w1 = zeros( (len(PointSet[0])), dtype = float)
+	w1 = zeros( (len(PointSet[0])), dtype = float32)
 	e_h = calc_e_h(x_center, y_center, z_center, c, PointSet)
 	for i in xrange(len(PointSet[0])):
 		h = calc_h(x_center, y_center, z_center, i, c, PointSet)
 		w1[i] = h/e_h
 	return w1
 
+#For IDW
 def calc_e_h(x_center, y_center, z_center, c, PointSet):
 	e_h = 0.0
 	for i in xrange(len(PointSet[0])):
 		e_h = e_h + (sqrt((x_center-PointSet[0][i])**2 + (y_center-PointSet[1][i])**2 + (z_center-PointSet[2][i])**2))**(-c)
 	return e_h
-	
+
+#For IDW
 def calc_h(x_center, y_center, z_center, j, c, PointSet):
 	h = (sqrt((x_center-PointSet[0][j])**2 + (y_center-PointSet[1][j])**2 + (z_center-PointSet[2][j])**2))**(-c)
 	return h
 
+# Function to get standardized weights
 def stand_weight(w, n):
-	sum = 0.0
-	for i in xrange(len(w)):
-		sum = sum + w[i]
+	sum = w.sum()
 	for i in xrange(len(w)):
 		w[i] = (w[i]*n)/sum
 	return w

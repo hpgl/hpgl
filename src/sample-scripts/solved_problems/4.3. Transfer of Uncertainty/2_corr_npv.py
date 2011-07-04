@@ -1,11 +1,4 @@
 #
-#   Copyright 2009 HPGL Team
-#   This file is part of HPGL (High Perfomance Geostatistics Library).
-#   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
-#   You should have received a copy of the BSD License along with HPGL.
-#
-
-#
 #	Solved Problems in Geostatistics
 #
 # ------------------------------------------------
@@ -51,7 +44,7 @@ l = 1000
 # Correlation coefficient
 p = 0.8
 
-# A formula for calculating NPV:
+# Function to calculate NPV:
 def npv_calculate(R, C, r, n):
 	npv = 0.0
 	for i in xrange(n):
@@ -59,7 +52,7 @@ def npv_calculate(R, C, r, n):
 	return npv
 
 def mean_var_calculate(p, C, mean_R, var_R, mean_C, var_C, n):
-	R = zeros( (n), dtype = float)
+	R = zeros( (n), order = 'F', dtype = float)
 	for i in xrange(n):
 		var = var_R * (1 - p**2)
 		mean = mean_R + (p * sqrt(var_R) * (C[i] - mean_C)) / (sqrt(var_C))
@@ -71,7 +64,6 @@ npv_array = []
 for i in xrange(l):
 	#Simulate random C
 	C = random.normal(mean_C, sqrt(var_C), n)
-	#print C
 	
 	#Calculate R
 	R = mean_var_calculate(p, C, mean_R, var_R, mean_C, var_C, n)
@@ -84,12 +76,11 @@ print "NPV", npv_array
 for i in xrange(l-1):
 	array_bins[i+1] = array_bins[i+1] + array_bins[i]
 
-array_bin = zeros( (l), dtype = float)
+array_bin = zeros( (l), order = 'F', dtype = float)
 
 for i in xrange(l):
 	array_bin[i] =  float(array_bins[i]) / l
 
-#print array_bin
 array_hist = delete(array_hist, [0])
 z = []
 

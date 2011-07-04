@@ -1,10 +1,3 @@
---
---   Copyright 2009 HPGL Team
---   This file is part of HPGL (High Perfomance Geostatistics Library).
---   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
---   You should have received a copy of the BSD License along with HPGL.
---
-
 CONN_CUBE 
 1 1 1 1 1 1 1 1 1 0 1 0 
 0 0 0 1 0 0 0 0 1 0 0 0 

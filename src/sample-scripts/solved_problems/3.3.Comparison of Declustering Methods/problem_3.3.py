@@ -1,11 +1,4 @@
 #
-#   Copyright 2009 HPGL Team
-#   This file is part of HPGL (High Perfomance Geostatistics Library).
-#   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
-#   You should have received a copy of the BSD License along with HPGL.
-#
-
-#
 #	Solved Problems in Geostatistics
 #
 # ------------------------------------------------
@@ -32,26 +25,33 @@ from decluster import *
 #
 # ----------------------------------------------------
 
-# Loading sample data from file
-
 #x = 14
 #y = 3
-dx = 1
-dy = 1
-dz = 1
-c = 2
-n_p = 7
 
+# Number of cells
+dx = 5
+dy = 5
+dz = 1
+
+# for IDW
+c = 2
+#n_p = 7
+
+# Loading sample data from file
 dict = load_gslib_file("decluster.txt")
 
-array3 = zeros( (len(dict['Northing'])), dtype = float)
+# Lets make a PointSet tuple
+array3 = zeros( (len(dict['Northing'])), order = 'F', dtype = float)
 PointSet = (dict['Northing'], dict['Elev.'], array3)
 
+# nx, ny, nz - cells length (extended space along nx, ny)
 nx = 10 + (max(dict['Northing']) - min(dict['Northing']))/dx
 ny = 10 + (max(dict['Elev.']) - min(dict['Elev.']))/dy
 nz = (max(array3) - min(array3))/dz
 
-print nx, ny, nz
+print "Cells Length."
+print "nx:", nx, "ny:", ny, "nz:", nz
+
 # Lets define 3D grid with dx*dy*dz cells and nx, ny, nz cells length
 array_grid = Grid(min(PointSet[0]), min(PointSet[1]), min(PointSet[2]), dx, dy, dz, nx, ny, nz)
 
@@ -83,5 +83,5 @@ print wsk
 # print "Stand polygonal weigths"
 # print wp
 
-#Drawing bar
-#bar_show(w_cell, wsk, widw, len(PointSet[0]))
+# Drawing bar
+bar_show(w_cell, wsk, widw, len(PointSet[0]))

@@ -1,11 +1,4 @@
 #
-#   Copyright 2009 HPGL Team
-#   This file is part of HPGL (High Perfomance Geostatistics Library).
-#   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
-#   You should have received a copy of the BSD License along with HPGL.
-#
-
-#
 #	Solved Problems in Geostatistics
 #
 # ------------------------------------------------
@@ -44,7 +37,7 @@ dict = load_gslib_file("DBHdata.txt")
 
 x_coord = dict['X']
 y_coord = dict['Y']
-z_coord = zeros((len(x_coord)), dtype = 'uint8')
+z_coord = zeros((len(x_coord)), order = 'F', dtype = 'uint8')
 
 # property
 value = "Por"
@@ -109,7 +102,7 @@ print "SK_transformed_data result:", krigged_transformed_data[0]
 #---------------------------------------------------
 #	Problem:
 #
-#	Compute the normal scores semivariograms of the gridded kriged estimates ans the simulated values and compare these experimental variograms to the input (Gaussian) variogram model.
+#	Compute the normal scores semivariograms of the gridded kriged estimates and the simulated values and compare these experimental variograms to the input (Gaussian) variogram model.
 #
 # --------------------------------------------------
 
