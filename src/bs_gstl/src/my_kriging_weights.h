@@ -1,14 +1,8 @@
 /*
-
-    Copyright 2009 HPGL Team
-
-    This file is part of HPGL (High Perfomance Geostatistics Library).
-
-    HPGL is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 2 of the License.
-
-    HPGL is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License along with HPGL. If not, see http://www.gnu.org/licenses/.
+   Copyright 2009 HPGL Team
+   This file is part of HPGL (High Perfomance Geostatistics Library).
+   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
+   You should have received a copy of the BSD License along with HPGL.
 
 */
 
@@ -19,6 +13,7 @@
 #include <sugarbox_grid.h>
 #include <property_array.h>
 #include <typedefs.h>
+#include "gauss_solver.h"
 
 
 namespace hpgl
@@ -31,39 +26,36 @@ namespace hpgl
 	inline ok_constraints_t ok_constraints() {return ok_constraints_t();}
 	inline corellogram_constraints_t corellogram_constraints() {return corellogram_constraints_t();}
 
-	template<typename MatrixLibrary, typename covariances_t, bool calc_variance, typename coord_t>
-	bool sk_kriging_weights_2(						
+	template<typename covariances_t, bool calc_variance, typename coord_t>
+	bool sk_kriging_weights_3(						
 			coord_t center_coord,			
 			const std::vector<coord_t> & coords,
 			const covariances_t & covariances, 
 			std::vector<kriging_weight_t> & weights,
 			double & variance)
 	{
-		typedef matrix_lib_traits<MatrixLibrary> MatrixLib;
-		typename MatrixLib::Symmetric_matrix A;
-		typename MatrixLib::Vector b;
-		typename MatrixLib::Vector b2;
-
-		A.resize(coords.size(), coords.size());
-		b.resize(coords.size());
-		b2.resize(coords.size());
+		int size = coords.size();
+		std::vector<double> A(coords.size() * coords.size());
+		std::vector<double> b(coords.size());
+		std::vector<double> b2(coords.size());
 		weights.resize(coords.size());
 
 		if (coords.size() <= 0)
 			return false;
 		
 		//build invariant
-		for (int i = 1, end_i = coords.size(); i <= end_i; ++i)
+		for (int i = 0, end_i = coords.size(); i < end_i; ++i)
 		{
-			for (int j = i, end_j = end_i; j <= end_j; ++j)
+			for (int j = i, end_j = end_i; j < end_j; ++j)
 			{
-				A(i, j) = covariances(coords[i-1], coords[j-1]);
+				A[i*size + j] = covariances(coords[i], coords[j]);
+				A[j*size + i] = A[i*size + j];
 			}
-			b(i) = covariances(coords[i-1], center_coord);
-			b2(i) = b(i);
+			b[i] = covariances(coords[i], center_coord);
+			b2[i] = b[i];
 		}
 
-		bool system_solved = ( MatrixLib::solve(A, b, weights.begin()) == 0 );
+		bool system_solved = gauss_solve(&A[0], &b[0], &weights[0], size);		
 
 		if (calc_variance)
 		{
@@ -73,9 +65,9 @@ namespace hpgl
 				sugarbox_location_t center_loc;
 				double cr0 = covariances(center_coord, center_coord);				
 				variance = cr0;
-				for (int i = 1, end_i = coords.size(); i <= end_i; ++i)
+				for (int i = 0, end_i = coords.size(); i < end_i; ++i)
 				{
-					variance -= weights[i-1] * b2(i);
+					variance -= weights[i] * b2[i];
 				}
 			}
 			else
@@ -96,7 +88,7 @@ namespace hpgl
 		)
 	{
 		double variance;
-		return sk_kriging_weights_2<GSTL_TNT_lib, covariances_t, false, coord_t>(center, coords, covariancer, weights, variance);
+		return sk_kriging_weights_3<covariances_t, false, coord_t>(center, coords, covariancer, weights, variance);
 	}
 
 	template<typename covariances_t, typename coord_t>
@@ -109,71 +101,68 @@ namespace hpgl
 		double & variance
 		)
 	{		
-		return sk_kriging_weights_2<GSTL_TNT_lib, covariances_t, true, coord_t>(center, coords, covariancer, weights, variance);
+		return sk_kriging_weights_3<covariances_t, true, coord_t>(center, coords, covariancer, weights, variance);
 	}
-
-
-	template<typename MatrixLibrary, typename covariances_t, bool calc_variance, typename coord_t>
-	bool ok_kriging_weights_2(
+	
+	template<typename covariances_t, bool calc_variance, typename coord_t>
+	bool ok_kriging_weights_3(
 			coord_t center,
 			const std::vector<coord_t> & coords,
 			const covariances_t & covariances, 
 			std::vector<kriging_weight_t> & weights,
 			double & variance)
 	{
-		typedef matrix_lib_traits<MatrixLibrary> MatrixLib;
-		typename MatrixLib::Symmetric_matrix A;
-		typename MatrixLib::Vector b;
-		typename MatrixLib::Vector b2;
-
-		int size = coords.size()+1;
-
-		A.resize(size, size);
-		b.resize(size);
-		b2.resize(size);
-		weights.resize(size);
-
 		if (coords.size() <= 0)
 			return false;
 
-		for (int i = 1; i <= size - 1; ++i)
+		int size = coords.size()+1;
+
+		std::vector<double> A(size*size);
+		std::vector<double> b(size);
+		std::vector<double> b2(size);
+		weights.resize(size);
+		
+		for (int i = 0; i < size - 1; ++i)
 		{
-			for (int j = i; j <= size - 1; ++j)
+			for (int j = i; j < size - 1; ++j)
 			{
-				A(i, j) = covariances(
-						coords[i-1], 
-						coords[j-1]);
+				A[i*size + j] = covariances(coords[i], coords[j]);
+				A[j*size + i] = A[i * size + j];
 			}
-			b(i) = covariances(
-						coords[i-1], 
-						center);
-			b2(i) = b(i);
+			b[i] = covariances(coords[i], center);
+			b2[i] = b[i];
 		}
 
-		for (int j = 1; j < size; ++j)
+		for (int j = 0; j < size - 1; ++j)
 		{
-			A(size, j) = 1;
+			A[(size-1) * size + j] = 1;
+			A[j * size + (size - 1)] = 1;			
 		}		
-		A(size, size) = 0;
-		b(size) = 1;
-		
-		bool result = MatrixLib::solve(A, b, weights.begin()) == 0;		
-		if (result)
+		A[size*size - 1] = 0;
+		b[size-1] = 1;
+
+		bool system_solved = gauss_solve(&A[0], &b[0], &weights[0], size);		
+
+		if (calc_variance)
 		{
-			if (calc_variance)
+			if (system_solved)
 			{
 				sugarbox_location_t center_loc;
 				double cr0 = covariances(center, center);
 				variance = cr0;
-				for (int i = 1, end_i = coords.size(); i <= end_i; ++i)
+				for (int i = 0, end_i = coords.size(); i < end_i; ++i)
 				{
-					variance -= weights[i-1] * b2(i);
+					variance -= weights[i] * b2[i];
 				}
-				variance -= weights[coords.size()];
+				variance -= weights[size - 1];
+			}
+			else
+			{
+				variance = -1;
 			}
 		}
 		weights.resize(coords.size());
-		return result;
+		return system_solved;
 	}
 
 	template<typename covariances_t, typename coord_t>
@@ -186,7 +175,8 @@ namespace hpgl
 		)
 	{
 		double variance;
-		return ok_kriging_weights_2<GSTL_TNT_lib, covariances_t, false, coord_t>(center, coords, covariances, weights, variance);
+		return ok_kriging_weights_3<covariances_t, false, coord_t>(
+				center, coords, covariances, weights, variance);		
 	}
 
 
@@ -200,11 +190,11 @@ namespace hpgl
 			double & variance
 		)
 	{		
-		return ok_kriging_weights_2<GSTL_TNT_lib, covariances_t, true, coord_t>(center, coords, covariances, weights, variance);
+		return ok_kriging_weights_3<covariances_t, true, coord_t>(center, coords, covariances, weights, variance);
 	}
 
 	template<typename covariances_t, typename coord_t>
-	bool corellogramed_weights_2(
+	bool corellogramed_weights_3(
 			coord_t center,			
 			mean_t center_mean,
 			const std::vector<coord_t> & coords,
@@ -217,45 +207,38 @@ namespace hpgl
 		if (size <= 0)
 			return false;
 
-		typedef matrix_lib_traits<GSTL_TNT_lib> MatrixLib;
-		typename MatrixLib::Symmetric_matrix A;
-		typename MatrixLib::Vector b;
-		
-		A.resize(size, size);
-		b.resize(size);
+		std::vector<double> A(size * size);
+		std::vector<double> b(size);
 		weights.resize(size);		
 
 		double meanc = center_mean;
 		double sigmac = sqrt(meanc * (1 - meanc));
 		
-		MatrixLib::Vector sigmas;
-		sigmas.resize(size);
+		std::vector<double> sigmas(size);		
 
-		for (int i = 1; i <= size; ++i)
+		for (int i = 0; i < size; ++i)
 		{			
-			double meani = means[i-1];
-			sigmas(i) = sqrt(meani * (1-meani));
+			double meani = means[i];
+			sigmas[i] = sqrt(meani * (1-meani));
 		}
 
 		//build invariant
-		for (int i = 1; i <= size; ++i)
+		for (int i = 0; i < size; ++i)
 		{			
-			for (int j = i; j <= size; ++j)
+			for (int j = 0; j < size; ++j)
 			{				
-				A(i, j) = cov(
-								coords[i-1], 
-								coords[j-1]) 
-						/ (sigmas(i) * sigmas(j));
+				A[i * size + j] = 
+					cov(coords[i], coords[j]) / (sigmas[i] * sigmas[j]);
 			}
-			b(i) = cov(coords[i-1], center) / (sigmas(i) * sigmac);
+			b[i] = cov(coords[i], center) / (sigmas[i] * sigmac);
 		}
 
-		bool result = MatrixLib::solve(A, b, weights.begin()) == 0;
-		for (int i = 1; i <= size; ++i)
+		bool system_solved = gauss_solve(&A[0], &b[0], &weights[0], size);		
+		for (int i = 0; i < size; ++i)
 		{
-			weights[i-1] *= sigmac / sigmas(i);
+			weights[i] *= sigmac / sigmas[i];
 		}
-		return result;
+		return system_solved;
 	}
 
 	template<typename covariances_t, typename coord_t>
@@ -269,11 +252,8 @@ namespace hpgl
 		std::vector<kriging_weight_t> & weights)
 	{
 		double variance;
-		return sk_kriging_weights_2<GSTL_TNT_lib, covariances_t, false, coord_t>(
-			center, 
-			coords, 
-			covariances, 
-			weights, variance);
+		return sk_kriging_weights_3<covariances_t, false, coord_t>
+			(center, coords, covariances, weights, variance);		
 	}
 
 	template<typename covariances_t, typename coord_t>
@@ -286,8 +266,10 @@ namespace hpgl
 		corellogram_constraints_t (*f)(void),
 		std::vector<kriging_weight_t> & weights)
 	{		
-		return corellogramed_weights_2(center, center_mean, coords, covariances, means, weights);
-	}	
+		return corellogramed_weights_3(center, center_mean, coords, covariances, means, weights);
+	}
+
+
 }
 
 #endif //__MY_KRIGING_WEIGHTS_H__B6211BC7_74C1_4D96_AB05_286A62D0F003

@@ -1,5 +1,13 @@
+#
+#   Copyright 2009 HPGL Team
+#   This file is part of HPGL (High Perfomance Geostatistics Library).
+#   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
+#   You should have received a copy of the BSD License along with HPGL.
+#
+
 
 from math import sqrt, log
+from numpy import *
 
 # Computes zk such that P(Z<z) = p.
 # This function uses a numerical approximation from : Statistical Computing,
@@ -33,4 +41,12 @@ def inverse_normal_score(prob, mean = 0.0, var = 1.0):
 	R = result*sqrt(var) + mean
 	return R
 	
-	
+def normal_score(prob):
+	a1 = 0.4361836
+	a2 = -0.1201676
+	a3 = 0.9372980
+	p = 0.33267
+	z = exp(-(prob**2)/2)/(sqrt(2*pi))
+	t = 1./(1 + p*prob)
+	P_x = 1 - z*(a1*t + a2*(t**2) + a3*(t**3))
+	return P_x

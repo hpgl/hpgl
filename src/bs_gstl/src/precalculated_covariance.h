@@ -1,14 +1,8 @@
 /*
-
-    Copyright 2009 HPGL Team
-
-    This file is part of HPGL (High Perfomance Geostatistics Library).
-
-    HPGL is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 2 of the License.
-
-    HPGL is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License along with HPGL. If not, see http://www.gnu.org/licenses/.
+   Copyright 2009 HPGL Team
+   This file is part of HPGL (High Perfomance Geostatistics Library).
+   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
+   You should have received a copy of the BSD License along with HPGL.
 
 */
 
@@ -24,8 +18,7 @@ namespace hpgl
 {
 	/*
 	Implements CovarianceModel concept.
-	*/
-	template<typename covariances_t, typename coord_t>
+	*/	
 	class precalculated_covariances_t
 	{
 		int dx;
@@ -40,15 +33,15 @@ namespace hpgl
 		precalculated_covariances_t()
 		{}
 
-		template<typename radiuses_t>
+		template<typename covariances_t, typename radiuses_t>
 		precalculated_covariances_t(const covariances_t & cov, const radiuses_t & rs)
 		{
 			init(cov, rs);			
 		}
 
-		template<typename radiuses_t>
+		template<typename covariances_t, typename radiuses_t>
 		void init(const covariances_t & cov, const radiuses_t & rs)
-		{
+		{			
 			int rx = rs[0];
 			int ry = rs[1];
 			int rz = rs[2];
@@ -65,20 +58,23 @@ namespace hpgl
 					for (int x = 0; x < sx; ++x)
 					{
 						int index = vr_to_dec(sy, sx, z, y, x);
-						m_covariances[index] = cov(coord_t(0,0,0), coord_t(x + dx, y + dy, z + dz));
+						double c1[] = {0, 0, 0};
+						double c2[] = {x + dx, y + dy, z + dz};
+						m_covariances[index] = cov(c1, c2);
 					}
 			m_box = rect_3d_t<int>(-rx, -ry, -rz, rx, ry, rz);
 			int vol = m_box.volume_inclusive();
 			assert(vol == size);
 		}
 
+		template<typename coord_t>
 		covariance_t operator()(const coord_t & c1, const coord_t & c2)const
 		{
-			typename coord_t::difference_type vec = c2 - c1;
+			double vec[] = {c2[0] - c1[0], c2[1] - c1[1], c2[2] - c1[2]}; //c2 - c1;
 
 			if (m_box.has(vec))
 			{
-				int index = vr_to_dec(sy, sx, vec[2] - dx, vec[1] - dy, vec[0] - dx);
+				int index = vr_to_dec(sy, sx, vec[2] - dz, vec[1] - dy, vec[0] - dx);
 				return m_covariances[index];
 			}
 			else

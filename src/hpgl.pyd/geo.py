@@ -1,15 +1,10 @@
 #
-#
 #   Copyright 2009 HPGL Team
-#
 #   This file is part of HPGL (High Perfomance Geostatistics Library).
+#   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
+#   You should have received a copy of the BSD License along with HPGL.
 #
-#   HPGL is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 2 of the License.
-#
-#   HPGL is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-#
-#   You should have received a copy of the GNU General Public License along with HPGL. If not, see http://www.gnu.org/licenses/.
-#
+
 import hpgl
 from hpgl import create_sugarbox_grid
 from hpgl import load_mean_data
@@ -57,7 +52,7 @@ def load_gslib_ind_property(filename, undefined_value, indicator_values,i,j,k):
 	return hpgl.load_gslib_ind_property(filename, undefined_value, indicator_values,i,j,k)
 	
 
-def ordinary_kriging(prop, grid, radiuses, max_neighbours, covariance_type, ranges, sill, nugget = None, angles=None):
+def ordinary_kriging(prop, grid, radiuses, max_neighbours, covariance_type, ranges, sill, nugget = None, angles=None, use_new_cov = True):
 	param = hpgl.create_ok_params()
 	param.set_covariance_type(covariance_type)
 	param.set_sill(sill)
@@ -68,7 +63,7 @@ def ordinary_kriging(prop, grid, radiuses, max_neighbours, covariance_type, rang
 		param.set_nugget(nugget)
 	if (not angles is None):
 		param.set_angles(*angles)
-	return hpgl.ordinary_kriging(prop, grid.grid, param)
+	return hpgl.ordinary_kriging(prop, grid.grid, param, use_new_cov)
 
 def simple_kriging(prop, grid, radiuses, max_neighbours, covariance_type, ranges, sill, nugget=None, angles=None, mean=None):
 	param = hpgl.create_sk_params()
@@ -125,11 +120,12 @@ def sgs_simulation(prop, grid, radiuses, max_neighbours, covariance_type, ranges
 	else:
 		#param.set_mean(hpgl.calc_mean(prop))
 		param.set_mean_kind("stationary_auto")
-		if mean_data is None:
-			return hpgl.sgs_simulation(prop, grid.grid, param, use_harddata, cdf_data, mask)
-		else:
-			return hpgl.sgs_lvm_simulation(prop, grid.grid, param, mean_data, use_harddata, cdf_data, mask)
-
+		
+	if mean_data is None:
+		return hpgl.sgs_simulation(prop, grid.grid, param, use_harddata, cdf_data, mask)
+	else:
+		return hpgl.sgs_lvm_simulation(prop, grid.grid, param, mean_data, use_harddata, cdf_data, mask)
+	
 def indicator_kriging(prop, grid, data, use_vpc = False):
 	return hpgl.indicator_kriging(prop, grid.grid, data, use_vpc)
 
@@ -151,9 +147,9 @@ def sis_simulation(prop, grid, data, seed, use_vpc = False, mean_data=None, use_
 	if use_vpc and not mean_data is None:
 		raise RuntimeError, "SIS simulation can't use both VPC and mean_data."
 	if (mean_data == None):
-			return hpgl.sis_simulation(prop, grid.grid, data, seed, use_vpc, use_corellogram, mask)
+		return hpgl.sis_simulation(prop, grid.grid, data, seed, use_vpc, use_corellogram, mask)
 	else:
-			return hpgl.sis_simulation_lvm(prop, grid.grid, data, seed, mean_data, use_corellogram, mask)
+		return hpgl.sis_simulation_lvm(prop, grid.grid, data, seed, mean_data, use_corellogram, mask)
 
 def simple_cokriging_markI(prop, grid, 
 		secondary_data, primary_mean, secondary_mean, secondary_variance, correlation_coef,
@@ -186,7 +182,6 @@ class ContProp:
 class MeanData:
 	def __init__(self, id):
 		self.id = id; 
-
 
 def read_eclipse_file(filename, destinations):
 	load_settings = hpgl.create_load_settings();

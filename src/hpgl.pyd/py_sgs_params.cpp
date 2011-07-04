@@ -1,14 +1,8 @@
 /*
-
-    Copyright 2009 HPGL Team
-
-    This file is part of HPGL (High Perfomance Geostatistics Library).
-
-    HPGL is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 2 of the License.
-
-    HPGL is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License along with HPGL. If not, see http://www.gnu.org/licenses/.
+   Copyright 2009 HPGL Team
+   This file is part of HPGL (High Perfomance Geostatistics Library).
+   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
+   You should have received a copy of the BSD License along with HPGL.
 
 */
 
@@ -82,17 +76,4 @@ namespace hpgl
 			throw hpgl_exception("py_sgs_params", boost::format("Unknown mean kind: %s.") % mean_kind);
 	}
 
-	void py_sgs_params_t::set_auto_reg(bool auto_reg)
-	{
-		m_sgs_params.auto_region_size = auto_reg;
-	}
-
-	void py_sgs_params_t::set_region_size(size_t r1, size_t r2, size_t r3)
-	{
-		m_sgs_params.reg_size.d[0] = r1;
-		m_sgs_params.reg_size.d[1] = r2;
-		m_sgs_params.reg_size.d[2] = r3;
-		
-		m_sgs_params.reg_size.volume = r1 * r2 * r3;
-	}
 }

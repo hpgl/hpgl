@@ -339,10 +339,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\py_read_eclipse_file.h"
-				>
-			</File>
-			<File
 				RelativePath=".\py_sgs_params.h"
 				>
 			</File>

@@ -14,7 +14,8 @@ release_files = [os.path.join('release', x) for x in src_files]
 includes = ['/usr/include/python2.5',
 		'../bs_gstl/include',
 		'../bs_gstl/src',
-		'../GsTL-1.3',
+		'../tnt_126',
+		#'/opt/boost_1_36_0'
 		];
 
 hpgl_d_so = SharedLibrary('hpgl_d', debug_files,
@@ -25,7 +26,7 @@ hpgl_d_so = SharedLibrary('hpgl_d', debug_files,
                 'libboost_thread-mt-d',
                 'libgomp',
 		libbsgstl_d],
-	LIBPATH=['../bs_gstl' ]
+	#LIBPATH=['../bs_gstl', '/opt/boost_1_36_lnx_x86_64_build/']
 	)
 
 
@@ -38,7 +39,7 @@ hpgl_so = SharedLibrary('hpgl', release_files,
                 'libgomp',
 		libbsgstl
                 ],
-	LIBPATH=['../bs_gstl', ]
+	#LIBPATH=['../bs_gstl', '/opt/boost_1_36_lnx_x86_64_build/']
 	)
 
-Return ('hpgl_d_so', 'hpgl_so' )
+Return ('hpgl_d_so', 'hpgl_so')

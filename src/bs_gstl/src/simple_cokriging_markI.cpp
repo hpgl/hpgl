@@ -1,14 +1,8 @@
 /*
-
-    Copyright 2009 HPGL Team
-
-    This file is part of HPGL (High Perfomance Geostatistics Library).
-
-    HPGL is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 2 of the License.
-
-    HPGL is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License along with HPGL. If not, see http://www.gnu.org/licenses/.
+   Copyright 2009 HPGL Team
+   This file is part of HPGL (High Perfomance Geostatistics Library).
+   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
+   You should have received a copy of the BSD License along with HPGL.
 
 */
 
@@ -21,30 +15,30 @@
 #include "sugarbox_grid.h"
 #include "sugarbox_neighbour_lookup.h"
 #include "covariance_param.h"
-#include "covariance_utils.h"
 #include "is_informed_predicate.h"
 #include "select.h"
 #include "pretty_printer.h"
 #include "progress_reporter.h"
+#include "cov_model.h"
+#include "gauss_solver.h"
 
 namespace hpgl
 {
 
-template<typename coord_t, typename MatrixLib, typename primary_cov_model_t, typename cross_cov_model_t>
-void build_system(
-	const MatrixLib &,
+template<typename coord_t, typename primary_cov_model_t, typename cross_cov_model_t>
+void build_system(	
 	const coord_t & center, 
 	const std::vector<coord_t> & coords,
 	const primary_cov_model_t & primary_cov,
 	const cross_cov_model_t & cross_cov,
 	double secondary_variance,
-	typename MatrixLib::Symmetric_matrix & A, 
-	typename MatrixLib::Vector & b)
+	std::vector<double> & A,
+	std::vector<double> & b)
 {
 	int neighbour_count = coords.size();
 	int matrix_size = neighbour_count + 1;
 
-	A.resize(matrix_size, matrix_size);
+	A.resize(matrix_size * matrix_size);
 
 	b.resize(matrix_size);
 
@@ -52,32 +46,31 @@ void build_system(
 	{
 		for (int j = i; j < neighbour_count; ++j)
 		{
-			A(i+1, j+1) = primary_cov(coords[i], coords[j]);
+			A[i * matrix_size + j] = primary_cov(coords[i], coords[j]);
+			A[j * matrix_size + i] = A[i * matrix_size + j];
 		}
 	}
 	
 	for (int i = 0; i < neighbour_count; ++i)
 	{
-		A(neighbour_count + 1, i + 1) = cross_cov(center, coords[i]);
-		//A(i + 1, neighbour_count + 1) = cross_cov(coords[i], center);
-		b(i + 1) = primary_cov(coords[i], center);
+		A[neighbour_count * matrix_size + i] = cross_cov(center, coords[i]);
+		A[i * matrix_size + neighbour_count] = A[neighbour_count * matrix_size + i];
+		b[i] = primary_cov(coords[i], center);
 	}
 
-	b(neighbour_count + 1) = cross_cov(coord_t(0,0,0), coord_t(0,0,0));
+	b[neighbour_count] = cross_cov(coord_t(0,0,0), coord_t(0,0,0));
 
-	A(neighbour_count + 1, neighbour_count + 1) = secondary_variance;
+	A[matrix_size * matrix_size - 1] = secondary_variance;	
 }
 
-template<typename MatrixLib>
-bool solve_system(const MatrixLib &, typename MatrixLib::Symmetric_matrix & A, typename MatrixLib::Vector & b, std::vector<kriging_weight_t> & weights)
+bool solve_system(std::vector<double> & A, std::vector<double> & b, std::vector<kriging_weight_t> & weights)
 {
 	weights.resize(b.size());
-	return MatrixLib::solve(A, b, weights.begin()) == 0;
+	return gauss_solve(&A[0], &b[0], &weights[0], b.size());
 }
 
-template<typename coord_t, typename primary_cov_model_t, typename cross_cov_model_t, typename MatrixLib>
-bool calc_weights(
-		const MatrixLib & mlib,
+template<typename coord_t, typename primary_cov_model_t, typename cross_cov_model_t>
+bool calc_weights(		
 		const coord_t & center,
 		std::vector<coord_t> & coords,
 		const primary_cov_model_t & primary_cov,
@@ -86,13 +79,13 @@ bool calc_weights(
 		std::vector<kriging_weight_t> & weights
 		)
 {
-	typename MatrixLib::Symmetric_matrix A; 
-	typename MatrixLib::Vector b;
+	std::vector<double> A; 
+	std::vector<double> b;
 	
 	// build system
-	build_system(mlib, center, coords, primary_cov, cross_cov, secondary_variance, A, b);
+	build_system(center, coords, primary_cov, cross_cov, secondary_variance, A, b);
 	// solve systemk
-	return solve_system(mlib, A, b, weights);
+	return solve_system(A, b, weights);
 }
 
 bool combine(
@@ -143,7 +136,7 @@ bool calc_value(
 		return false;
 
 	std::vector<kriging_weight_t> weights;
-	if (!calc_weights(matrix_lib_traits<GSTL_TNT_lib>(), center, coords, primary_cov, cross_cov, secondary_variance, weights))
+	if (!calc_weights(center, coords, primary_cov, cross_cov, secondary_variance, weights))
 		return false;
 
 	std::vector<cont_value_t> values;
@@ -162,17 +155,14 @@ class cross_cov_model_mark_i_t
 	double m_coef;
 	cov_model_t * m_cov_model;
 public:
-	typedef typename cov_model_t::first_argument_type first_argument_type;
-	typedef typename cov_model_t::second_argument_type second_argument_type;
-	typedef typename cov_model_t::result_type result_type;
-
 	cross_cov_model_mark_i_t(double p12, double d2, cov_model_t * cov_model)
 		: m_cov_model(cov_model)
 	{
-		m_coef = p12 * sqrt(d2) / sqrt((*cov_model)(first_argument_type(0,0,0), second_argument_type(0,0,0)));
+		m_coef = p12 * sqrt(d2) / sqrt((*cov_model)(coord_t(0,0,0), coord_t(0,0,0)));
 	}
 
-	result_type operator()(const first_argument_type & p1, const second_argument_type & p2)const
+	template<typename coord1_t, typename coord2_t>
+	covariance_t operator()(const coord1_t & p1, const coord2_t & p2)const
 	{
 		return m_coef * (*m_cov_model)(p1, p2);
 	}	
@@ -184,19 +174,17 @@ class cross_cov_model_mark_ii_t
 	double m_coef;	
 	secondary_cov_model_t * m_secondary_cov_model;
 public:
-	typedef typename secondary_cov_model_t::first_argument_type first_argument_type;
-	typedef typename secondary_cov_model_t::second_argument_type second_argument_type;
-	typedef typename secondary_cov_model_t::result_type result_type;
 
 	cross_cov_model_mark_ii_t(double p12, primary_cov_model_t * primary_cov_model, secondary_cov_model_t * secondary_cov_model)
 		: m_secondary_cov_model(secondary_cov_model)
 	{
-		double primary_variance = (*primary_cov_model)(first_argument_type(0,0,0), second_argument_type(0,0,0));
-		double secondary_variance = (*secondary_cov_model)(first_argument_type(0,0,0), second_argument_type(0,0,0));
+		double primary_variance = (*primary_cov_model)(coord_t(0,0,0), coord_t(0,0,0));
+		double secondary_variance = (*secondary_cov_model)(coord_t(0,0,0), coord_t(0,0,0));
 		m_coef = p12 * sqrt( secondary_variance / primary_variance );
 	}
 
-	result_type operator()(const first_argument_type & p1, const second_argument_type & p2)const
+	template<typename coord1_t, typename coord2_t>
+	covariance_t operator()(const coord1_t & p1, const coord2_t & p2)const
 	{
 		return m_coef * (*m_secondary_cov_model)(p1, p2);
 	}
@@ -226,14 +214,13 @@ void simple_cokriging_markI(
 	print_param("Secondary variance", secondary_variance);
 	print_param("Correllation coef", correlation_coef);
 
-	sugarbox_covariance_t cov;
-	create_covariance(primary_cov_params, cov);
+	cov_model_t cov(primary_cov_params);	
 
-	cross_cov_model_mark_i_t<sugarbox_covariance_t> cross_cov(correlation_coef, secondary_variance, &cov);
+	cross_cov_model_mark_i_t<cov_model_t> cross_cov(correlation_coef, secondary_variance, &cov);
 
 	int data_size = input_prop.size();
 	
-	neighbour_lookup_t<sugarbox_grid_t, sugarbox_covariance_t> n_lookup(&grid, &cov, neighbourhood_params);
+	neighbour_lookup_t<sugarbox_grid_t, cov_model_t> n_lookup(&grid, &cov, neighbourhood_params);
 
 	progress_reporter_t report(data_size);
 
@@ -288,18 +275,15 @@ void simple_cokriging_markII(
 	print_param("Secondary mean", secondary_mean);	
 	print_param("Correllation coef", correlation_coef);
 
-	sugarbox_covariance_t primary_cov;
-	create_covariance(primary_cov_params, primary_cov);
-
-	sugarbox_covariance_t secondary_cov;
-	create_covariance(secondary_cov_params, secondary_cov);
+	cov_model_t primary_cov(primary_cov_params);	
+	cov_model_t secondary_cov(secondary_cov_params);	
 	double secondary_variance = secondary_cov(sugarbox_grid_t::coord_t(0,0,0), sugarbox_grid_t::coord_t(0,0,0));
 
-	cross_cov_model_mark_ii_t<sugarbox_covariance_t, sugarbox_covariance_t> cross_cov(correlation_coef, &primary_cov, &secondary_cov);
+	cross_cov_model_mark_ii_t<cov_model_t, cov_model_t> cross_cov(correlation_coef, &primary_cov, &secondary_cov);
 
 	int data_size = input_prop.size();
 	
-	neighbour_lookup_t<sugarbox_grid_t, sugarbox_covariance_t> n_lookup(&grid, &primary_cov, neighbourhood_params);
+	neighbour_lookup_t<sugarbox_grid_t, cov_model_t> n_lookup(&grid, &primary_cov, neighbourhood_params);
 
 	progress_reporter_t report(data_size);
 

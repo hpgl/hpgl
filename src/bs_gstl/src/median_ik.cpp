@@ -1,14 +1,8 @@
 /*
-
-    Copyright 2009 HPGL Team
-
-    This file is part of HPGL (High Perfomance Geostatistics Library).
-
-    HPGL is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 2 of the License.
-
-    HPGL is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License along with HPGL. If not, see http://www.gnu.org/licenses/.
+   Copyright 2009 HPGL Team
+   This file is part of HPGL (High Perfomance Geostatistics Library).
+   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
+   You should have received a copy of the BSD License along with HPGL.
 
 */
 
@@ -18,12 +12,11 @@
 
 #include "covariance_field.h"
 #include <progress_reporter.h>
-#include <covariance_from_param.h>
-#include <indicator_combiner.h>
 #include "my_kriging_weights.h"
 #include "kriging_interpolation.h"
 #include "sugarbox_indexed_neighbour_lookup.h"
 #include "is_informed_predicate.h"
+#include "mean_provider.h"
 
 namespace hpgl
 {
@@ -59,9 +52,8 @@ void median_ik_for_two_indicators(
 
 
 	size_t prop_size = input_property.size();
-	sugarbox_covariance_t cov_model;
-	covariance_from_param(params, cov_model);
-	covariance_field_t cov_field(params.m_radiuses, cov_model);
+	
+	covariance_field_t cov_field(params.m_radiuses, cov_model_t(params));
 
 	std::vector<node_index_t> indices;
 

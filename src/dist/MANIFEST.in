@@ -1,1 +1,4 @@
-include geo/*.*
+include geo/*.pyd
+include geo/*.dll
+include geo/*.py
+include geo/*.so

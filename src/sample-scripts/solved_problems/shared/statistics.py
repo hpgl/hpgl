@@ -1,4 +1,11 @@
 #
+#   Copyright 2009 HPGL Team
+#   This file is part of HPGL (High Perfomance Geostatistics Library).
+#   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
+#   You should have received a copy of the BSD License along with HPGL.
+#
+
+#
 #	Solved Problems in Geostatistics
 #
 # ------------------------------------------------
@@ -75,12 +82,14 @@ def corr_coef(x,y):
 	return coef
 
 # Make random array from existing with same values
-def rand_array(array, n):
-	array_rand = zeros( (n), dtype = float)
+def rand_arrays(array1, array2, n):
+	array1_rand = zeros( (n), dtype = float)
+	array2_rand = zeros( (n), dtype = float)
 	for i in xrange(n):
-		value = random.randint(len(array))
-		array_rand[i] = array[value]
-	return array_rand
+		value = random.randint(len(array1))
+		array1_rand[i] = array1[value]
+		array2_rand[i] = array2[value]
+	return [array1_rand, array2_rand]
 
 # Calculate weighted covariance
 def calc_cov(x, y, w):
@@ -99,7 +108,7 @@ def w_corr_coef(x, y, w):
 
 # Calculate distance between points
 def calc_distance(x1,y1,x2,y2):
-	h = sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1))
+	h = sqrt((x2-x1)**2+(y2-y1)**2)
 	return h
 
 from numpy import mean, std, sum, sqrt, sort, corrcoef, tanh, arctanh
@@ -121,3 +130,4 @@ def bootstrap_correlation(x,y):
 #bootstrap standard error using Fisher's z-transform (NB! biased)
 	std_err = tanh(std(arctanh(r))*(len(r)/(len(r)-1.0)))
 	return (std_err, conf_interval)
+

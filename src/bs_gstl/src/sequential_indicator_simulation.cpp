@@ -1,14 +1,8 @@
 /*
-
-    Copyright 2009 HPGL Team
-
-    This file is part of HPGL (High Perfomance Geostatistics Library).
-
-    HPGL is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 2 of the License.
-
-    HPGL is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License along with HPGL. If not, see http://www.gnu.org/licenses/.
+   Copyright 2009 HPGL Team
+   This file is part of HPGL (High Perfomance Geostatistics Library).
+   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
+   You should have received a copy of the BSD License along with HPGL.
 
 */
 
@@ -19,16 +13,15 @@
 #include "ik_params.h"
 #include "random_node_enumerator.h"
 #include "bs_random_generator.h"
-#include "indicator_combiner.h"
 #include "sample.h"
 #include "my_kriging_weights.h"
 #include "pretty_printer.h"
 #include "progress_reporter.h"
 #include "precalculated_covariance.h"
-#include "covariance_utils.h"
 #include "kriging_interpolation.h"
 #include "sugarbox_indexed_neighbour_lookup.h"
 #include "is_informed_predicate.h"
+#include "cov_model.h"
 
 namespace hpgl
 {
@@ -47,17 +40,15 @@ void do_sis(
 		const weight_calculator_t & weight_calculator_sis,
 		const mask_t & mask)
 {
-	typedef precalculated_covariances_t<sugarbox_covariance_t, sugarbox_location_t> cov_t;
+	typedef precalculated_covariances_t cov_t;
 	typedef neighbour_lookup_t<grid_t, cov_t> nl_t;
-	std::vector<cov_t> 							covariances(params.m_category_count);
-	std::vector<sugarbox_covariance_t> 			sbcovs(params.m_category_count);
+	std::vector<cov_t> 							covariances(params.m_category_count);	
 	std::vector<nl_t> 							nblookups;
 	std::vector<indicator_array_adapter_t> 		ind_props;
 
 	for (int i = 0; i < params.m_category_count; ++i)
-	{
-		create_covariance(params.m_cov_params[i], sbcovs[i]);		
-		covariances[i].init(sbcovs[i], params.m_radiuses[i]);
+	{		
+		covariances[i].init(cov_model_t(params.m_cov_params[i]), params.m_radiuses[i]);
 		nblookups.push_back(nl_t(&grid, &covariances[i], params.m_nb_params[i]));
 		ind_props.push_back(indicator_array_adapter_t(&property, i));
 	}

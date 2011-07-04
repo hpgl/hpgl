@@ -41,11 +41,12 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/MP"
 				Optimization="0"
-				AdditionalIncludeDirectories="C:\Python25\include;D:\BlueSky\boost_1_35_0;&quot;D:\BlueSky\bluesky_geo\GsTL-1.3\GsTL-1.3&quot;;include"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\tnt_126&quot;;include"
 				PreprocessorDefinitions="BS_PROPERTY_ARRAY_EXPORTS;BS_PROPERTY_SERVER_EXPORTS;BS_GSTL_EXPORTS;BS_EXPORTING_PLUGIN;WIN32;GSTL_NOWARNING;NOMINMAX;HGPL_ENABLE_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				OpenMP="true"
 				UsePrecompiledHeader="2"
 				BrowseInformation="1"
 				WarningLevel="3"
@@ -112,7 +113,7 @@
 				EnableIntrinsicFunctions="false"
 				OmitFramePointers="false"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="C:\Python25\include;D:\BlueSky\boost_1_35_0;&quot;D:\BlueSky\bluesky_geo\GsTL-1.3\GsTL-1.3&quot;;include"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\tnt_126&quot;;include"
 				PreprocessorDefinitions="BS_PROPERTY_ARRAY_EXPORTS;BS_PROPERTY_SERVER_EXPORTS;BS_GSTL_EXPORTS;BS_EXPORTING_PLUGIN;GSTL_NOWARNING;NDEBUG;WIN32;NOMINMAX"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="false"
@@ -189,11 +190,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\covariance_from_param.cpp"
+				RelativePath=".\src\covariance_param.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\covariance_param.cpp"
+				RelativePath=".\src\gauss_solver.cpp"
 				>
 			</File>
 			<File
@@ -214,10 +215,6 @@
 			</File>
 			<File
 				RelativePath=".\src\load_property_from_file.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\looped_sugarbox_grid.cpp"
 				>
 			</File>
 			<File
@@ -282,6 +279,10 @@
 			</File>
 			<File
 				RelativePath=".\src\sequential_indicator_simulation.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\set_thread_num.cpp"
 				>
 			</File>
 			<File
@@ -389,19 +390,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\cov_model.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\covariance_field.h"
 				>
 			</File>
 			<File
-				RelativePath=".\include\covariance_from_param.h"
-				>
-			</File>
-			<File
 				RelativePath=".\include\covariance_model.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\covariance_model.h"
 				>
 			</File>
 			<File
@@ -413,19 +410,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\covariance_utils.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\data_sink.h"
-				>
-			</File>
-			<File
 				RelativePath=".\include\dump_cdf.h"
 				>
 			</File>
 			<File
 				RelativePath=".\include\dump_property.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\gauss_solver.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\gaussian_distribution.h"
 				>
 			</File>
 			<File
@@ -445,10 +442,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\grid.h"
-				>
-			</File>
-			<File
 				RelativePath=".\include\hpgl_core.h"
 				>
 			</File>
@@ -457,15 +450,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\hpgl_logger.h"
-				>
-			</File>
-			<File
 				RelativePath=".\include\ik_params.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\indicator_combiner.h"
 				>
 			</File>
 			<File
@@ -478,6 +463,10 @@
 			</File>
 			<File
 				RelativePath=".\src\is_informed_predicate.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\kriging.h"
 				>
 			</File>
 			<File
@@ -501,7 +490,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\looped_sugarbox_grid.h"
+				RelativePath=".\include\lvm_data.h"
 				>
 			</File>
 			<File
@@ -510,10 +499,6 @@
 			</File>
 			<File
 				RelativePath=".\src\map_categories.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\mean_kind.h"
 				>
 			</File>
 			<File
@@ -529,11 +514,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\neighbour_set.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\neighbourhood_lookup.h"
 				>
 			</File>
 			<File
 				RelativePath=".\include\neighbourhood_param.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\non_parametric_cdf.h"
 				>
 			</File>
 			<File

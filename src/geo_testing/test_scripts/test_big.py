@@ -1,15 +1,10 @@
 #
-#
 #   Copyright 2009 HPGL Team
-#
 #   This file is part of HPGL (High Perfomance Geostatistics Library).
+#   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
+#   You should have received a copy of the BSD License along with HPGL.
 #
-#   HPGL is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 2 of the License.
-#
-#   HPGL is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-#
-#   You should have received a copy of the GNU General Public License along with HPGL. If not, see http://www.gnu.org/licenses/.
-#
+
 from geo import *
 from sys import *
 import time
@@ -93,14 +88,13 @@ if (not "nosgs" in argv):
 	sgs_result2 = sgs_simulation(prop_cont, grid, seed=24193421, **sgs_params)
 	write_property(sgs_result2, "results/medium/SGS2.INC", "SGS2", -99)
 
-#	sgs lvm has bug for now, excluded
-#	sgs_lvm = sgs_simulation(prop_cont, grid, seed=3439275, **lvm_sgs_params)
-#	write_property(sgs_lvm, "results/medium/SGS_LVM.INC", "SGS_LVM", -99)
+	sgs_lvm = sgs_simulation(prop_cont, grid, seed=3439275, **lvm_sgs_params)
+	write_property(sgs_lvm, "results/medium/SGS_LVM.INC", "SGS_LVM", -99)
 
 	write_property(sgs_result2, "results/RESULt_SGS2_BIG.INC", "BIG_SGS2", -99)
 	del(sgs_result1)
 	del(sgs_result2)
-	#del(sgs_lvm)
+	del(sgs_lvm)
 
 ik_prop = load_ind_property("test_data/BIG_SOFT_DATA_160_141_20.INC", -99, [0,1])
 print 'Property data loaded.'

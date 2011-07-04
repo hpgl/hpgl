@@ -1,14 +1,8 @@
 /*
-
-    Copyright 2009 HPGL Team
-
-    This file is part of HPGL (High Perfomance Geostatistics Library).
-
-    HPGL is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 2 of the License.
-
-    HPGL is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License along with HPGL. If not, see http://www.gnu.org/licenses/.
+   Copyright 2009 HPGL Team
+   This file is part of HPGL (High Perfomance Geostatistics Library).
+   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
+   You should have received a copy of the BSD License along with HPGL.
 
 */
 
@@ -17,6 +11,7 @@
 #define __HPGL_CORE_H__A666CEEC_CEB4_49C4_9B92_992B1A9EA24B
 
 #include <typedefs.h>
+#include "property_array.h"
 
 namespace hpgl
 {	
@@ -28,7 +23,20 @@ namespace hpgl
 	class progress_reporter_t;
 	class sugarbox_grid_t;
 	class indicator_lvm_data_t;
-	class covariance_param_t;
+	class covariance_param_t;	
+
+	struct indicator_params_t
+	{
+		int cov_type;
+		double ranges[3];
+		double angles[3];
+		double sill;
+		double nugget;
+		double radiuses[3];
+		int max_neighbours;
+	};
+
+	void set_thread_num(int n_threads);
 
 	//TODO: maybe where should be pointers instead of references?
 
@@ -36,7 +44,8 @@ namespace hpgl
 		const cont_property_array_t & input,
 		const sugarbox_grid_t & grid,
 		const ok_params_t & params,		
-		cont_property_array_t & output);
+		cont_property_array_t & output,
+		bool use_new_cov = true);
 
 	void simple_kriging(
 		const cont_property_array_t & input,
@@ -45,8 +54,8 @@ namespace hpgl
 		cont_property_array_t & output);
 
         void simple_kriging_weights(
-                real_covariance_t cov_params,
-                real_location_t center_point,
+			const covariance_param_t * cov_params,
+            real_location_t center_point,
                 std::vector<real_location_t> neighbourhoods_coords,
                 std::vector<kriging_weight_t> & weights,
                 double & variance);
@@ -110,7 +119,6 @@ namespace hpgl
 		bool m_use_corellograms;
 	};
 
-
 void simple_cokriging_markI(
 		const sugarbox_grid_t & grid,
 		const cont_property_array_t & input_prop, 
@@ -136,6 +144,7 @@ void simple_cokriging_markII(
 		cont_property_array_t & output_prop);
 
 bool calc_mean(const cont_property_array_t * prop, double * mean);	
+
 }
 
 

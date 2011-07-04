@@ -46,7 +46,7 @@
 				BuildCommandLine="deploy.bat &quot;$(OutDir)&quot;"
 				ReBuildCommandLine=""
 				CleanCommandLine=""
-				Output="geo_testing2.exe"
+				Output="geo_testing_exe2.exe"
 				PreprocessorDefinitions="WIN32;NDEBUG"
 				IncludeSearchPath=""
 				ForcedIncludes=""
@@ -107,18 +107,6 @@
 		</File>
 		<File
 			RelativePath=".\test_scripts\ik_small.py"
-			>
-		</File>
-		<File
-			RelativePath=".\test_scripts\sis_medium_test.py"
-			>
-		</File>
-		<File
-			RelativePath=".\test_scripts\st_sis.py"
-			>
-		</File>
-		<File
-			RelativePath=".\test_scripts\tc_sis.py"
 			>
 		</File>
 		<File

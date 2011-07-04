@@ -1,15 +1,10 @@
 #
-#
 #   Copyright 2009 HPGL Team
-#
 #   This file is part of HPGL (High Perfomance Geostatistics Library).
+#   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
+#   You should have received a copy of the BSD License along with HPGL.
 #
-#   HPGL is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 2 of the License.
-#
-#   HPGL is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-#
-#   You should have received a copy of the GNU General Public License along with HPGL. If not, see http://www.gnu.org/licenses/.
-#
+
 from geo import *
 from sys import *
 import os
@@ -26,9 +21,7 @@ write_property(prop, "results/MIRROR_INPUT.INC", "INPUT_PROP", -99);
 
 grid = SugarboxGrid(55, 52, 1)
 
-# sgs lvm has bug for now, so excluded
-
-enabled_algos = ['ok', 'sk', 'sgs', 'mik' , 'ik', 'sis', 'lvm']
+enabled_algos = ['ok', 'sk', 'lvm', 'sgs', 'mik' , 'ik', 'sis']
 #enabled_algos = ['sis']
 
 if 'ok' in enabled_algos:
@@ -79,9 +72,8 @@ if ('sgs' in enabled_algos):
 	sgs_result2 = sgs_simulation(prop, grid, seed=24193421, **sgs_params)
 	write_property(sgs_result2, "results/RESULt_SGS2.INC", "SGS2", -99)
 
-	# sgs lvm has bug for now, excluded
-	#sgs_lvm_result = sgs_simulation(prop, grid, mean_data=mean_data, seed=3439275, **sgs_params)
-	#write_property(sgs_lvm_result, "results/small/sgs_lvm.inc", "SGS_LVM", -99)
+	sgs_lvm_result = sgs_simulation(prop, grid, mean_data=mean_data, seed=3439275, **sgs_params)
+	write_property(sgs_lvm_result, "results/small/sgs_lvm.inc", "SGS_LVM", -99)
 
 ik_prop = load_ind_property("test_data/NEW_TEST_PROP_01.INC", -99, [0,1])
 write_property(ik_prop, "results/MIRROR_IK_INPUT.INC", "IK_INPUT", -99);

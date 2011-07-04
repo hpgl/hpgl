@@ -1,14 +1,8 @@
 /*
-
-    Copyright 2009 HPGL Team
-
-    This file is part of HPGL (High Perfomance Geostatistics Library).
-
-    HPGL is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 2 of the License.
-
-    HPGL is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License along with HPGL. If not, see http://www.gnu.org/licenses/.
+   Copyright 2009 HPGL Team
+   This file is part of HPGL (High Perfomance Geostatistics Library).
+   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
+   You should have received a copy of the BSD License along with HPGL.
 
 */
 
@@ -62,6 +56,26 @@ namespace hpgl
 			}
 		}
 	}
+
+	template<typename mask_t>
+	void generate_reverse_path_with_mask(int length, int seed, 
+			const mask_t & mask, 
+			std::vector<node_index_t> & reverse_path)
+	{
+		reverse_path.resize(length);
+		random_path_generator_t rpg(length, seed);
+		int counter = 0;
+		while (!rpg.end_of_path())
+		{
+			++counter;
+			node_index_t node = rpg.get_next();
+			if (mask[node] == 1)
+				reverse_path[node] = 0;
+			else
+				reverse_path[node] = counter;
+		}
+	}
+
 }
 
 #endif //__GENERATE_REVERSE_PATH_H__68FBB897_E796_4FE8_9F58_58DEEBB84F9D

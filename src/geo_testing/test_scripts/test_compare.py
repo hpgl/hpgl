@@ -1,15 +1,10 @@
 #
-#
 #   Copyright 2009 HPGL Team
-#
 #   This file is part of HPGL (High Perfomance Geostatistics Library).
+#   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
+#   You should have received a copy of the BSD License along with HPGL.
 #
-#   HPGL is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 2 of the License.
-#
-#   HPGL is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-#
-#   You should have received a copy of the GNU General Public License along with HPGL. If not, see http://www.gnu.org/licenses/.
-#
+
 from sys import *
 from geo import *
 from razn import *
@@ -128,11 +123,6 @@ test_data = [
 			 "current/SGS1.INC", "SGS1",
 			 "fixed/SGS1.INC",
 			 time_SGS),
-		("PSGS1",
-			sgs_simulation, [variogram2, neighbourhood1, {"prop": prop_cont, "grid": grid, "seed": 3439275, "kriging_type": "sk", "workers_count": 2}],
-			 "current/PSGS1.INC", "SGS1",
-			 "fixed/SGS1.INC",
-			 time_SGS),
 		("SGS_CDF_EQUAL",
 			sgs_simulation, [variogram2, neighbourhood1, {"prop": prop_cont, "grid": grid, "seed": 3439275, "kriging_type": "sk", "cdf_data": prop_cont}],
 			 "current/SGS1.INC", "SGS1",
@@ -160,9 +150,6 @@ test_data = [
 		("SIS", sis_simulation, [{"prop": ik_prop, "grid": grid, "data": ik_data, "seed": 3241347}],
 			"current//RESULT_SIS_BIG_SOFT.INC", "SIS_RESULT_BIG_SOFT",
 			"fixed/RESULT_SIS_BIG_SOFT.INC", time_SIS),
-		("PSIS", sis_simulation, [{"prop": ik_prop, "grid": grid, "data": ik_data, "seed": 3241347, "workers_count": 2}],
-			"current//RESULT_PSIS_BIG_SOFT.INC", "PSIS_RESULT_BIG_SOFT",
-			"fixed/RESULT_SIS_BIG_SOFT.INC", time_SIS),
 		]
 
 def test_algo(algo_name, algo, params, current_file_path, current_prop_name, fixed_file_path, sgems_time):
@@ -181,6 +168,7 @@ def test_algo(algo_name, algo, params, current_file_path, current_prop_name, fix
 	result_current = load_property_python(x,y,z, current_file_path, True)
 	if all(result_fixed == result_current):
 		result = True
+		diff = 0
 		print "Ok"
 	else:
 		result = False
@@ -194,6 +182,15 @@ def test_algo(algo_name, algo, params, current_file_path, current_prop_name, fix
 	err_data = (algo_name, diff, time2 - time1)
 	return result, err_data
 
+def print_summary(errors, error_data, test_count):
+	if errors == 0:
+		print "All %s tests succeed." % (test_count)
+	else:
+		for err_data in error_data:
+			print "%s:\t mean diff = %s,\t time = %s" % err_data
+		print "%s of %s tests failed." % (errors, test_count)
+
+
 def test_all():
 	errors = 0
 	error_data = []
@@ -202,40 +199,38 @@ def test_all():
 		if not success:
 			errors += 1
 			error_data.append(err_data)
-	if errors == 0:
-		print "All %s tests succeed." % (len(test_data))
-	else:
-		for err_data in error_data:
-			print "%s:\t mean diff = %s,\t time = %s" % err_data
-		print "%s of %s tests failed." % (errors, len(test_data))
+	print_summary(errors, error_data, len(test_data))
+
+def test_only(tests):
+	errors = 0
+	error_data = []
+	for data in test_data:
+		if (data[0] in tests):
+			success, err_data = test_algo(*data)
+			if not success:
+				errors += 1
+				error_data.append(err_data)
+	print_summary(errors, error_data, len(tests))
 
 def test_sis_only():
-	errors = 0
-	for data in test_data:
-		if (data[0] == "SIS"):
-			if not test_algo(*data):
-				errors += 1
+	test_only(["SIS"])
 
 def test_psis_only():
-	errors = 0
-	for data in test_data:
-		if (data[0] == "PSIS"):
-			if not test_algo(*data):
-				errors += 1
+	test_only(["PSIS"])
+
 def test_ik_only():
-	errors = 0
-	for data in test_data:
-		if (data[0] == "IK"):
-			if not test_algo(*data):
-				errors += 1
+	test_only(["IK"])
+
+def test_sgs_only():
+	test_only(["SGS1", "SGS2", "SGS_LVM"])
+
 def test_psgs_only():
-	errors = 0
-	for data in test_data:
-		if (data[0] in ["PSGS1"]):
-			if not test_algo(*data):
-				errors += 1
+	test_only(["PSGS1"])
 
 test_all()
+#test_only(["SGS_CDF_EQUAL", "SGS_CDF_NOT_EQUAL"])
+#test_sgs_cdf()
+#test_sgs_only()
 #test_sis_only()
 #test_psis_only()
 #test_ik_only()

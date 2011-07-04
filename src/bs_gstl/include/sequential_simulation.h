@@ -1,14 +1,8 @@
 /*
-
-    Copyright 2009 HPGL Team
-
-    This file is part of HPGL (High Perfomance Geostatistics Library).
-
-    HPGL is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 2 of the License.
-
-    HPGL is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License along with HPGL. If not, see http://www.gnu.org/licenses/.
+   Copyright 2009 HPGL Team
+   This file is part of HPGL (High Perfomance Geostatistics Library).
+   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
+   You should have received a copy of the BSD License along with HPGL.
 
 */
 
@@ -26,9 +20,9 @@
 #include "combiner.h"
 #include "kriging_interpolation.h"
 #include "precalculated_covariance.h"
-#include <covariance_from_param.h>
 #include "neighbourhood_lookup.h"
 #include "is_informed_predicate.h"
+#include "cov_model.h"
 
 namespace hpgl
 {
@@ -73,9 +67,6 @@ namespace hpgl
 		const mask_t & mask)
 	{
 
-		Covariance<sugarbox_location_t> covariance;
-		covariance_from_param(params, covariance);
-
 		if (property.size() != grid.size())
 			throw hpgl_exception("do_sequential_gausian_simulation", boost::format("Property size '%s' is not equal to grid size '%s'") % property.size() % grid.size());
 
@@ -83,8 +74,8 @@ namespace hpgl
 		gen.seed(params.m_seed);
 		path_random_generator_t path_gen(property.size(), params.m_seed);
 
-		typedef precalculated_covariances_t<sugarbox_covariance_t, sugarbox_location_t> cov_t;
-		cov_t pcov(covariance, params.m_radiuses);
+		typedef precalculated_covariances_t cov_t;
+		cov_t pcov(cov_model_t(params), params.m_radiuses);
 		typedef /*indexed_*/ neighbour_lookup_t<grid_t, cov_t> nl_t;
 		nl_t neighbour_lookup(&grid, &pcov,	params);
 		
@@ -118,8 +109,8 @@ namespace hpgl
 				neighbour_lookup, weight_calculator_sgs, mean, variance);			
 
 			double value = ki_result == KI_SUCCESS 
-				? sample(gen, Gaussian_cdf(mean, variance))
-				: sample(gen, Gaussian_cdf());		
+				? sample(gen, gaussian_cdf_t(mean, variance))
+				: sample(gen, gaussian_cdf_t());		
 			
 			property.set_at(node, value);
 			//neighbour_lookup.add_node(node);
@@ -138,10 +129,6 @@ namespace hpgl
 		const weight_calculator_t & weight_calculator_sgs,
 		const std::vector<int> & points_indexes)
 	{
-
-		Covariance<sugarbox_location_t> covariance;
-		covariance_from_param(params, covariance);
-
 		if (property.size() != grid.size())
 			throw hpgl_exception("do_sequential_gausian_simulation_in_points", boost::format("Property size '%s' is not equal to grid size '%s'") % property.size() % grid.size());
 
@@ -149,8 +136,9 @@ namespace hpgl
 		gen.seed(params.m_seed);
 		path_random_generator_t path_gen(points_indexes.size(), params.m_seed);
 
-		typedef precalculated_covariances_t<sugarbox_covariance_t, sugarbox_location_t> cov_t;
-		cov_t pcov(covariance, params.m_radiuses);
+		typedef precalculated_covariances_t cov_t;
+		//typedef precalculated_covariances_t<cov_model_t, sugarbox_location_t> cov_t;
+		cov_t pcov(cov_model_t(params), params.m_radiuses);
 		typedef /*indexed_*/ neighbour_lookup_t<grid_t, cov_t> nl_t;	
 		nl_t neighbour_lookup(&grid, &pcov,	params);
 		
@@ -184,8 +172,8 @@ namespace hpgl
 				neighbour_lookup, weight_calculator_sgs, mean, variance);			
 
 			double value = ki_result == KI_SUCCESS 
-				? sample(gen, Gaussian_cdf(mean, variance))
-				: sample(gen, Gaussian_cdf());		
+				? sample(gen, gaussian_cdf_t(mean, variance))
+				: sample(gen, gaussian_cdf_t());		
 			
 			property.set_at(node, value);
 			//neighbour_lookup.add_node(node);

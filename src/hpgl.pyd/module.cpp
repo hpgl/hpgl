@@ -1,14 +1,8 @@
 /*
-
-    Copyright 2009 HPGL Team
-
-    This file is part of HPGL (High Perfomance Geostatistics Library).
-
-    HPGL is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 2 of the License.
-
-    HPGL is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License along with HPGL. If not, see http://www.gnu.org/licenses/.
+   Copyright 2009 HPGL Team
+   This file is part of HPGL (High Perfomance Geostatistics Library).
+   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
+   You should have received a copy of the BSD License along with HPGL.
 
 */
 
@@ -45,6 +39,7 @@ namespace hpgl
 
 	py_byte_property_array_t py_indicator_kriging(const py_byte_property_array_t & input_array,
 		const py_grid_t & grid, PyObject * params, bool use_vpc);	
+
 
 	namespace python
 	{
@@ -166,12 +161,12 @@ py_sgs_params_t create_sgs_params()
 }
 
 py_cont_property_array_t ordinary_kriging(py_cont_property_array_t input_array, py_grid_t grid,
-		const py_ok_params_t & param )
+		const py_ok_params_t & param, bool use_new_cov)
 {
 	using namespace hpgl;
 	py_cont_property_array_t result;
 	result.m_double_property_array = input_array.m_double_property_array->clone();	
-	hpgl::ordinary_kriging(*input_array.m_double_property_array, *grid.m_sugarbox_geometry, param.m_ok_param, *result.m_double_property_array);	
+	hpgl::ordinary_kriging(*input_array.m_double_property_array, *grid.m_sugarbox_geometry, param.m_ok_param, *result.m_double_property_array, use_new_cov);	
 	return result;
 }
 
@@ -276,6 +271,8 @@ BOOST_PYTHON_MODULE(hpgl)
 	using namespace hpgl;
 	using namespace boost::python;
 
+	def("set_thread_num", set_thread_num);
+
 	class_<py_byte_property_array_t>("byte_property_array", init<int, boost::python::object>())
 		.def("size", &py_byte_property_array_t::size)
 		.def("get_at", &py_byte_property_array_t::get_at)
@@ -339,13 +336,11 @@ BOOST_PYTHON_MODULE(hpgl)
 		.def("set_mean", &py_sgs_params_t::set_mean)
 		.def("set_kriging_kind", &py_sgs_params_t::set_kriging_kind)
 		.def("set_seed", &py_sgs_params_t::set_seed)
-		.def("set_mean_kind", &py_sgs_params_t::set_mean_kind)
-		.def("set_auto_reg", &py_sgs_params_t::set_auto_reg)
-		.def("set_region_size", &py_sgs_params_t::set_region_size);
+		.def("set_mean_kind", &py_sgs_params_t::set_mean_kind);
 
 	class_<py_mean_data_t>("MeanData", init<py_mean_data_t>());
 	class_<py_indicator_lvm_data_t>("IndicatorLvmData", init<py_indicator_lvm_data_t>());
-				
+
 	def("load_cont_property", load_cont_property);
 	def("load_ind_property", load_ind_property);
 	def("load_gslib_cont_property", load_gslib_cont_property);
@@ -366,7 +361,7 @@ BOOST_PYTHON_MODULE(hpgl)
 	def("create_sgs_params", create_sgs_params);
 	def("create_median_ik_params", py_create_median_ik_params);
 
-        def("simple_kriging_weights", py_calculate_kriging_weight);
+    def("simple_kriging_weights", py_calculate_kriging_weight);
 
 	def("ordinary_kriging", ::ordinary_kriging);
 	def("simple_kriging", ::simple_kriging);

@@ -19,9 +19,9 @@ includes = [
 		'include', 
 		'src', 
 		'/usr/include/python2.5', 
-		'../GsTL-1.3',
+		'../tnt_126',
+		#'/opt/boost_1_36_0'
 		];
-
 
 custom_defines = []
 for key, value in ARGLIST:
@@ -35,6 +35,7 @@ libbsgstl_d = StaticLibrary('bs_gstl_d', debug_files,
 	LIBS=['libboost_python-mt-d',
                 'libboost_thread-mt-d',
                 ],
+	#LIBPATH=['/opt/boost_1_36_lnx_x86_64_build/']
 	)
 
 libbsgstl = StaticLibrary('bs_gstl', release_files, 
@@ -45,6 +46,7 @@ libbsgstl = StaticLibrary('bs_gstl', release_files,
                 'libboost_thread-mt',
                 'libgomp'
                 ],
+	#LIBPATH=['/opt/boost_1_36_lnx_x86_64_build/']
 	)
 
 Return('libbsgstl_d', 'libbsgstl')

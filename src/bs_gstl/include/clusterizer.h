@@ -1,14 +1,8 @@
 /*
-
-    Copyright 2009 HPGL Team
-
-    This file is part of HPGL (High Perfomance Geostatistics Library).
-
-    HPGL is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 2 of the License.
-
-    HPGL is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License along with HPGL. If not, see http://www.gnu.org/licenses/.
+   Copyright 2009 HPGL Team
+   This file is part of HPGL (High Perfomance Geostatistics Library).
+   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
+   You should have received a copy of the BSD License along with HPGL.
 
 */
 
@@ -35,7 +29,7 @@ class clusterizer_t
 {
 	struct state;
 	state * m_state;
-	typedef location_3d<int> cluster_coord_t;
+	typedef sugarbox_location_t cluster_coord_t;
 public:
 	clusterizer_t();
 	clusterizer_t(
@@ -51,8 +45,8 @@ public:
 	int get_index_from_grid_point(const point_t & loc)
 	{
 		int cx = loc[0] / m_ellipsoid[0];
-		int cy = loc[1] / m_ellipsoid[0];
-		int cz = loc[2] / m_ellipsoid[0];
+		int cy = loc[1] / m_ellipsoid[1];
+		int cz = loc[2] / m_ellipsoid[2];
 		return get_index(cx, cy, cz);		
 	}
 

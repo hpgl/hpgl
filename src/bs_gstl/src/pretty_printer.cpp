@@ -1,14 +1,8 @@
 /*
-
-    Copyright 2009 HPGL Team
-
-    This file is part of HPGL (High Perfomance Geostatistics Library).
-
-    HPGL is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 2 of the License.
-
-    HPGL is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License along with HPGL. If not, see http://www.gnu.org/licenses/.
+   Copyright 2009 HPGL Team
+   This file is part of HPGL (High Perfomance Geostatistics Library).
+   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
+   You should have received a copy of the BSD License along with HPGL.
 
 */
 
@@ -20,6 +14,7 @@
 #include "sk_params.h"
 #include "ik_params.h"
 #include "sgs_params.h"
+#include "hpgl_core.h"
 
 namespace hpgl
 {
@@ -122,9 +117,42 @@ namespace hpgl
 			add_ws(counter, pos[7]);
 			counter += printf("%g:%g:%g", p.m_radiuses[idx][0], p.m_radiuses[idx][1], p.m_radiuses[idx][2]);
 			add_ws(counter, pos[8]); 
-			counter += printf("%d", p.m_neighbour_limits[idx]);
+			counter += printf("%d", (int)p.m_neighbour_limits[idx]);
 			add_ws(counter, pos[9]); 
 			printf("%g\n", p.m_marginal_probs[idx]);				
+		}				
+		fflush(stdout);
+	}
+
+	void print_params(const indicator_params_t * p, int param_count, const mean_t * marginal_probs)
+	{
+		int pos[] = {0, 2, 6, 10, 22, 34, 41, 48, 63, 71}	;
+		printf("#     Cov Ranges      Angles      Sill   Nugget SearchRadiuses MaxNeib MargProb\n");
+		for (indicator_index_t idx = 0; idx < param_count; ++idx)
+		{
+			int counter = 0;			
+			counter += printf("%d", idx);
+			add_ws(counter, pos[1]);
+			//counter += printf("%d", p.m_values[idx]);
+			add_ws(counter, pos[2]);
+			counter += printf("%d", p[idx].cov_type);
+			add_ws(counter, pos[3]);
+			counter += printf("%g:%g:%g", p[idx].ranges[0], p[idx].ranges[1], p[idx].ranges[2]);
+			add_ws(counter, pos[4]);
+			counter += printf("%g:%g:%g", p[idx].angles[0], p[idx].angles[1], p[idx].angles[2]);
+			add_ws(counter, pos[5]);
+			counter += printf("%g", p[idx].sill);
+			add_ws(counter, pos[6]);
+			counter += printf("%g", p[idx].nugget);
+			add_ws(counter, pos[7]);
+			counter += printf("%g:%g:%g", p[idx].radiuses[0], p[idx].radiuses[1], p[idx].radiuses[2]);
+			add_ws(counter, pos[8]); 
+			counter += printf("%d", p[idx].max_neighbours);
+			add_ws(counter, pos[9]); 
+			if (marginal_probs != 0)
+				printf("%g\n", marginal_probs[idx]);				
+			else
+				printf("N/A\n");
 		}				
 		fflush(stdout);
 	}

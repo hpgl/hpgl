@@ -1,14 +1,8 @@
 /*
-
-    Copyright 2009 HPGL Team
-
-    This file is part of HPGL (High Perfomance Geostatistics Library).
-
-    HPGL is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 2 of the License.
-
-    HPGL is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License along with HPGL. If not, see http://www.gnu.org/licenses/.
+   Copyright 2009 HPGL Team
+   This file is part of HPGL (High Perfomance Geostatistics Library).
+   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
+   You should have received a copy of the BSD License along with HPGL.
 
 */
 
@@ -20,22 +14,111 @@
 
 namespace hpgl
 {
-	typedef location_3d<double> bs_real_location_t;
-//deprecated
-	typedef bs_real_location_t real_location_t; 
+	template<typename T>
+	struct vec_t
+	{
+		T c[3];
 
-	typedef location_3d<int> bs_sugarbox_location_t;
-//deprecated
-	typedef bs_sugarbox_location_t sugarbox_location_t; 
+		vec_t()
+		{
+			c[0] = 0;
+			c[1] = 0;
+			c[2] = 0;
+		}
+
+		vec_t(T x, T y, T z)
+		{
+			c[0] = x;
+			c[1] = y;
+			c[2] = z;
+		}
+
+		T & operator[](int idx)
+		{
+			return c[idx];
+		}
+
+		T operator[](int idx)const
+		{
+			return c[idx];
+		}
+
+		template<typename T2>
+		bool operator==(const vec_t<T2> & t)
+		{
+			return c[0] == t[0] && c[1] == t[1] && c[2] == t[2];
+		}
+	};
+
+	template<typename T>
+	struct loc_t
+	{
+		T c[3];
+		typedef vec_t<T> difference_type;
+
+		loc_t()
+		{
+			c[0] = 0;
+			c[1] = 0;
+			c[2] = 0;
+		}
+
+		loc_t(T x, T y, T z)
+		{
+			c[0] = x;
+			c[1] = y;
+			c[2] = z;
+		}
+
+		T & operator[](int idx)
+		{
+			return c[idx];
+		}
+
+		T operator[](int idx)const
+		{
+			return c[idx];
+		}
+
+		template<typename T2>
+		bool operator==(const loc_t<T2> & t)
+		{
+			return c[0] == t[0] && c[1] == t[1] && c[2] == t[2];
+		}
+	};
+
+	template<typename T>
+	inline vec_t<T> operator-(const loc_t<T> & loc1, const loc_t<T> & loc2)
+	{
+		vec_t<T> result;
+		for (int i = 0; i < 3; ++i)
+		{
+			result.c[i] = loc1.c[i] - loc2.c[i];
+		}
+		return result;
+	}
+
+	template<typename T>
+	inline loc_t<T> operator+(const loc_t<T> & loc1, const vec_t<T> & vec2)
+	{
+		loc_t<T> result;
+		for (int i = 0; i < 3; ++i)
+		{
+			result.c[i] = loc1.c[i] + vec2.c[i];
+		}
+		return result;
+	}
+
+	typedef loc_t<double> real_location_t; 
+
+	typedef loc_t<int> sugarbox_location_t; 
 	
-	typedef sugarbox_location_t::difference_type sugarbox_vector_t; 
+	typedef vec_t<int> sugarbox_vector_t; 
+
 
 	typedef int bs_node_index_t;
 	typedef bs_node_index_t node_index_t;
 	typedef int sugarbox_grid_size_t;
-
-	typedef Covariance<sugarbox_location_t> sugarbox_covariance_t;
-        typedef Covariance<real_location_t> real_covariance_t;
 
 	typedef unsigned char indicator_value_t;
 	typedef unsigned char indicator_index_t;

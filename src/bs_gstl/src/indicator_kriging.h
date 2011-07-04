@@ -1,14 +1,8 @@
 /*
-
-    Copyright 2009 HPGL Team
-
-    This file is part of HPGL (High Perfomance Geostatistics Library).
-
-    HPGL is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 2 of the License.
-
-    HPGL is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License along with HPGL. If not, see http://www.gnu.org/licenses/.
+   Copyright 2009 HPGL Team
+   This file is part of HPGL (High Perfomance Geostatistics Library).
+   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
+   You should have received a copy of the BSD License along with HPGL.
 
 */
 
@@ -19,20 +13,18 @@
 #include <ik_params.h>
 #include <sugarbox_grid.h>
 #include "progress_reporter.h"
-#include "indicator_combiner.h"
 #include "cdf_utils.h"
 #include "pretty_printer.h"
 #include "my_kriging_weights.h"
 #include "precalculated_covariance.h"
-#include "covariance_utils.h"
 #include "kriging_interpolation.h"
 #include "neighbourhood_lookup.h"
 #include "is_informed_predicate.h"
+#include "cov_model.h"
 
 namespace hpgl
 {
-
-	typedef std::vector<boost::shared_ptr<Covariance<sugarbox_location_t> > > covariances_t;
+	
 	typedef std::vector<indicator_probability_t> marginal_probs_t;
 
 	
@@ -51,9 +43,7 @@ namespace hpgl
 			result.resize(params.m_category_count);
 			for (int i = 0; i < params.m_category_count; ++i)
 			{
-				sugarbox_covariance_t cov;
-				create_covariance(params.m_cov_params[i], cov);
-				result[i].init(cov, params.m_radiuses[i]);	
+				result[i].init(cov_model_t(params.m_cov_params[i]), params.m_radiuses[i]);	
 			}
 		}
 
@@ -87,7 +77,7 @@ namespace hpgl
 		print_params(params);
 		progress_reporter_t report(grid.size());
 
-		typedef precalculated_covariances_t<sugarbox_covariance_t, sugarbox_location_t> cov_t;
+		typedef precalculated_covariances_t cov_t;
 		std::vector<cov_t> covariances;
 		create_precalucated_cov_models(params, covariances);		
 

@@ -1,14 +1,8 @@
 /*
-
-    Copyright 2009 HPGL Team
-
-    This file is part of HPGL (High Perfomance Geostatistics Library).
-
-    HPGL is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 2 of the License.
-
-    HPGL is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License along with HPGL. If not, see http://www.gnu.org/licenses/.
+   Copyright 2009 HPGL Team
+   This file is part of HPGL (High Perfomance Geostatistics Library).
+   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
+   You should have received a copy of the BSD License along with HPGL.
 
 */
 
@@ -18,17 +12,10 @@
 
 #include <sk_params.h>
 
-
-
 namespace hpgl
 {
 	enum kriging_kind_t {KRIG_ORDINARY, KRIG_SIMPLE};
 
-	struct region_size_t
-	{
-		int d[3];
-		int volume;
-	};
 
 	class sgs_params_t : public sk_params_t
 	{
@@ -38,8 +25,6 @@ namespace hpgl
 		long int m_seed;
 		mean_kind_t m_mean_kind;
 		std::vector<mean_t> * m_lvm;
-		bool auto_region_size;
-		region_size_t reg_size;
 	};
 	
 	inline std::ostream & operator<<(std::ostream & o, const sgs_params_t & p)

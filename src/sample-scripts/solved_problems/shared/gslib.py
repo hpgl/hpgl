@@ -1,3 +1,10 @@
+#
+#   Copyright 2009 HPGL Team
+#   This file is part of HPGL (High Perfomance Geostatistics Library).
+#   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
+#   You should have received a copy of the BSD License along with HPGL.
+#
+
 from numpy import *
 from scipy import *
 from sys import *
@@ -10,11 +17,11 @@ def load_gslib_file(filename):
 	f = open(filename)
 	name = f.readline()
 	num_p = int(f.readline())
-	print num_p
+	#print num_p
 
 	for i in xrange(num_p):
 		list_prop.append(str(f.readline().strip()))
-	print list_prop
+	#print list_prop
 
 	for i in xrange(len(list_prop)):
 		dict[ list_prop[i] ] = array([])

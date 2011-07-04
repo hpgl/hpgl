@@ -1,15 +1,10 @@
 #
-#
 #   Copyright 2009 HPGL Team
-#
 #   This file is part of HPGL (High Perfomance Geostatistics Library).
+#   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
+#   You should have received a copy of the BSD License along with HPGL.
 #
-#   HPGL is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 2 of the License.
-#
-#   HPGL is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-#
-#   You should have received a copy of the GNU General Public License along with HPGL. If not, see http://www.gnu.org/licenses/.
-#
+
 from sys import *
 from geo import *
 from razn import *
@@ -107,12 +102,11 @@ if (not "nosgs" in argv):
 	time_SGS_p = time2 - time1
 	write_property(sgs_result1, "current/SGS1.INC", "SGS1", -99)
 
-	# has bug for now, excluded
-	#time1 = time.time()
-	#sgs_lvm = sgs_simulation(prop_cont, grid, seed=3439275, **lvm_sgs_params)
-	#time2 = time.time()
-	#time_LVM_SGS_p = time2 - time1
-	#write_property(sgs_lvm, "current/SGS_LVM.INC", "SGS_LVM", -99)
+	time1 = time.time()
+	sgs_lvm = sgs_simulation(prop_cont, grid, seed=3439275, **lvm_sgs_params)
+	time2 = time.time()
+	time_LVM_SGS_p = time2 - time1
+	write_property(sgs_lvm, "current/SGS_LVM.INC", "SGS_LVM", -99)
 
 	del(sgs_result1)
 	del(sgs_lvm)

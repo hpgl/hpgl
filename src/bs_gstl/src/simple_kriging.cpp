@@ -1,14 +1,8 @@
 /*
-
-    Copyright 2009 HPGL Team
-
-    This file is part of HPGL (High Perfomance Geostatistics Library).
-
-    HPGL is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 2 of the License.
-
-    HPGL is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License along with HPGL. If not, see http://www.gnu.org/licenses/.
+   Copyright 2009 HPGL Team
+   This file is part of HPGL (High Perfomance Geostatistics Library).
+   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
+   You should have received a copy of the BSD License along with HPGL.
 
 */
 
@@ -29,20 +23,20 @@ namespace hpgl
 {
 
             void simple_kriging_weights(
-                real_covariance_t cov_params,
+                const covariance_param_t * cov_params,
                 real_location_t center_point,
                 std::vector<real_location_t> neighbourhoods_coords,
                 std::vector<kriging_weight_t> & weights,
                 double & variance)
             {
-                
+                cov_model_t cov(*cov_params);
                bool result = kriging_weights_2(
-			center_point,
-			neighbourhoods_coords,
-			cov_params,
-			sk_constraints,
-			weights,
-			variance);
+					center_point,
+					neighbourhoods_coords,
+					cov,
+					sk_constraints,
+					weights,
+					variance);
 
                if(result == false)
                {
@@ -63,7 +57,10 @@ namespace hpgl
 		double mean;
 		if (params.m_calculate_mean)
 		{	
-			mean = calc_mean(input);
+			bool valid_mean;
+			mean = calc_mean(input, &valid_mean);
+			if (!valid_mean)
+				std::cout << "WARNING: No data to calculate mean. Defaulting to 0.\n";
 			print_param("Calculated mean: ", mean);		
 		}
 		else
@@ -73,9 +70,8 @@ namespace hpgl
 		kriging_stats_t stats;			
 		progress_reporter_t report(grid.size());
 
-		sugarbox_covariance_t covariance;	
-		covariance_from_param(params, covariance);	
-		typedef precalculated_covariances_t<sugarbox_covariance_t, sugarbox_location_t> covariances_t;
+		cov_model_t covariance(params);		
+		typedef precalculated_covariances_t covariances_t;
 		covariances_t pcov(covariance, params.m_radiuses);
 
 		hpgl::cont_kriging(input, grid, params, single_mean_t(mean), pcov, 

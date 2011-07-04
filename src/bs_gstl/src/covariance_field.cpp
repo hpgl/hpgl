@@ -1,14 +1,8 @@
 /*
-
-    Copyright 2009 HPGL Team
-
-    This file is part of HPGL (High Perfomance Geostatistics Library).
-
-    HPGL is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 2 of the License.
-
-    HPGL is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License along with HPGL. If not, see http://www.gnu.org/licenses/.
+   Copyright 2009 HPGL Team
+   This file is part of HPGL (High Perfomance Geostatistics Library).
+   HPGL is free software: you can redistribute it and/or modify it under the terms of the BSD License.
+   You should have received a copy of the BSD License along with HPGL.
 
 */
 
@@ -52,14 +46,14 @@ covariance_field_t::covariance_field_t(
 			int xradius, 
 			int yradius, 
 			int zradius, 
-			const Covariance<sugarbox_location_t> & cov)
+			const cov_model_t & cov)
 {
 	init (xradius, yradius, zradius, cov);
 }
 
 covariance_field_t::covariance_field_t(
 		const sugarbox_search_ellipsoid_t &ellipsoid,
-		const Covariance<sugarbox_location_t> & cov)		
+		const cov_model_t & cov)		
 {
 	init(ellipsoid[0], ellipsoid[1], ellipsoid[2], cov);
 }
@@ -70,7 +64,7 @@ void covariance_field_t::init(
 		int xradius,
 		int yradius,
 		int zradius,
-		const Covariance<sugarbox_location_t> & cov)	
+		const cov_model_t & cov)	
 {
 	m_xradius = (xradius);
 	m_yradius = (yradius);
