@@ -120,57 +120,6 @@ void load_doubles_into_vector(FILE * file, std::vector<T> & data)
 	};
 }
 
-void 
-load_property_from_file(
-		sp_double_property_array_t property_array, 
-		const std::string & file_name, double undefined_value)
-{	
-
-	blue_sky::locale_keeper lkeeper ("C", LC_NUMERIC);
-	FILE * file = fopen(file_name.c_str(), "r");
-	if (file == 0)
-	{
-		throw hpgl_exception("load_property_from_file", std::string("Error opening file:") + file_name + ".");
-	}
-	std::string prop_name;
-	read_prop_name(file, prop_name);
-	
-	std::vector<cont_value_t> data;
-	
-	load_doubles_into_vector(file, data);
-	property_array->assign(data, undefined_value);
-}
-
-void load_indicator_property_from_file(
-		sp_byte_property_array_t property_array, 
-		const std::string & file_name, 
-		int undefined_value)
-{
-	blue_sky::locale_keeper lkeeper ("C", LC_NUMERIC);
-	FILE * file = fopen(file_name.c_str(), "r");	
-	if (file == 0)
-	{
-		throw hpgl_exception("load_indicator_property_from_file", std::string("Error opening file:") + file_name + ".");
-	}
-
-	std::string prop_name;
-
-	read_prop_name(file, prop_name);
-
-	int value;
-	int idx = 0;
-	std::vector<indicator_value_t> data;
-	while (fscanf(file, "%d\n", &value))
-	{
-		if (value == undefined_value)
-			data.push_back(0xFF);
-		else
-			data.push_back(indicator_value_t(value));
-	};
-
-	property_array->assign(data, 0xFF);
-}
-
 void load_variable_mean_from_file(
 	std::vector<mean_t> & data,
 	const std::string & file_name)

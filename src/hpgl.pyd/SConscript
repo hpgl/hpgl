@@ -15,31 +15,27 @@ includes = ['/usr/include/python2.5',
 		'../bs_gstl/include',
 		'../bs_gstl/src',
 		'../tnt_126',
-		#'/opt/boost_1_36_0'
-		];
+		'/opt/boost_1_38_src'];
 
 hpgl_d_so = SharedLibrary('hpgl_d', debug_files,
 	CPPPATH=includes,
-	CPPDEFINES=['DEBUG', 'GSTL_NOWARNING', 'BS_GSTL_EXPORTS', 'BS_EXPORINTG_PLUGIN', 'BS_PROPERTY_ARRAY_EXPORTS', 'BS_PROPERTY_SERVER_EXPORTS'],
+	CPPDEFINES=['DEBUG', 'BS_GSTL_EXPORTS', 'BS_EXPORINTG_PLUGIN', 'BS_PROPERTY_ARRAY_EXPORTS', 'BS_PROPERTY_SERVER_EXPORTS'],
 	CCFLAGS='-ggdb -fPIC',
-	LIBS=['libboost_python-mt-d-py25',
-                'libboost_thread-mt-d',
-                'libgomp',
+	LIBS=['libboost_python-mt-d-py2.5',
 		libbsgstl_d],
-	#LIBPATH=['../bs_gstl', '/opt/boost_1_36_lnx_x86_64_build/']
+	LIBPATH=['../bs_gstl', '/opt/boost_1_38_builded_fPIC/']
 	)
 
 
 hpgl_so = SharedLibrary('hpgl', release_files,
 	CPPPATH=includes,
-	CPPDEFINES=['NDEBUG', 'GSTL_NOWARNING', 'BS_GSTL_EXPORTS', 'BS_EXPORINTG_PLUGIN', 'BS_PROPERTY_ARRAY_EXPORTS', 'BS_PROPERTY_SERVER_EXPORTS'],
+	CPPDEFINES=['NDEBUG', 'BS_GSTL_EXPORTS', 'BS_EXPORINTG_PLUGIN', 'BS_PROPERTY_ARRAY_EXPORTS', 'BS_PROPERTY_SERVER_EXPORTS'],
 	CCFLAGS='-g -O3 -finline-functions -fmove-loop-invariants -fopenmp',
-        LIBS=['libboost_python-mt',
-                'libboost_thread-mt',
+        LIBS=['libboost_python-mt-py2.5',
                 'libgomp',
 		libbsgstl
                 ],
-	#LIBPATH=['../bs_gstl', '/opt/boost_1_36_lnx_x86_64_build/']
+	LIBPATH=['../bs_gstl', '/opt/boost_1_38_builded_fPIC/']
 	)
 
 Return ('hpgl_d_so', 'hpgl_so')

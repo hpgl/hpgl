@@ -19,8 +19,8 @@ namespace hpgl
 	most_probable_category(
 		const std::vector<indicator_probability_t> & probs);
 
-	template <typename T, typename Cdf1, typename Cdf2>
-	void transform_cdf(property_array_t<T> & property, Cdf1 from, Cdf2 to)
+	template <typename prop_t, typename Cdf1, typename Cdf2>
+	void transform_cdf_p(prop_t & property, Cdf1 from, Cdf2 to)
 	{	
 		for (int idx = 0, end_idx = property.size(); idx < end_idx; ++idx)
 		{
@@ -34,13 +34,13 @@ namespace hpgl
 	}
 
 	template <typename T, typename Cdf1, typename Cdf2>
-	T transform_cdf(T value, Cdf1 from, Cdf2 to)
+	T transform_cdf_s(T value, Cdf1 from, Cdf2 to)
 	{	
 		return to.inverse(from.prob(value));			
 	}
 
 	template <typename T, typename Cdf1, typename Cdf2>
-	void transform_cdf(const std::vector<T> & in, std::vector<T> & out, Cdf1 from, Cdf2 to)
+	void transform_cdf_v(const std::vector<T> & in, std::vector<T> & out, Cdf1 from, Cdf2 to)
 	{
 		out.resize(in.size());
 		for (size_t idx = 0, end_idx = in.size(); idx < end_idx; ++idx)

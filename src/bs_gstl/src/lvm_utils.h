@@ -13,10 +13,8 @@
 namespace hpgl
 {
 	template<typename data_t, typename lvm_t>
-	void subtract_means(data_t & prop, const lvm_t & means)
+	void subtract_means(data_t & prop, const lvm_t means)
 	{
-		if (means.size() != prop.size())
-				throw hpgl_exception("subtract_means", boost::format("Data size: %s. Mean data size: %s. Must be equal.") % prop.size() % means.size());
 		for (size_t idx = 0, end_idx = prop.size(); idx < end_idx; ++idx)
 		{
 			if (prop.is_informed(idx))
@@ -25,10 +23,8 @@ namespace hpgl
 	}
 
 	template<typename data_t, typename lvm_t>
-	void add_means(data_t & prop, const lvm_t & means)
+	void add_means(data_t & prop, const lvm_t means)
 	{
-		if (means.size() != prop.size())
-				throw hpgl_exception("add_means", boost::format("Data size: %s. Mean data size: %s. Must be equal.") % prop.size() % means.size());
 		for (size_t idx = 0; idx < prop.size(); ++idx)
 		{
 			if (prop.is_informed(idx))

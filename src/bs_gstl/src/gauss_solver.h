@@ -13,6 +13,7 @@
 namespace hpgl
 {
 	bool gauss_solve(double * A, double * B, double * X, int size);
+	bool cholesky_solve(double * A, double * B, double * X, int size);
 }
 
 #endif //__GAUSS_SOLVER_H__2513A17A_DAF0_43DF_ADF0_BD80D8F29F38____

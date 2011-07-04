@@ -8,20 +8,20 @@
 from setuptools import setup, find_packages
 setup(
     name = "HPGL_x64",
-    version = "0.9.2",
+    version = "0.9.5",
     #scripts = ['geo.py'],
 	include_package_data = True,
 	#package_dir = {'': 'package'},
 	packages = ['geo'],
-	package_data = {'geo': ['geo'], 'geo':['misc']},
+	package_data = {'geo': ['*.*'] },
 
     # metadata for upload to PyPI
-    author = "Artur Muharlyamov, Andrew Bezrukov, Konstantin Barsky",
+    author = "Artur Muharlyamov, Andrew Bezrukov, Konstantin Barsky, Nasibullina Dina",
     author_email = "muharlyamovar@ufanipi.ru, barskykd@ufanipi.ru, bezrukovav@ufanipi.ru",
     description = "HPGL: High Perfomance Geostatistical Library",
-    license = "---",
-    keywords = ["geostatistics"]
-    #url = "---",   # project home page, if any
+    license = "BSD",
+    keywords = ["geostatistics"],
+    url = "hpgl.sourceforge.net",   # project home page, if any
 
     # could also include long_description, download_url, classifiers, etc.
 )

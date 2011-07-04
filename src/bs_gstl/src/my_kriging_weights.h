@@ -56,6 +56,7 @@ namespace hpgl
 		}
 
 		bool system_solved = gauss_solve(&A[0], &b[0], &weights[0], size);		
+		//bool system_solved = cholesky_solve(&A[0], &b[0], &weights[0], size);	
 
 		if (calc_variance)
 		{
@@ -142,6 +143,7 @@ namespace hpgl
 		b[size-1] = 1;
 
 		bool system_solved = gauss_solve(&A[0], &b[0], &weights[0], size);		
+		//bool system_solved = cholesky_solve(&A[0], &b[0], &weights[0], size);
 
 		if (calc_variance)
 		{
@@ -234,6 +236,8 @@ namespace hpgl
 		}
 
 		bool system_solved = gauss_solve(&A[0], &b[0], &weights[0], size);		
+		//bool system_solved = cholesky_solve(&A[0], &b[0], &weights[0], size);
+
 		for (int i = 0; i < size; ++i)
 		{
 			weights[i] *= sigmac / sigmas[i];

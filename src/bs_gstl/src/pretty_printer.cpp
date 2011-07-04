@@ -45,14 +45,18 @@ namespace hpgl
 	{
 		print_param("Covariance type", p.m_covariance_type);
 		print_param("Sill", p.m_sill);
+		print_param("Nugget", p.m_nugget);
 		print_param("Ranges", p.m_ranges);
+		print_param("Angles", p.m_angles);		
 	}
 
 	void print_params(const ok_params_t & p)
 	{
 		print_param("Covariance type", p.m_covariance_type);
 		print_param("Sill", p.m_sill);
+		print_param("Nugget", p.m_nugget);
 		print_param("Ranges", p.m_ranges);
+		print_param("Angles", p.m_angles);	
 		print_param("Search radiuses", p.m_radiuses);
 		print_param("Max number of neighbours", p.m_max_neighbours);
 	}
@@ -61,7 +65,9 @@ namespace hpgl
 	{
 		print_param("Covariance type", p.m_covariance_type);
 		print_param("Sill", p.m_sill);
+		print_param("Nugget", p.m_nugget);
 		print_param("Ranges", p.m_ranges);
+		print_param("Angles", p.m_angles);	
 		print_param("Search radiuses", p.m_radiuses);
 		print_param("Max number of neighbours", p.m_max_neighbours);
 		if (p.m_calculate_mean)
@@ -73,7 +79,9 @@ namespace hpgl
 	{
 		print_param("Covariance type", p.m_covariance_type);
 		print_param("Sill", p.m_sill);
+		print_param("Nugget", p.m_nugget);
 		print_param("Ranges", p.m_ranges);
+		print_param("Angles", p.m_angles);	
 		print_param("Search radiuses", p.m_radiuses);
 		print_param("Max number of neighbours", p.m_max_neighbours);
 		if (p.m_calculate_mean)

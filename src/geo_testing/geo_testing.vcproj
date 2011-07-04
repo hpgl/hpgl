@@ -110,6 +110,18 @@
 			>
 		</File>
 		<File
+			RelativePath=".\test_scripts\sis_medium_test.py"
+			>
+		</File>
+		<File
+			RelativePath=".\test_scripts\st_sis.py"
+			>
+		</File>
+		<File
+			RelativePath=".\test_scripts\tc_sis.py"
+			>
+		</File>
+		<File
 			RelativePath=".\test_scripts\test.py"
 			>
 		</File>

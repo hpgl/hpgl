@@ -12,9 +12,10 @@
 #include "py_grid.h"
 #include <ik_params.h>
 #include <property_array.h>
-#include "py_property_array.h"
 #include <hpgl_exception.h>
 #include <hpgl_core.h>
+
+#include "numpy_utils.h"
 
 namespace hpgl
 {
@@ -56,9 +57,12 @@ namespace hpgl
 	}
 
 
-py_byte_property_array_t py_indicator_kriging(const py_byte_property_array_t & input_array,
-									  const py_grid_t & grid,
-									  PyObject * params, bool use_vpc)
+	void py_indicator_kriging(
+		boost::python::tuple input_array,
+		boost::python::tuple output_array,
+		const py_grid_t & grid,
+		PyObject * params, 
+		bool use_vpc)
 {
 	using namespace hpgl;
 	if (use_vpc)
@@ -115,11 +119,10 @@ py_byte_property_array_t py_indicator_kriging(const py_byte_property_array_t & i
 		ik_params.add_indicator(indicator_param);
 	}
 
-	sp_byte_property_array_t output_prop = input_array.m_byte_property_array->clone();
-	indicator_kriging(*input_array.m_byte_property_array, *grid.m_sugarbox_geometry, ik_params, *output_prop);
-	py_byte_property_array_t result;
-	result.m_byte_property_array = output_prop;
-	return result;
+	sp_byte_property_array_t in_prop = ind_prop_from_tuple(input_array);
+	sp_byte_property_array_t out_prop = ind_prop_from_tuple(output_array);
+	
+	indicator_kriging(*in_prop, *grid.m_sugarbox_geometry, ik_params, *out_prop);	
 }
 
 } //namespace hpgl

@@ -18,77 +18,7 @@
 #include "hpgl_exception.h"
 
 namespace hpgl
-{
-	template <typename T>
-	random_node_enumerator_t<T> :: random_node_enumerator_t()
-		: m_initialized(false)
-	{}
-
-	template<typename T>
-	random_node_enumerator_t<T> :: random_node_enumerator_t(
-			const sugarbox_grid_t * grid, 
-			property_array_t<T> * property, 
-			int seed)
-			: m_initialized(false)
-	{
-		init(grid, property, seed);
-	}
-
-	template<typename T>
-	void random_node_enumerator_t<T> :: init(
-			const sugarbox_grid_t * grid, 
-			property_array_t<T> * property, 
-			int seed)
-	{
-		BS_ASSERT(!m_initialized && "Already initialized.");
-		m_seed = seed;
-		m_geometry = grid;
-		m_property = property;
-		int grid_size = grid->size();
-		int property_size = property->size();
-		BS_ASSERT(grid_size == property_size)(grid_size)(property_size);
-		m_initialized = true;
-		reset();
-		
-	}
-
-	template<typename T>
-	void random_node_enumerator_t<T> :: reset()
-	{
-		m_generator.reset(
-				new path_random_generator_t(
-						m_geometry->size(), 
-						m_seed));
-		m_current_idx = -1;
-		m_start_idx = m_seed % m_geometry->size();
-		m_watch_counter = 0;
-	}
-
-	template<typename T>
-	bool random_node_enumerator_t<T> :: move_next()
-	{
-		BS_ASSERT(m_generator && "generator is not created");
-		BS_ASSERT(m_watch_counter <= m_geometry->size())(m_watch_counter);
-		m_watch_counter++;	
-
-		if (m_current_idx < 0)
-		{
-			m_start_idx = m_generator->next();
-			m_current_idx = m_start_idx;
-			return true;
-		}
-		else
-		{
-			m_current_idx = m_generator->next();
-			return m_current_idx != m_start_idx;
-		}
-		
-	}
-
-
-	template class random_node_enumerator_t<cont_value_t>;
-	template class random_node_enumerator_t<indicator_value_t>;
-
+{	
 	random_path_generator_t::random_path_generator_t(size_t size, int seed)
 		: m_path_gen(size, seed),
 		m_counter(0),

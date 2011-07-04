@@ -63,12 +63,12 @@ namespace hpgl
 		}
 	}
 
-	template<typename grid_t, typename mean_provider_t>
+	template<typename grid_t, typename marginal_probs_t>
 	void do_indicator_kriging(
 		const indicator_property_array_t & input_property, 
 		const grid_t & grid, 
 		const ik_params_t & params, 
-		const std::vector<boost::shared_ptr<mean_provider_t> > & mps,
+		const marginal_probs_t & mps,
 		indicator_property_array_t & output_property)
 	{
 		using namespace hpgl::detail;
@@ -111,11 +111,11 @@ namespace hpgl
 				{
 					indicator_probability_t prob;
 
-					ki_result_t ki_result = kriging_interpolation(ind_props[idx], is_informed_predicate_t<indicator_property_array_t>(input_property), node_idx, covariances[idx], *mps[idx], nblookups[idx], weight_calculator(sk_constraints, input_property), prob);
+					ki_result_t ki_result = kriging_interpolation(ind_props[idx], is_informed_predicate_t<indicator_property_array_t>(input_property), node_idx, covariances[idx], mps[idx], nblookups[idx], weight_calculator(sk_constraints, input_property), prob);
 
 					if (ki_result != KI_SUCCESS)
 					{
-						prob = (*mps[idx])[node_idx];
+						prob = mps[idx][node_idx];
 					}
 					probs.push_back(prob);
 				}				

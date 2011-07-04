@@ -10,7 +10,7 @@
 #ifndef MEAN_PROVIDER_H_INCLUDED_T9TUHNORNUVKDSFJP3O4NP2CQ0CNPASDFJPO23RV238V
 #define MEAN_PROVIDER_H_INCLUDED_T9TUHNORNUVKDSFJP3O4NP2CQ0CNPASDFJPO23RV238V
 
-#include "lvm_data.h"
+#include "typedefs.h"
 
 namespace hpgl
 {
@@ -49,7 +49,22 @@ namespace hpgl
 		}
 	};
 
-	void create_means(const std::vector<indicator_probability_t> & marginal_probs, std::vector<boost::shared_ptr<single_mean_t> > & means);
+	void create_means(const std::vector<indicator_probability_t> & marginal_probs, std::vector<single_mean_t> & means);
+	
+	template<typename T>
+	struct marginal_probs_traits_t{};
+
+	template<typename T>
+	struct marginal_probs_traits_t<T**>
+	{
+		typedef T* means_type;
+	};
+
+	template<typename T>
+	struct marginal_probs_traits_t<std::vector<T> >
+	{
+		typedef T means_type;
+	};
 	
 }
 

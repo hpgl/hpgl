@@ -8,7 +8,7 @@
 from setuptools import *
 setup(
     name = "HPGL",
-    version = "0.9.4",
+    version = "0.9.5",
     #scripts = ['geo.py'],
 	include_package_data = True,
 	#package_dir = {'': 'package'},
@@ -21,7 +21,7 @@ setup(
     description = "HPGL: High Perfomance Geostatistical Library",
     license = "BSD",
     keywords = ["geostatistics"],
-    url = "hpgl.sourceforge.net"   # project home page, if any
+    url = "hpgl.sourceforge.net",   # project home page, if any
 
     # could also include long_description, download_url, classifiers, etc.
 )

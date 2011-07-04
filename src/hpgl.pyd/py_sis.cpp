@@ -10,56 +10,50 @@
 #include "stdafx.h"
 #include <ik_params.h>
 #include <property_array.h>
-#include "py_sis.h"
-#include "py_property_array.h"
 #include "py_grid.h"
 #include <sugarbox_grid.h>
 #include "py_parse_sis_params.h"
 #include "mean_provider.h"
 #include <progress_reporter.h>
-#include "py_mean_data.h"
 #include <hpgl_core.h>
-#include "extract_lvm_data.h"
+#include "numpy_utils.h"
 
 namespace hpgl
 {
-	py_byte_property_array_t py_sis(
-			const py_byte_property_array_t & input_array, const py_grid_t & grid,
-			PyObject * params, int seed, bool use_vpc, bool use_corellogram, boost::python::object mask_data)
+	void py_sis(
+		boost::python::tuple array, 
+		const py_grid_t & grid,
+		PyObject * params, int seed, bool use_vpc, bool use_corellogram, boost::python::object mask_data)
 	{
 		if (use_vpc)
 			throw hpgl_exception("py_sis", "use_vpc no longer supported. Use lvm instead.");
 
-		boost::python::extract<py_byte_property_array_t> mask_ext(mask_data);
-
 		ik_params_t ik_params;
 		parse_sis_params(params, ik_params);
 
-		sp_byte_property_array_t output_property(new property_array_t<unsigned char>(*input_array.m_byte_property_array));
-		py_byte_property_array_t result;
-		result.m_byte_property_array = output_property;
+		boost::shared_ptr<indicator_property_array_t> property 
+				= ind_prop_from_tuple(array);		
+									
 		progress_reporter_t report(grid.m_sugarbox_geometry->size());
 
-		indicator_property_array_t * mask = mask_ext.check() 
-			? ((py_byte_property_array_t)mask_ext).m_byte_property_array.get()
-			: NULL;
+		unsigned char * mask_ptr = 
+			mask_data.ptr() == Py_None ? NULL 
+			: get_buffer_from_ndarray<unsigned char,'u'>(mask_data, property->size(), "py_sis");
 
 		sequential_indicator_simulation(
-			*output_property,
+			*property,
 			*grid.m_sugarbox_geometry,
 			ik_params,
 			seed,
 			report,
 			use_corellogram,
-			mask);
-		
-		return result;
+			mask_ptr);
 	}
 
 
 
-	py_byte_property_array_t py_sis_lvm(
-			const py_byte_property_array_t & input_array,
+	void py_sis_lvm(
+			const boost::python::tuple & array,
 			const py_grid_t & grid,
 			PyObject * params,
 			int seed,
@@ -67,30 +61,29 @@ namespace hpgl
 			bool use_corellogram,
 			boost::python::object mask_data)
 	{
-		boost::shared_ptr<indicator_lvm_data_t> lvm_data = extract_lvm_data(mean_data,  indicator_count(*input_array.m_byte_property_array));
-		
+		boost::shared_ptr<indicator_property_array_t> property = ind_prop_from_tuple(array);		
+
 		ik_params_t ik_params;
-		parse_sis_params(params, ik_params);
-
-		sp_byte_property_array_t output_property(new property_array_t<unsigned char>(*input_array.m_byte_property_array));
-		py_byte_property_array_t result;
-		result.m_byte_property_array = output_property;
+		parse_sis_params(params, ik_params);		
 		progress_reporter_t report(grid.m_sugarbox_geometry->size());
+		
+		unsigned char * mask_ptr =
+			mask_data.ptr() == Py_None ? NULL 
+			: get_buffer_from_ndarray<unsigned char,'u'>(mask_data, property->size(), "py_sis_lvm");
 
-		boost::python::extract<py_byte_property_array_t> mask_ext(mask_data);
-		indicator_property_array_t * mask = mask_ext.check() 
-			? ((py_byte_property_array_t)mask_ext).m_byte_property_array.get()
+		std::vector<const mean_t*> means;
+		for (int i = 0; i < indicator_count(*property); ++i)
+		{
+			means.push_back(get_buffer_from_ndarray<mean_t, 'f'>(mean_data[i], property->size(), "py_sis_lvm"));
+		}
 
-			: NULL;
 		sequential_indicator_simulation_lvm(
-				*output_property, 
+				*property, 
 				*grid.m_sugarbox_geometry, 
 				ik_params, seed, 
-				*lvm_data, 
+				&means[0], 
 				report, 
-				use_corellogram);	
-
-		return result;
+				use_corellogram, mask_ptr);	
 	}
 
 }

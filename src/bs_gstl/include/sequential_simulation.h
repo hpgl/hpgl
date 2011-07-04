@@ -58,7 +58,7 @@ namespace hpgl
 
 	template <typename grid_t, typename mean_provider_t, typename constraints_t, typename weight_calculator_t, typename mask_t>
 	void do_sequential_gausian_simulation(
-		property_array_t<cont_value_t> & property,
+		cont_property_array_t & property,
 		const grid_t & grid,
 		const sgs_params_t & params,
 		const mean_provider_t & mp,
@@ -121,7 +121,7 @@ namespace hpgl
 
 	template <typename grid_t, typename mean_provider_t, typename constraints_t, typename weight_calculator_t>
 	void do_sequential_gausian_simulation_in_points(
-		property_array_t<cont_value_t> & property,
+		cont_property_array_t & property,
 		const grid_t & grid,
 		const sgs_params_t & params,
 		const mean_provider_t & mp,

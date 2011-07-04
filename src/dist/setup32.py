@@ -8,7 +8,7 @@
 from setuptools import setup, find_packages
 setup(
     name = "HPGL_x32",
-    version = "0.9.4",
+    version = "0.9.5",
     #scripts = ['geo.py'],
 	include_package_data = True,
 	#package_dir = {'': 'package'},
@@ -16,7 +16,7 @@ setup(
 	package_data = {'geo': ['geo'], 'geo':['misc']},
 
     # metadata for upload to PyPI
-    author = "Artur Muharlyamov, Andrew Bezrukov, Konstantin Barsky",
+    author = "Artur Muharlyamov, Andrew Bezrukov, Konstantin Barsky, Nasibullina Dina",
     author_email = "muharlyamovar@ufanipi.ru, barskykd@ufanipi.ru, bezrukovav@ufanipi.ru",
     description = "HPGL: High Perfomance Geostatistical Library",
     license = "BSD",

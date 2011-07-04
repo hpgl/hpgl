@@ -25,7 +25,7 @@ void indicator_kriging(
 	const ik_params_t & params,
 	indicator_property_array_t & output)
 {
-	std::vector<boost::shared_ptr<single_mean_t> > single_means;
+	std::vector<single_mean_t> single_means;
 	create_means(params.m_marginal_probs, single_means);
 	do_indicator_kriging(input, grid, params, single_means, output);
 }

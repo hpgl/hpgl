@@ -120,7 +120,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\bs_gstl\include&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;HPGLPYD_EXPORTS"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;HPGLPYD_EXPORTS;BOOST_PYTHON_STATIC_LIB "
 				RuntimeLibrary="2"
 				OpenMP="true"
 				UsePrecompiledHeader="2"
@@ -189,10 +189,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\extract_lvm_data.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\generate_complement_array.cpp"
 				>
 			</File>
@@ -202,14 +198,6 @@
 			</File>
 			<File
 				RelativePath=".\module.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\py_calc_mean.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\py_calc_vpc.cpp"
 				>
 			</File>
 			<File
@@ -225,18 +213,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\py_load_property.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\py_lvm_data.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\py_mean_data.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\py_ok_param.cpp"
 				>
 			</File>
@@ -245,11 +221,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\py_property_array.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\py_save_mean_data.cpp"
+				RelativePath=".\py_read_inc_file.cpp"
 				>
 			</File>
 			<File
@@ -295,10 +267,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\extract_lvm_data.h"
-				>
-			</File>
-			<File
 				RelativePath=".\generate_complement_array.h"
 				>
 			</File>
@@ -307,19 +275,11 @@
 				>
 			</File>
 			<File
+				RelativePath=".\numpy_utils.h"
+				>
+			</File>
+			<File
 				RelativePath=".\py_grid.h"
-				>
-			</File>
-			<File
-				RelativePath=".\py_load_property.h"
-				>
-			</File>
-			<File
-				RelativePath=".\py_lvm_data.h"
-				>
-			</File>
-			<File
-				RelativePath=".\py_mean_data.h"
 				>
 			</File>
 			<File
@@ -335,15 +295,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\py_property_array.h"
-				>
-			</File>
-			<File
 				RelativePath=".\py_sgs_params.h"
-				>
-			</File>
-			<File
-				RelativePath=".\py_sis.h"
 				>
 			</File>
 			<File

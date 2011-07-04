@@ -166,10 +166,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\src\bs_property_array.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\bs_random_generator.cpp"
 				>
 			</File>
@@ -218,10 +214,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\lvm_data.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\lvm_kriging.cpp"
 				>
 			</File>
@@ -266,7 +258,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\read_gslib.cpp"
+				RelativePath=".\src\read_inc_file.cpp"
 				>
 			</File>
 			<File
@@ -319,6 +311,10 @@
 			</File>
 			<File
 				RelativePath=".\src\sugarbox_grid.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\sugarbox_indexed_neighbour_lookup.h"
 				>
 			</File>
 		</Filter>
@@ -490,10 +486,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\lvm_data.h"
-				>
-			</File>
-			<File
 				RelativePath=".\src\lvm_utils.h"
 				>
 			</File>
@@ -562,10 +554,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\read_gslib.h"
-				>
-			</File>
-			<File
 				RelativePath=".\include\sample.h"
 				>
 			</File>
@@ -603,10 +591,6 @@
 			</File>
 			<File
 				RelativePath=".\include\sugarbox_grid.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\sugarbox_indexed_neighbour_lookup.h"
 				>
 			</File>
 			<File

@@ -20,7 +20,7 @@ includes = [
 		'src', 
 		'/usr/include/python2.5', 
 		'../tnt_126',
-		#'/opt/boost_1_36_0'
+		'/opt/boost_1_38_src/'
 		];
 
 custom_defines = []
@@ -30,23 +30,18 @@ for key, value in ARGLIST:
  
 libbsgstl_d = StaticLibrary('bs_gstl_d', debug_files, 
 	CPPPATH=includes,
-	CPPDEFINES=['DEBUG', 'GSTL_NOWARNING', 'BS_GSTL_EXPORTS', 'BS_EXPORINTG_PLUGIN', 'BS_PROPERTY_ARRAY_EXPORTS', 'BS_PROPERTY_SERVER_EXPORTS'] + custom_defines,
+	CPPDEFINES=['DEBUG', 'BS_GSTL_EXPORTS', 'BS_EXPORINTG_PLUGIN', 'BS_PROPERTY_ARRAY_EXPORTS', 'BS_PROPERTY_SERVER_EXPORTS'] + custom_defines,
 	CCFLAGS='-ggdb -fPIC',
-	LIBS=['libboost_python-mt-d',
-                'libboost_thread-mt-d',
-                ],
-	#LIBPATH=['/opt/boost_1_36_lnx_x86_64_build/']
+	LIBS=['libboost_python-mt-d-py2.5'],
+	LIBPATH=['/opt/boost_1_38_builded_fPIC/']
 	)
 
 libbsgstl = StaticLibrary('bs_gstl', release_files, 
 	CPPPATH=includes,
-	CPPDEFINES=['NDEBUG', 'GSTL_NOWARNING', 'BS_GSTL_EXPORTS', 'BS_EXPORINTG_PLUGIN', 'BS_PROPERTY_ARRAY_EXPORTS', 'BS_PROPERTY_SERVER_EXPORTS'] + custom_defines,
+	CPPDEFINES=['NDEBUG', 'BS_GSTL_EXPORTS', 'BS_EXPORINTG_PLUGIN', 'BS_PROPERTY_ARRAY_EXPORTS', 'BS_PROPERTY_SERVER_EXPORTS'] + custom_defines,
 	CCFLAGS='-g -O3 -finline-functions -fmove-loop-invariants -fopenmp -fPIC',
-        LIBS=['libboost_python-mt',
-                'libboost_thread-mt',
-                'libgomp'
-                ],
-	#LIBPATH=['/opt/boost_1_36_lnx_x86_64_build/']
+        LIBS=['libboost_python-mt-py2.5', 'libgomp' ],
+	LIBPATH=['/opt/boost_1_38_builded_fPIC/']
 	)
 
 Return('libbsgstl_d', 'libbsgstl')

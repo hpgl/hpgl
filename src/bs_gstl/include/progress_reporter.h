@@ -20,7 +20,6 @@ namespace hpgl
 		long m_iterations;
 		time_t m_start;
 		time_t m_end;
-		boost::mutex m_mutex;
 		void set_iteration_count(long iteration_count);
 	public:
 		progress_reporter_t(long n_iterations);

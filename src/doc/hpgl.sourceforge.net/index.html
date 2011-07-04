@@ -1,11 +1,25 @@
 <HTML>
 <HEAD>
 	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
-	<TITLE>HPGL - High Perfomance Geostatistics Library</TITLE>
+	<TITLE>HPGL - High Performance Geostatistics Library</TITLE>
 </HEAD>
 
 <BODY>
-<H1>HPGL - High Perfomance Geostatistics Library </H1>
+
+<!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://apps.sourceforge.net/piwik/hpgl/" : "http://apps.sourceforge.net/piwik/hpgl/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+piwik_action_name = '';
+piwik_idsite = 1;
+piwik_url = pkBaseURL + "piwik.php";
+piwik_log(piwik_action_name, piwik_idsite, piwik_url);
+</script>
+<object><noscript><p><img src="http://apps.sourceforge.net/piwik/hpgl/piwik.php?idsite=1" alt="piwik"/></p></noscript></object>
+<!-- End Piwik Tag -->
+
+<H1>HPGL - High Performance Geostatistics Library </H1>
 
 <P>[<b>ENG</b>] [<A HREF="index_ru.html">RUS</a>]</P>
 
@@ -27,7 +41,7 @@
 <a name="Intro"><H2>1. Description</H2></a>
 
 <P ALIGN=JUSTIFY STYLE="text-indent: 1.2cm">
-HPGL stands for High Perfomance Geostatistics Library.
+HPGL stands for High Performance Geostatistics Library.
 </P>
 
 <P ALIGN=JUSTIFY STYLE="text-indent: 1.2cm">
@@ -39,7 +53,7 @@ HPGL was written in C++ / Python to realize some geostatistical algorithms (see 
 <P>HPGL boasts the following features:</P>
 
 <OL>
-	<LI><P>High perfomance (<i>even in comparison to commercial software</i>)
+	<LI><P>High performance (<i>even in comparison to commercial software</i>)
 	</P>
 	<LI><P>Low memory consumption
 	</P>
@@ -49,13 +63,17 @@ HPGL was written in C++ / Python to realize some geostatistical algorithms (see 
 	</P>
 	<LI><P>Easy development of geo-modeling scenarios using Python
 	</P>
+	<LI><P>NumPy/SciPy compatibility (properties are stored as NumPy arrays)
+	</P>
+	<LI><P>Built-it functions for writing and reading GSLIB and Eclipse Property text files
+	</P>
 </OL>
 
 <P>The algorithms are performed on a Cartesian Grid (IJK-grid).</P>
 
 <a name="Algorithms"><H2>3. List of Algorithms</H2></a>
 
-<P>The current version of HPGL (0.9.4) implements the following algorithms:</P>
+<P>The current version of HPGL (0.9.5) implements the following algorithms:</P>
 
 <OL>
 	<LI><P>Simple Kriging (SK)</P>
@@ -100,11 +118,11 @@ HPGL was written in C++ / Python to realize some geostatistical algorithms (see 
 
 <a name="Downloads"><H2 >6. Downloads </H2></a>
 
-<P  STYLE="text-indent: 1.2cm">To work with HPGL, you will need to install Python 2.5.</p>
+<P  STYLE="text-indent: 1.2cm">To work with HPGL, you will need to install Python 2.5 with <a href="http://numpy.scipy.org/">NumPy</a>/<a href="http://scipy.org/">SciPy</a> packages.</p>
 
 <P  STYLE="text-indent: 1.2cm">Additionally, on Windows hosts, you will need to download and install Visual C++ 2005 Redistritable package, available from <a href="http://www.microsoft.com/downloads/details.aspx?FamilyId=32BC1BEE-A3F9-4C13-9C99-220B62A191EE&displaylang=en#RelatedDownloads">here</a>.</p>
 
-<P  STYLE="text-indent: 1.2cm">The most recent stable builds (together with the source code from the GIT repository) can be downloaded from the <A HREF="https://sourceforge.net/projects/hpgl/">project site</A>.</P>
+<P  STYLE="text-indent: 1.2cm">The most recent stable builds (together with the source code) can be downloaded from the <A HREF="https://sourceforge.net/projects/hpgl/">project site</A>.</P>
 
 <a name="UserGuide"><H2>7. User Guide </H2></a>
 
@@ -112,7 +130,7 @@ HPGL was written in C++ / Python to realize some geostatistical algorithms (see 
 
 <a name="SolvedProblems"><H2>8. Solved Problems in Geostatistics </H2></a>
 
-<P  STYLE="text-indent: 1.16cm">At the <A HREF="https://sourceforge.net/projects/hpgl/">project site</A>, , in the Solved Problems section, you can find Python scripts solving the geostatistical problems described in the book <a href="http://www.amazon.com/Solved-Problems-Geostatistics-Oy-Leuangthong/dp/0470177926/ref=sr_1_1?ie=UTF8&s=books&qid=1240201050&sr=8-1">"Solved Problems in Geostatistics"</a> by O. Leuangthong, K.Daniel Khan, and Clayton V. Deutsch.  </P>
+<P  STYLE="text-indent: 1.16cm">At the <A HREF="https://sourceforge.net/projects/hpgl/">project site</A>, in the Solved Problems section, you can find Python scripts solving the geostatistical problems described in the book <a href="http://www.amazon.com/Solved-Problems-Geostatistics-Oy-Leuangthong/dp/0470177926/ref=sr_1_1?ie=UTF8&s=books&qid=1240201050&sr=8-1">"Solved Problems in Geostatistics"</a> by O. Leuangthong, K.Daniel Khan, and Clayton V. Deutsch.  </P>
 
 <a name="Authors"><H2>9. The Authors </H2></a>
 

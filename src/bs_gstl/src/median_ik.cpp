@@ -32,8 +32,8 @@ namespace hpgl
 void median_ik_for_two_indicators(
 		const median_ik_params & params, 
 		const sugarbox_grid_t & grid,
-		const property_array_t<indicator_value_t> & input_property,
-		property_array_t<indicator_value_t> & output_property
+		const indicator_property_array_t & input_property,
+		indicator_property_array_t & output_property
 )
 {
 	typedef sugarbox_grid_t grid_t;

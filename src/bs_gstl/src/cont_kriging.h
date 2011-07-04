@@ -87,7 +87,7 @@ namespace hpgl
 		for(node_index_t idx = 0; idx < idx_end; ++idx)	
 		{	
 			if (!input_property.is_informed(idx))
-			{
+			{				
 				cont_value_t value;
 				switch(kriging_interpolation(input_property, is_informed_predicate_t<data_t>(input_property), idx, cov, means, neighbour_lookup, wc, value))
 				{
@@ -107,7 +107,7 @@ namespace hpgl
 						output_property.set_at(idx, means[idx]);
 						sum += means[idx];
 					break;
-				}	
+				}				
 			}
 			else
 			{

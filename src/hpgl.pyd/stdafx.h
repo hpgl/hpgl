@@ -12,6 +12,8 @@
 
 //#define _SECURE_SCL 0
 
+
+
 #include <vector>
 #include <deque>
 #include <list>
@@ -24,8 +26,6 @@
 #include <exception>
 #include <boost/smart_ptr.hpp>
 #include <boost/algorithm/string.hpp>
-#include <boost/thread.hpp>
-#include <boost/thread/condition.hpp>
 #include <boost/format.hpp>
 #include <boost/python.hpp>
 

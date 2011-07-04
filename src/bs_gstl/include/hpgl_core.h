@@ -38,6 +38,21 @@ namespace hpgl
 
 	void set_thread_num(int n_threads);
 
+	void read_inc_file_float(
+			const char * file_name,
+			float undefined_value,
+			int size,
+			float * data_buffer,
+			unsigned char * mask_buffer);
+
+	void read_inc_file_byte(
+		const char * file_name,
+		int undefined_value,
+		int size,
+		unsigned char * data_buffer,
+		unsigned char * mask_buffer);
+
+
 	//TODO: maybe where should be pointers instead of references?
 
 	void ordinary_kriging(
@@ -62,7 +77,7 @@ namespace hpgl
 
 	void lvm_kriging(
 		const cont_property_array_t & input,
-		const std::vector<mean_t> & mean_data,
+		const mean_t * mean_data,
 		const sugarbox_grid_t & grid,
 		const ok_params_t & params,
 		cont_property_array_t & output);
@@ -77,20 +92,18 @@ namespace hpgl
 
 	void sequential_gaussian_simulation(
 		const sugarbox_grid_t & grid,
-		const sgs_params_t & params,
-		bool use_harddata,
+		const sgs_params_t & params,		
 		cont_property_array_t & output,
 		const cont_property_array_t & cdf_property,
-		const indicator_property_array_t * mask = NULL);
+		const unsigned char * mask = NULL);
 
 	void sequential_gaussian_simulation_lvm(
 		const sugarbox_grid_t & grid,
 		const sgs_params_t & params,
-		bool use_harddata,
-		const std::vector<mean_t> & mean_data,
+		const mean_t * mean_data,
 		cont_property_array_t & output,
 		const cont_property_array_t & cdf_property,
-		const indicator_property_array_t * mask = NULL);
+		const unsigned char * mask = NULL);
 
 	void sequential_indicator_simulation(
 			indicator_property_array_t & property,
@@ -99,17 +112,17 @@ namespace hpgl
 			int seed,
 			progress_reporter_t & report,
 			bool use_corellogram,
-			const indicator_property_array_t * mask = NULL);
+			const unsigned char * mask = NULL);
 	
 	void sequential_indicator_simulation_lvm(
 		indicator_property_array_t & property,
 			const sugarbox_grid_t & grid,
 			const ik_params_t & params,
 			int seed,
-			const indicator_lvm_data_t & mean_data,
+			const mean_t ** mean_data,
 			progress_reporter_t & report,
 			bool use_corellogram,
-			const indicator_property_array_t * mask = NULL);
+			const unsigned char * mask = NULL);
 
 	struct sis_mean_params_t
 	{
@@ -143,6 +156,7 @@ void simple_cokriging_markII(
 		const covariance_param_t & secondary_cov_params,
 		cont_property_array_t & output_prop);
 
+	
 bool calc_mean(const cont_property_array_t * prop, double * mean);	
 
 }

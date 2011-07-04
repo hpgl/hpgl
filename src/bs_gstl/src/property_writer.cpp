@@ -57,7 +57,7 @@ namespace hpgl
 			fprintf(f.get(), "%s\n", property_name);
 
 			for (int i = 0, end_i = property.size(); i < end_i; ++i)
-			{
+			{				
 				if (property.is_informed(i))						
 					write_value(f.get(), property.get_at(i));
 				else

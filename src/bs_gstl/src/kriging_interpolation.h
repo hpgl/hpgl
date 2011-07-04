@@ -86,10 +86,10 @@ namespace hpgl
 		}			
 	};
 
-	template<typename constraints_t, typename value_t>
-	weight_calculator_t<constraints_t, value_t> weight_calculator(constraints_t constraints, const property_array_t<value_t> &)
+	template<typename constraints_t, typename prop_t>
+	weight_calculator_t<constraints_t, typename prop_t::value_type> weight_calculator(constraints_t constraints, const prop_t &)
 	{
-		return weight_calculator_t<constraints_t,value_t>(constraints);
+		return weight_calculator_t<constraints_t, typename prop_t::value_type>(constraints);
 	}
 
 	enum ki_result_t

@@ -16,12 +16,10 @@ namespace hpgl
 {
 	void create_means(
 			const std::vector<indicator_probability_t> & marginal_probs, 
-			std::vector<boost::shared_ptr<single_mean_t> > & means)
+			std::vector<single_mean_t> & means)
 	{
 		for (indicator_index_t i = 0; i < marginal_probs.size(); ++i)
-			means.push_back(
-				boost::shared_ptr<single_mean_t>(
-					new single_mean_t(marginal_probs[i])));
+			means.push_back(single_mean_t(marginal_probs[i]));
 	}
 		
 }

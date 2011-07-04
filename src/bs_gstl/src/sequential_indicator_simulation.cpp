@@ -29,13 +29,13 @@ namespace hpgl
 namespace
 {	
 
-template<typename grid_t, typename mean_provider_ptr_t, typename weight_calculator_t, typename mask_t>
+template<typename grid_t, typename marginal_probs_t, typename weight_calculator_t, typename mask_t>
 void do_sis(
 		indicator_property_array_t & property,
 		const grid_t & grid,
 		const ik_params_t & params,
 		int seed,
-		const std::vector<mean_provider_ptr_t> & marginal_probs,		
+		const marginal_probs_t & marginal_probs,		
 		progress_reporter_t & reporter,
 		const weight_calculator_t & weight_calculator_sis,
 		const mask_t & mask)
@@ -77,11 +77,11 @@ void do_sis(
 			
 			ki_result_t ki_result = kriging_interpolation(
 				ind_props[idx], is_informed_predicate_t<indicator_property_array_t>(property), 
-				node, covariances[idx], *marginal_probs[idx], nblookups[idx], weight_calculator_sis, prob);
+				node, covariances[idx], marginal_probs[idx], nblookups[idx], weight_calculator_sis, prob);
 
 			if (ki_result != KI_SUCCESS)
 			{
-				prob = marginal_probs[idx]->operator[](node);
+				prob = marginal_probs[idx][node];
 			}
 			probs.push_back(prob);
 		}
@@ -109,20 +109,19 @@ void sequential_indicator_simulation(
 			int seed,
 			progress_reporter_t & report,
 			bool use_corellogram,
-			const indicator_property_array_t * mask)
+			const unsigned char * mask)
 {
 	print_algo_name("Sequential Indicator Simulation");
 	print_params(params);
 	if (property.size() != grid.size())
 		throw hpgl_exception("sequential_indicator_simulation", boost::format("Property size '%s' is not equal to grid size '%s'") % property.size() % grid.size());
 	
-	print_param("VPC", "off");
-	std::vector<boost::shared_ptr<single_mean_t> > single_means;
+	std::vector<single_mean_t> single_means;
 	create_means(params.m_marginal_probs, single_means);	
 	if (mask == NULL)	
 		do_sis(property, grid, params, seed, single_means, report, weight_calculator(sk_constraints, property), no_mask_t());
 	else
-		do_sis(property, grid, params, seed, single_means, report, weight_calculator(sk_constraints, property), *mask);
+		do_sis(property, grid, params, seed, single_means, report, weight_calculator(sk_constraints, property), mask);
 
 }
 	
@@ -131,10 +130,10 @@ void sequential_indicator_simulation_lvm(
 		const sugarbox_grid_t & grid,
 		const ik_params_t & params,
 		int seed,
-		const indicator_lvm_data_t & mean_data,
+		const mean_t ** mean_data,		
 		progress_reporter_t & report,
 		bool use_corellogram,
-		const indicator_property_array_t * mask)
+		const unsigned char * mask)
 {
 	print_algo_name("Sequential Indicator Simulation");
 	print_params(params);
@@ -144,15 +143,15 @@ void sequential_indicator_simulation_lvm(
 	{
 		print_param("Corellogram", "on");
 		if (mask == NULL)
-			do_sis(property, grid, params, seed, mean_data.m_data, report, weight_calculator(corellogram_constraints, property), no_mask_t());
+			do_sis(property, grid, params, seed, mean_data, report, weight_calculator(corellogram_constraints, property), no_mask_t());
 		else
-			do_sis(property, grid, params, seed, mean_data.m_data, report, weight_calculator(corellogram_constraints, property), *mask);
+			do_sis(property, grid, params, seed, mean_data, report, weight_calculator(corellogram_constraints, property), mask);
 	} else {
 		print_param("Corellogram", "off");
 		if (mask == NULL)
-			do_sis(property, grid, params, seed, mean_data.m_data, report, weight_calculator(sk_constraints, property), no_mask_t());
+			do_sis(property, grid, params, seed, mean_data, report, weight_calculator(sk_constraints, property), no_mask_t());
 		else
-			do_sis(property, grid, params, seed, mean_data.m_data, report, weight_calculator(sk_constraints, property), *mask);
+			do_sis(property, grid, params, seed, mean_data, report, weight_calculator(sk_constraints, property), mask);
 	}
 }
 

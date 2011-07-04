@@ -11,7 +11,8 @@
 #define __PY_MEDIAN_IK_H__A0D5ED65_54BC_419B_B523_723C47E0CF32
 
 #include <median_ik.h>
-#include "py_property_array.h"
+
+#include "numpy_utils.h"
 
 namespace hpgl
 {
@@ -76,18 +77,18 @@ namespace hpgl
 		return py_median_ik_params_t();
 	}
 
-	py_byte_property_array_t py_median_ik(const py_byte_property_array_t & input_property,
+	void py_median_ik(boost::python::tuple input_property,
+		boost::python::tuple output_property,
 		const py_grid_t & grid,
 		const py_median_ik_params_t & params)
 	{
-		py_byte_property_array_t result;
-		result.m_byte_property_array.reset(
-			new property_array_t<indicator_value_t>(*input_property.m_byte_property_array));
+		using namespace boost::python;
+		sp_byte_property_array_t in_prop = ind_prop_from_tuple(input_property);
+		sp_byte_property_array_t out_prop = ind_prop_from_tuple(output_property);
 			
 		std::cout << "Performing Median IK.\n" << params.m_params;
 
-		median_ik_for_two_indicators(params.m_params, *grid.m_sugarbox_geometry, *input_property.m_byte_property_array, *result.m_byte_property_array);
-		return result;
+		median_ik_for_two_indicators(params.m_params, *grid.m_sugarbox_geometry, *in_prop, *out_prop);		
 	}
 }
 

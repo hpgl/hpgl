@@ -37,18 +37,17 @@ namespace hpgl
 			print_param("Calculated SGS mean", mean);			
 			std::cout.flush();
 		} else {
-			mean = transform_cdf(params.mean(), target_cdf, gaussian_cdf_t());
+			mean = transform_cdf_s(params.mean(), target_cdf, gaussian_cdf_t());
 		}	
 		return mean;
 	}
 
 void sequential_gaussian_simulation(
 		const sugarbox_grid_t & grid,
-		const sgs_params_t & params,
-		bool use_harddata,
+		const sgs_params_t & params,		
 		cont_property_array_t & output,
 		const cont_property_array_t & cdf_property,
-		const indicator_property_array_t * mask)
+		const unsigned char * mask)
 {
 	print_algo_name("Sequential Gaussian Simulation");
 	print_params(params);
@@ -64,7 +63,7 @@ void sequential_gaussian_simulation(
 	build_cdf_from_property(cdf_property, target_cdf);
 	transform_cdf(output, target_cdf, Gaussian_cdf());*/
 	non_parametric_cdf_t<cont_value_t, double> new_cdf(cdf_property);
-	transform_cdf(output, new_cdf, gaussian_cdf_t());
+	transform_cdf_p(output, new_cdf, gaussian_cdf_t());
 
 	if (params.m_kriging_kind == KRIG_SIMPLE)
 	{
@@ -75,7 +74,7 @@ void sequential_gaussian_simulation(
 			do_sequential_gausian_simulation( output, grid, params, 
 					single_mean_t(mean), sk_constraints, 
 					weight_calculator(sk_constraints, output), 
-					*mask);
+					mask);
 		}
 		else
 		{
@@ -91,7 +90,7 @@ void sequential_gaussian_simulation(
 			do_sequential_gausian_simulation( output, grid, params,
 				no_mean_t(), ok_constraints,
 				weight_calculator(ok_constraints, output),
-				*mask);
+				mask);
 		} else {
 			do_sequential_gausian_simulation( output, grid, params,
 				no_mean_t(), ok_constraints,
@@ -99,20 +98,17 @@ void sequential_gaussian_simulation(
 				no_mask_t());
 		}
 	}
-	
-	
-	transform_cdf(output, gaussian_cdf_t(), new_cdf);
-	
+		
+	transform_cdf_p(output, gaussian_cdf_t(), new_cdf);	
 }
 
 void sequential_gaussian_simulation_lvm(
 		const sugarbox_grid_t & grid,
-		const sgs_params_t & params,
-		bool use_harddata,
-		const std::vector<mean_t> & mean_data,
+		const sgs_params_t & params,		
+		const mean_t * mean_data,
 		cont_property_array_t & output,
 		const cont_property_array_t & cdf_property,
-		const indicator_property_array_t * mask
+		const unsigned char * mask
 		)
 {
 	print_algo_name("Sequential Gaussian Simulation with Local Varying Mean");
@@ -121,14 +117,11 @@ void sequential_gaussian_simulation_lvm(
 
 	if (output.size() != grid.size())
 		throw hpgl_exception("sequential_gaussian_simulation_lvm",
-		boost::format("Input property size: %s. Grid size: %s. Must be equal.") % output.size() % grid.size());
-	if (output.size() != mean_data.size())
-		throw hpgl_exception("sequential_gaussian_simulation_lvm",
-		boost::format("Input property size: %s. Mean data size: %s. Must be equal.") % output.size() % mean_data.size());
+		boost::format("Input property size: %s. Grid size: %s. Must be equal.") % output.size() % grid.size());	
 
 	subtract_means(output, mean_data);	
 
-	sequential_gaussian_simulation(grid, params, use_harddata, output, cdf_property, mask);	
+	sequential_gaussian_simulation(grid, params, output, cdf_property, mask);	
 	
 	add_means(output, mean_data);
 	

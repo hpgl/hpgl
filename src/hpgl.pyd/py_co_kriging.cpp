@@ -8,22 +8,22 @@
 
 
 #include "stdafx.h"
-#include "py_property_array.h"
 #include "py_grid.h"
-#include "py_mean_data.h"
 #include "neighbourhood_param.h"
 #include "covariance_param.h"
 #include <hpgl_core.h>
+
+#include "numpy_utils.h"
 
 
 namespace hpgl
 {
 	namespace python
 	{
-		py_cont_property_array_t py_simple_cokriging_markI(
-			const py_cont_property_array_t & prop,
+		void py_simple_cokriging_markI(
+			boost::python::tuple input_array,
 			const py_grid_t & grid,
-			const py_cont_property_array_t & secondary_data,
+			boost::python::tuple secondary_data,
 			mean_t primary_mean,
 			mean_t secondary_mean,
 			double secondary_variance,
@@ -34,7 +34,8 @@ namespace hpgl
 			const boost::python::tuple & ranges,
 			double sill,
 			double nugget,
-			const boost::python::tuple & angles)
+			const boost::python::tuple & angles,
+			boost::python::tuple out_array)
 		{
 			if (boost::python::len(radiuses) != 3)
 				throw hpgl_exception("py_simple_cokriging_markI", boost::format("len(radiuses) = %s. Should be 3") % boost::python::len(radiuses));
@@ -42,10 +43,7 @@ namespace hpgl
 				throw hpgl_exception("py_simple_cokriging_markI", boost::format("len(ranges) = %s. Should be 3") % boost::python::len(ranges));
 			if (boost::python::len(angles) != 3)
 				throw hpgl_exception("py_simple_cokriging_markI", boost::format("len(angles) = %s. Should be 3") % boost::python::len(angles));
-
-			py_cont_property_array_t result;
-			result.m_double_property_array = prop.m_double_property_array->clone();
-
+			
 			neighbourhood_param_t np; 
 			np.m_max_neighbours = max_neighbours;
 
@@ -61,24 +59,33 @@ namespace hpgl
 		       		pcp.m_angles[i] = boost::python::extract<double>(angles[i]);
 			}
 
-			
+			sp_double_property_array_t primary_prop = cont_prop_from_tuple(input_array);
+			sp_double_property_array_t secondary_prop = cont_prop_from_tuple(secondary_data);
+			sp_double_property_array_t out_prop = cont_prop_from_tuple(out_array);
 
-			simple_cokriging_markI(*grid.m_sugarbox_geometry, *prop.m_double_property_array, *secondary_data.m_double_property_array,
-					primary_mean, secondary_mean, secondary_variance, correlation_coef, np, pcp, *result.m_double_property_array);
-			return result;
+
+			simple_cokriging_markI(*grid.m_sugarbox_geometry, *primary_prop, 
+				*secondary_prop, primary_mean, secondary_mean, 
+				secondary_variance, correlation_coef, np, pcp, *out_prop);			
 		}
 
-		py_cont_property_array_t py_simple_cokriging_markII(
+		void py_simple_cokriging_markII(
 			py_grid_t grid,
 			boost::python::dict primary_data,
 			boost::python::dict secondary_data,
 			double correlation_coef,
 			boost::python::tuple radiuses,
-			int max_neighbours)
+			int max_neighbours,
+			boost::python::tuple out_array)
 		{
-			py_cont_property_array_t input_prop = boost::python::extract<py_cont_property_array_t>(primary_data["data"]);
-			py_cont_property_array_t secondary_prop = boost::python::extract<py_cont_property_array_t>(secondary_data["data"]);
-			
+			using namespace boost::python;
+			sp_double_property_array_t input_prop = 
+				cont_prop_from_tuple(extract<tuple>(primary_data["data"]));
+			sp_double_property_array_t secondary_prop =
+				cont_prop_from_tuple(extract<tuple>(secondary_data["data"]));
+			sp_double_property_array_t out_prop =
+				cont_prop_from_tuple(out_array);
+						
 			mean_t primary_mean = boost::python::extract<mean_t>(primary_data["mean"]);
 			mean_t secondary_mean = boost::python::extract<mean_t>(secondary_data["mean"]);
 
@@ -117,17 +124,12 @@ namespace hpgl
 			secondary_cov_params.m_sill = secondary_sill;
 			secondary_cov_params.m_nugget = secondary_nugget;
 			secondary_cov_params.m_covariance_type = secondary_cov_type;
-
-			py_cont_property_array_t result;
-			result.m_double_property_array = input_prop.m_double_property_array->clone();
-
+			
 			simple_cokriging_markII(
 				*grid.m_sugarbox_geometry, 
-				*input_prop.m_double_property_array, 
-				*secondary_prop.m_double_property_array, 
-				primary_mean, secondary_mean, correlation_coef, np, primary_cov_params, secondary_cov_params, *result.m_double_property_array);
-
-			return result;
+				*input_prop, 
+				*secondary_prop, 
+				primary_mean, secondary_mean, correlation_coef, np, primary_cov_params, secondary_cov_params, *out_prop);			
 		}
 
 	}

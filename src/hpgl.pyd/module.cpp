@@ -13,15 +13,10 @@
 #include <property_writer.h>
 #include "py_ok_param.h"
 #include "py_sk_params.h"
-#include "py_property_array.h"
 #include "py_grid.h"
 #include "py_sgs_params.h"
-#include "py_sis.h"
 #include <load_property_from_file.h>
-#include "py_mean_data.h"
 #include "py_median_ik.h"
-#include "py_lvm_data.h"
-#include "py_load_property.h"
 #include <hpgl_core.h>
 #include "progress_reporter.h"
 #include "extract_indicator_values.h"
@@ -31,23 +26,49 @@ using namespace hpgl;
 
 namespace hpgl
 {
-	boost::python::object 
-	py_calc_vpc(py_byte_property_array_t property, py_grid_t grid, const boost::python::list & marginal_probs);
+	void py_indicator_kriging(
+		boost::python::tuple input_array,
+		boost::python::tuple output_array,
+		const py_grid_t & grid,
+		PyObject * params, 
+		bool use_vpc);	
 
-	void 
-	py_save_mean_data(py_mean_data_t mean_data, const std::string & name, const std::string & property_name);
+	void py_sis(
+		boost::python::tuple array, 
+		const py_grid_t & grid,
+		PyObject * params, int seed, bool use_vpc, bool use_corellogram, boost::python::object mask_data);	
 
-	py_byte_property_array_t py_indicator_kriging(const py_byte_property_array_t & input_array,
-		const py_grid_t & grid, PyObject * params, bool use_vpc);	
-
+	void py_sis_lvm(
+			const boost::python::tuple & array,
+			const py_grid_t & grid,
+			PyObject * params,
+			int seed,
+			boost::python::object mean_data,
+			bool use_corellogram,
+			boost::python::object mask_data);
 
 	namespace python
 	{
-		py_cont_property_array_t py_simple_cokriging_markI(
-			const py_cont_property_array_t & prop,
+		void py_read_inc_file_float(
+			const std::string & filename,
+			double undefined_value,
+			int size,
+			boost::python::object odata,
+			boost::python::object omask);
+
+		void py_read_inc_file_byte(
+			const std::string & filename,
+			int undefined_value,
+			int size,
+			boost::python::object data,
+			boost::python::object mask, 
+			boost::python::list ind_values);
+
+		void py_simple_cokriging_markI(
+			boost::python::tuple input_array,
 			const py_grid_t & grid,
-			const py_cont_property_array_t & secondary_data,
-			mean_t property_mean,
+			boost::python::tuple secondary_data,
+			mean_t primary_mean,
 			mean_t secondary_mean,
 			double secondary_variance,
 			double correlation_coef,
@@ -57,78 +78,50 @@ namespace hpgl
 			const boost::python::tuple & ranges,
 			double sill,
 			double nugget,
-			const boost::python::tuple & angles);
+			const boost::python::tuple & angles,
+			boost::python::tuple out_array);
 
-		py_cont_property_array_t py_simple_cokriging_markII(
+		void py_simple_cokriging_markII(
 			py_grid_t grid,
 			boost::python::dict primary_data,
 			boost::python::dict secondary_data,
 			double correlation_coef,
 			boost::python::tuple radiuses,
-			int max_neighbours);
+			int max_neighbours,
+			boost::python::tuple out_array);		
 
-		double py_calc_mean(const py_cont_property_array_t & prop);
-		double py_calc_mean(const py_mean_data_t & prop);
-
-		double (*py_calc_mean1)(const py_cont_property_array_t & prop) = &py_calc_mean;
-		double (*py_calc_mean2)(const py_mean_data_t & prop) = &py_calc_mean;
 	}
 }
 
 void write_byte_property(
-		const py_byte_property_array_t & property,
+		boost::python::tuple property,
 		const char * filename,
 		const char * name,
 		double undefined_value,
 		boost::python::list indicator_values)
 {
 	std::vector<unsigned char> remap_table;
+	sp_byte_property_array_t prop = ind_prop_from_tuple(property);
 	extract_indicator_values(
 			indicator_values, 
-			indicator_count(*property.m_byte_property_array),
+			indicator_count(*prop),
 			remap_table);
 
 	hpgl::property_writer_t writer;
 	writer.init(filename, name);
-	writer.write_byte(property.m_byte_property_array, (unsigned char)undefined_value, remap_table);
+	writer.write_byte(prop, (unsigned char)undefined_value, remap_table);
 }
 
 void write_cont_property(
-		const py_cont_property_array_t & property,
+		boost::python::tuple property,
 		const char * filename,
 		const char * name,
 		double undefined_value)
 {
+	sp_double_property_array_t prop = cont_prop_from_tuple(property);
 	hpgl::property_writer_t writer;
 	writer.init(filename, name);
-	writer.write_double(property.m_double_property_array, undefined_value);
-}
-
-void write_byte_gslib_property(
-		const py_byte_property_array_t & property,
-		const char * filename,
-		const char * name,
-		double undefined_value,
-		int i_size, int j_size, int k_size,
-		boost::python::list indicator_values)
-{
-	std::vector<unsigned char> remap_table;
-	extract_indicator_values(
-			indicator_values, 
-			indicator_count(*property.m_byte_property_array),
-			remap_table);
-
-	write_gslib_byte(property.m_byte_property_array, (unsigned char)undefined_value, filename, name, i_size, j_size, k_size, remap_table);
-}
-
-void write_cont_gslib_property(
-		const py_cont_property_array_t & property,
-		const char * filename,
-		const char * name,
-		double undefined_value,
-		int i_size, int j_size, int k_size)
-{
-	write_gslib_double(property.m_double_property_array, (unsigned char)undefined_value, filename, name, i_size, j_size, k_size);
+	writer.write_double(prop, undefined_value);
 }
 
 // Hmm... can't we just give constructor to py_grid_t?
@@ -160,137 +153,115 @@ py_sgs_params_t create_sgs_params()
 	return py_sgs_params_t();
 }
 
-py_cont_property_array_t ordinary_kriging(py_cont_property_array_t input_array, py_grid_t grid,
-		const py_ok_params_t & param, bool use_new_cov)
+void ordinary_kriging(
+		boost::python::tuple input_array, 
+		boost::python::tuple output_array,
+		py_grid_t grid,
+		const py_ok_params_t & param, 
+		bool use_new_cov)
 {
 	using namespace hpgl;
-	py_cont_property_array_t result;
-	result.m_double_property_array = input_array.m_double_property_array->clone();	
-	hpgl::ordinary_kriging(*input_array.m_double_property_array, *grid.m_sugarbox_geometry, param.m_ok_param, *result.m_double_property_array, use_new_cov);	
-	return result;
+
+	sp_double_property_array_t in_prop = cont_prop_from_tuple(input_array);
+	sp_double_property_array_t out_prop = cont_prop_from_tuple(output_array);
+	
+	hpgl::ordinary_kriging(*in_prop, *grid.m_sugarbox_geometry, param.m_ok_param, *out_prop, use_new_cov);		
 }
 
-py_cont_property_array_t simple_kriging(const py_cont_property_array_t & input_array,
+void simple_kriging(
+		boost::python::tuple input_array,
+		boost::python::tuple output_array,
 		const py_grid_t & grid,
 		const py_sk_params_t & param)
 {
 	using namespace hpgl;
-	py_cont_property_array_t result;
-	result.m_double_property_array = input_array.m_double_property_array->clone(); 
-	hpgl::simple_kriging(*input_array.m_double_property_array, *grid.m_sugarbox_geometry, param.m_sk_params, *result.m_double_property_array);	
-	return result;
+	sp_double_property_array_t in_prop = cont_prop_from_tuple(input_array);
+	sp_double_property_array_t out_prop = cont_prop_from_tuple(output_array);
+	hpgl::simple_kriging(*in_prop, *grid.m_sugarbox_geometry, param.m_sk_params, *out_prop);		
 }
 
-py_cont_property_array_t lvm_kriging(const py_cont_property_array_t & input_array,
+void lvm_kriging(
+		boost::python::tuple input_array,
+		boost::python::tuple output_array,
 		const py_grid_t & grid,
 		const py_ok_params_t & param,
-		const py_mean_data_t & mean_data)
+		boost::python::object mean_data)
 {
 	using namespace hpgl;
-	py_cont_property_array_t result;
-	result.m_double_property_array = input_array.m_double_property_array->clone();		
-	hpgl::lvm_kriging(*input_array.m_double_property_array, *mean_data.m_data, *grid.m_sugarbox_geometry, param.m_ok_param, *result.m_double_property_array);	
-	return result;
+	sp_double_property_array_t in_prop = cont_prop_from_tuple(input_array);
+	sp_double_property_array_t out_prop = cont_prop_from_tuple(output_array);
+	mean_t * means = get_buffer_from_ndarray<mean_t, 'f'>(mean_data, out_prop->size(), "lvm_kriging");
+	hpgl::lvm_kriging(*in_prop, means, *grid.m_sugarbox_geometry, param.m_ok_param, *out_prop);	
 }
 
-py_cont_property_array_t sgs_simulation(const py_cont_property_array_t & input_property,
+void sgs_simulation(		
+		boost::python::tuple output_array,
 		const py_grid_t & grid,
-		const py_sgs_params_t & param,
-		bool use_harddata,
-		PyObject * cdf_property,
+		const py_sgs_params_t & param,		
+		boost::python::object cdf_property,
 		boost::python::object mask_data)
 {
-	boost::python::extract<py_cont_property_array_t> ext(cdf_property);
-	boost::python::extract<py_byte_property_array_t> mask_ext(mask_data);
+	using namespace boost::python;	
+	sp_double_property_array_t out_prop = cont_prop_from_tuple(output_array);
 
-	sp_double_property_array_t output_property = use_harddata ? 
-		input_property.m_double_property_array->clone()
-		: input_property.m_double_property_array->clone_without_data();	
+	boost::python::extract<tuple> ext(cdf_property);
 
-	indicator_property_array_t * mask = NULL;
-	if (mask_ext.check())
-		mask = ((py_byte_property_array_t)mask_ext).m_byte_property_array.get();
-
-	if(ext.check())
+	unsigned char * mask =
+			mask_data.ptr() == Py_None ? NULL 
+			: get_buffer_from_ndarray<unsigned char,'u'>(mask_data, out_prop->size(), "py_sis");
+	
+	sp_double_property_array_t cdf_prop;
+	if (ext.check())
 	{
-		py_cont_property_array_t cdf_prop = ext;
-
-		hpgl::sequential_gaussian_simulation(*grid.m_sugarbox_geometry, param.m_sgs_params, use_harddata, *output_property, *cdf_prop.m_double_property_array, mask);
+		cdf_prop = cont_prop_from_tuple(ext);
 	}
 	else
 	{
-		hpgl::sequential_gaussian_simulation(*grid.m_sugarbox_geometry, param.m_sgs_params, use_harddata, *output_property, *output_property, mask);
+		cdf_prop = out_prop;
 	}
 
-	py_cont_property_array_t result;
-	result.m_double_property_array = output_property;
-	return result;
+	hpgl::sequential_gaussian_simulation(*grid.m_sugarbox_geometry, param.m_sgs_params, *out_prop, *cdf_prop, mask);		
 }
 
-py_cont_property_array_t sgs_lvm_simulation(const py_cont_property_array_t & input_property,
+void sgs_lvm_simulation(
+		boost::python::tuple output_array,
 		const py_grid_t & grid,
 		const py_sgs_params_t & param,
-		const py_mean_data_t & mean_data,
-		bool use_harddata,
+		boost::python::object mean_data,		
 		PyObject * cdf_property,
 		boost::python::object mask_data)
 {
-	boost::python::extract<py_cont_property_array_t> ext(cdf_property);
-	boost::python::extract<py_byte_property_array_t> mask_ext(mask_data);
+	using namespace boost::python;	
+	sp_double_property_array_t out_prop = cont_prop_from_tuple(output_array);
 
-	indicator_property_array_t * mask = mask_ext.check() 
-				? ((py_byte_property_array_t) mask_ext).m_byte_property_array.get() 
-				: NULL;
-		
-	sp_double_property_array_t output_property = use_harddata 
-		?  input_property.m_double_property_array->clone()		
-		: input_property.m_double_property_array->clone_without_data();
+	boost::python::extract<tuple> ext(cdf_property);
+	
+	unsigned char * mask =
+			mask_data.ptr() == Py_None ? NULL 
+			: get_buffer_from_ndarray<unsigned char,'u'>(mask_data, out_prop->size(), "sgs_lvm_simulation");
 
-	if(ext.check())
+	sp_double_property_array_t cdf_prop;
+	if (ext.check())
 	{
-		py_cont_property_array_t cdf_prop = ext;
-
-		hpgl::sequential_gaussian_simulation_lvm(*grid.m_sugarbox_geometry, param.m_sgs_params, use_harddata,*mean_data.m_data, *output_property,  *cdf_prop.m_double_property_array, mask);
+		cdf_prop = cont_prop_from_tuple(ext);
 	}
 	else
 	{
-		hpgl::sequential_gaussian_simulation_lvm(*grid.m_sugarbox_geometry, param.m_sgs_params, use_harddata,*mean_data.m_data, *output_property,  *output_property, mask);	
+		cdf_prop = out_prop;
 	}
-	py_cont_property_array_t result;
-	result.m_double_property_array = output_property;
-	return result;
-}
 
-BOOST_PYTHON_OPAQUE_SPECIALIZED_TYPE_ID(float)
-BOOST_PYTHON_OPAQUE_SPECIALIZED_TYPE_ID(float_vector_t)
-BOOST_PYTHON_OPAQUE_SPECIALIZED_TYPE_ID(unsigned char)
-BOOST_PYTHON_OPAQUE_SPECIALIZED_TYPE_ID(byte_vector_t)
+	mean_t * lvm_data = get_buffer_from_ndarray<mean_t, 'f'>(mean_data, out_prop->size(), "sgs_lvm_simulation");
+	hpgl::sequential_gaussian_simulation_lvm(*grid.m_sugarbox_geometry, param.m_sgs_params, lvm_data, *out_prop, *cdf_prop, mask);	
+}
 
 BOOST_PYTHON_MODULE(hpgl)
 {
 	using namespace hpgl;
+	using namespace hpgl::python;
 	using namespace boost::python;
 
 	def("set_thread_num", set_thread_num);
-
-	class_<py_byte_property_array_t>("byte_property_array", init<int, boost::python::object>())
-		.def("size", &py_byte_property_array_t::size)
-		.def("get_at", &py_byte_property_array_t::get_at)
-		.def("set_at", &py_byte_property_array_t::set_at)
-		.def("is_informed", &py_byte_property_array_t::is_informed)
-		.def("clone", &py_byte_property_array_t::clone)
-		.def("get_raw_byte_pointer", &py_byte_property_array_t::get_raw_byte_pointer, return_value_policy<return_opaque_pointer>())
-		.def("get_raw_byte_vector_pointer", &py_byte_property_array_t::get_raw_byte_vector_pointer, return_value_policy<return_opaque_pointer>());
-
-	class_<py_cont_property_array_t>("cont_property_array", init<int>())
-		.def("size", &py_cont_property_array_t::size)
-		.def("get_at", &py_cont_property_array_t::get_at)
-		.def("set_at", &py_cont_property_array_t::set_at)
-		.def("is_informed", &py_cont_property_array_t::is_informed)
-		.def("clone", &py_cont_property_array_t::clone)
-		.def("get_raw_float_pointer", &py_cont_property_array_t::get_raw_float_pointer, return_value_policy<return_opaque_pointer>())
-		.def("get_raw_float_vector_pointer", &py_cont_property_array_t::get_raw_float_vector_pointer, return_value_policy<return_opaque_pointer>());
-
+	
 	class_<py_grid_t>("grid") 
 		.def(init<sugarbox_grid_size_t,
 				sugarbox_grid_size_t, 
@@ -337,24 +308,13 @@ BOOST_PYTHON_MODULE(hpgl)
 		.def("set_kriging_kind", &py_sgs_params_t::set_kriging_kind)
 		.def("set_seed", &py_sgs_params_t::set_seed)
 		.def("set_mean_kind", &py_sgs_params_t::set_mean_kind);
-
-	class_<py_mean_data_t>("MeanData", init<py_mean_data_t>());
-	class_<py_indicator_lvm_data_t>("IndicatorLvmData", init<py_indicator_lvm_data_t>());
-
-	def("load_cont_property", load_cont_property);
-	def("load_ind_property", load_ind_property);
-	def("load_gslib_cont_property", load_gslib_cont_property);
-	def("load_gslib_ind_property", load_gslib_ind_property);
-
-	def("load_mean_data", py_load_mean_data);
-	def("load_indicator_mean_data", py_load_indicator_mean_data);
-
+		
+	def("read_inc_file_float", py_read_inc_file_float);
+	def("read_inc_file_byte", py_read_inc_file_byte);
+	
 	def("write_byte_property", write_byte_property);
 	def("write_cont_property", write_cont_property);
-	def("write_byte_gslib_property", write_byte_gslib_property);
-	def("write_cont_gslib_property", write_cont_gslib_property);
-	def("write_mean_data", py_save_mean_data);
-
+	
 	def("create_sugarbox_grid", create_sugarbox_grid);
 	def("create_ok_params", create_ok_params);
 	def("create_sk_params", create_sk_params);
@@ -375,8 +335,5 @@ BOOST_PYTHON_MODULE(hpgl)
 
 	def("simple_cokriging_markI", hpgl::python::py_simple_cokriging_markI);
 	def("simple_cokriging_markII", hpgl::python::py_simple_cokriging_markII);
-
-	def("calc_vpc", py_calc_vpc);
-	def("calc_mean", hpgl::python::py_calc_mean1);
-	def("calc_mean", hpgl::python::py_calc_mean2);
+	
 }

@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Tests>
+  <edtdocversion branch="retail" build="50727" revision="42" />
+  <GenericTest type="Microsoft.VisualStudio.TestTools.TestTypes.Generic.GenericTest, Microsoft.VisualStudio.QualityTools.Tips.GenericTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <FileName type="System.String">C:\Python25\python.exe</FileName>
+    <Arguments type="System.String">test_compare.py</Arguments>
+    <RedirectStandardOutputAndError type="System.Boolean">False</RedirectStandardOutputAndError>
+    <UseSummaryXmlFileName type="System.Boolean">False</UseSummaryXmlFileName>
+    <SummaryXmlFileName type="System.String">%TestOutputDirectory%\&lt;Enter summary file name here&gt;</SummaryXmlFileName>
+    <MaxDuration type="System.Int32">0</MaxDuration>
+    <WorkingDirectory type="System.String">..\..\..\exe\release</WorkingDirectory>
+    <EnvironmentVariables type="System.Collections.Specialized.StringDictionary, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <cssProjectStructure type="System.String" />
+    <isRunOnRestart type="System.Boolean">False</isRunOnRestart>
+    <timeOut type="System.Int32">0</timeOut>
+    <isGroupable type="System.Boolean">True</isGroupable>
+    <abortRunOnAgentFailure type="System.Boolean">False</abortRunOnAgentFailure>
+    <cssIteration type="System.String" />
+    <workItemIds type="System.Collections.Generic.List`1[[System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]">
+      <_size type="System.Int32">0</_size>
+      <_version type="System.Int32">1</_version>
+    </workItemIds>
+    <id type="Microsoft.VisualStudio.TestTools.Common.TestId">
+      <id type="System.Guid">23ef80e1-6bf7-4198-9cb3-8f16f2c9b84a</id>
+    </id>
+    <name type="System.String">test_compare</name>
+    <description type="System.String">Executes external testing system with specified parameters.</description>
+    <enabled type="System.Boolean">True</enabled>
+    <owner type="System.String" />
+    <priority type="System.Int32">0</priority>
+    <executionId type="Microsoft.VisualStudio.TestTools.Common.TestExecId">
+      <id type="System.Guid">00000000-0000-0000-0000-000000000000</id>
+    </executionId>
+    <parentExecutId type="Microsoft.VisualStudio.TestTools.Common.TestExecId">
+      <id type="System.Guid">00000000-0000-0000-0000-000000000000</id>
+    </parentExecutId>
+    <deploymentItems type="Microsoft.VisualStudio.TestTools.Common.DeploymentItemCollection" />
+    <agentAttributes type="System.Collections.Specialized.StringDictionary, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <storage type="System.String">c:\hpgl-repo\hpgl_test\test_compare.generictest</storage>
+    <projectData type="Microsoft.VisualStudio.TestTools.Common.ProjectData">
+      <id type="System.Guid">ce330cfa-91a3-4ac6-8766-db993913ef47</id>
+      <projectName type="System.String">hpgl_test</projectName>
+      <solutionName type="System.String">hpgl</solutionName>
+      <projectRelativePath type="System.String">hpgl_test\hpgl_test.vcproj</projectRelativePath>
+    </projectData>
+    <m_nonRunnableReason type="System.String" />
+  </GenericTest>
+</Tests>

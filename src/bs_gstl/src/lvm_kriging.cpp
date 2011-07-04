@@ -24,7 +24,7 @@ namespace hpgl
 
 void lvm_kriging(
 		const cont_property_array_t & input,
-		const std::vector<mean_t> & mean_data,
+		const mean_t * mean_data,
 		const sugarbox_grid_t & grid,
 		const ok_params_t & params,
 		cont_property_array_t & output)
@@ -39,7 +39,7 @@ void lvm_kriging(
 	typedef precalculated_covariances_t covariances_t;
 	covariances_t pcov(cov_model_t(params), params.m_radiuses);
 
-	hpgl::cont_kriging(input, grid, params,mean_data, pcov, 
+	hpgl::cont_kriging(input, grid, params, mean_data, pcov, 
 		weight_calculator(sk_constraints, input), 
 		output, reporter, stats, mean_on_failure); 
 	
