@@ -41,7 +41,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/MP"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\tnt_126&quot;;&quot;$(SolutionDir)\geo\hpgl&quot;;&quot;$(SolutionDir)\geo\hpgl\hpgl_ex&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\tnt_126&quot;;&quot;$(SolutionDir)\geo\hpgl&quot;;&quot;$(SolutionDir)\geo\hpgl\hpgl_ex&quot;;&quot;$(SolutionDir)\CLAPACK_WIN\include&quot;"
 				PreprocessorDefinitions="BS_PROPERTY_ARRAY_EXPORTS;BS_PROPERTY_SERVER_EXPORTS;BS_GSTL_EXPORTS;BS_EXPORTING_PLUGIN;WIN32;GSTL_NOWARNING;NOMINMAX;HGPL_ENABLE_WARNINGS;HPGL_DLL;HPGL_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -65,7 +65,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="/NODEFAULTLIB:LIBCMT"
+				AdditionalDependencies="blasd.lib lapackd.lib libf2cd.lib"
 				OutputFile="$(OutDir)\hpgl_d.dll"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)\CLAPACK_WIN\lib&quot;"
 				GenerateDebugInformation="true"
 				ImportLibrary="$(IntDir)$(TargetName).lib"
 			/>
@@ -125,7 +128,7 @@
 				EnableIntrinsicFunctions="false"
 				OmitFramePointers="false"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\tnt_126&quot;;&quot;$(SolutionDir)\geo_bsd\hpgl&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\tnt_126&quot;;&quot;$(SolutionDir)\CLAPACK_WIN\include&quot;;&quot;$(SolutionDir)\geo_bsd\hpgl&quot;"
 				PreprocessorDefinitions="BS_PROPERTY_ARRAY_EXPORTS;BS_PROPERTY_SERVER_EXPORTS;BS_GSTL_EXPORTS;BS_EXPORTING_PLUGIN;GSTL_NOWARNING;NDEBUG;WIN32;NOMINMAX;HPGL_DLL;HPGL_EXPORTS"
 				RuntimeLibrary="0"
 				BufferSecurityCheck="false"
@@ -150,7 +153,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="/NODEFAULTLIB:LIBCMT"
+				AdditionalDependencies="blas.lib lapack.lib libf2c.lib"
 				OutputFile="$(OutDir)\hpgl.dll"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)\CLAPACK_WIN\lib&quot;"
 				GenerateDebugInformation="true"
 				ImportLibrary="$(IntDir)$(TargetName).lib"
 			/>

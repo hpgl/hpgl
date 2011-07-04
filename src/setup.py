@@ -1,7 +1,7 @@
 from setuptools import *
 setup(
     name = "HPGL-BSD",
-    version = "0.9.7 Xmass Edition",
+    version = "0.9.9",
     #scripts = ['geo.py'],
 	include_package_data = True,
 	#package_dir = {'': 'package'},

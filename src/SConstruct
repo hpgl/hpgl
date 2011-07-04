@@ -5,16 +5,17 @@ for key, value in ARGLIST:
 	if key == 'define':
 		cl_defines.append(value)
 
-python_ver = "2.5"
+python_ver = "2.6"
 
 env = Environment(
 	CPPDEFINES = cl_defines,
 	CPPPATH = [ 
-		'/opt/boost_1_38_src/',
+#		'/opt/boost_1_38_src/',
 		'tnt_126',
-		'geo_bsd/hpgl'],
-	LIBS = ['stdc++', 'libgomp', 'pthread'],
-	LIBPATH =  ['/opt/boost_1_38_builded_fPIC/'],	
+		'geo_bsd/hpgl',
+        'CLAPACK-3.1.1.1/INCLUDE' ],
+	LIBS = ['stdc++', 'libgomp', 'pthread', 'lapack', 'f2c', 'tmglib', 'blas'],
+	LIBPATH =  ['CLAPACK-3.1.1.1'],	
 	)
 
 dbg_suffixes = {True: '_d', False: ''}
