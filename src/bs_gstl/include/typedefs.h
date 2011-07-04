@@ -191,6 +191,7 @@ namespace hpgl
 
 	typedef xyz_tuple_t<double> coord_t;
 	typedef xyz_tuple_t<double> search_area_t;	
+	typedef search_area_t sugarbox_search_ellipsoid_t;
 
 	typedef xyz_tuple_t<angle_t> angles_t;	
 	typedef xyz_tuple_t<range_t> ranges_t;

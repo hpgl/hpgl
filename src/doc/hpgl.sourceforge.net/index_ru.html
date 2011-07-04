@@ -29,6 +29,7 @@ piwik_log(piwik_action_name, piwik_idsite, piwik_url);
 <li><a href="#Intro">Описание</a>
 <li><a href="#Features">Особенности</a>
 <li><a href="#Algorithms">Реализованные алгоритмы</a>
+<li><a href="#GSLIB">Сравнение с GSLIB</a>
 <li><a href="#Components">Используемые компоненты</a>
 <li><a href="#License">Лицензирование</a>
 <li><a href="#Downloads">Как получить</a>
@@ -82,7 +83,7 @@ HPGL написан на С++/Python и в нем реализованы раз�
 
 <a name="Algorithms"><H2>3. Реализованные алгоритмы</H2></a>
 
-<P>В текущей версии HPGL 0.9.5 реализованы
+<P>В текущей версии HPGL 0.9.6 реализованы
 следующие алгоритмы:</P>
 
 <OL>
@@ -106,8 +107,38 @@ HPGL написан на С++/Python и в нем реализованы раз�
 	
 	<LI><P>Truncated Gaussian Simulation (GTSIM) [в наборе скриптов на Python] </P>
 </OL>
+<a name="GSLIB"><H2>4. Сравнение производительности с GSLIB</H2></a>
 
-<a name="Components"><H2>4. Используемые компоненты </H2></a>
+Параметры тестирования:
+<br><br>
+- 1 CPU case (Intel Core Duo 1.8 Ghz)
+<br>
+- Grid Size: 166x141x225 (5+ millions cells)
+<br>
+- Indicator Property: 20% defined points, 80% undefined, 2 indicators
+<br>
+- Continious Property: 20% defined points, 80% undefined, Values: [0:1]
+<br>
+- Variogram = (10, 10, 10)
+<br>
+- Search Radius = (20, 20, 20)
+<br>
+- Max Neighbourhoods = 12
+<br><br>
+
+<b>Result:</b>
+<br>
+<br>
+<table border="1">
+	<tr><td><b>Алгоритм</b><td><b>GSLIB</b><td><b>HPGL 0.9.5</b>
+	<tr><td>Simple Kriging<td>4m 10s<td>1m 7s
+	<tr><td>Ordinary Kriging<td>4m 30s<td>1m 80s
+	<tr><td>Indicator Kriging<td>1h 30m+<td>1m 60s
+	<tr><td>Sequential Indicator Simulation<td>4m 40s<td>1m 30s
+	<tr><td>Sequential Gaussian Simulation<td>3m 10s<td>1m 70s
+</table>
+
+<a name="Components"><H2>5. Используемые компоненты </H2></a>
 
 <P>В библиотеке используются следующие
 свободно распространяемые компоненты:</P>
@@ -124,12 +155,12 @@ HPGL написан на С++/Python и в нем реализованы раз�
 	</P>
 </OL>
 
-<a name="License"><H2>5. Лицензирование </H2></a>
+<a name="License"><H2>6. Лицензирование </H2></a>
 
 <P  STYLE="text-indent: 1.2cm">HPGL
 распространяется на условиях <a href="license_ru.txt">лицензии BSD</A></P>
 
-<a name="Downloads"><H2 >6. Как получить </H2></a>
+<a name="Downloads"><H2 >7. Как получить </H2></a>
 
 <P  STYLE="text-indent: 1.2cm">Для работы с HPGL вам понадобится Python 2.5 с установленными пакетами <a href="http://numpy.scipy.org/">NumPy</a>/<a href="http://scipy.org/">SciPy</a></p>
 
@@ -141,19 +172,21 @@ HPGL написан на С++/Python и в нем реализованы раз�
 код) можно на <A HREF="https://sourceforge.net/projects/hpgl/">сайте
 проекта</A> в разделе Downloads.</P>  
 
-<a name="UserGuide"><H2>7. Документация пользователя </H2></a>
+<a name="UserGuide"><H2>8. Документация пользователя </H2></a>
 
 <P  STYLE="text-indent: 1.16cm">Документация
 пользователя на русском и английском
 языках (а также набор примеров использования на языке Python) доступна в виде PDF-файлов на <A HREF="https://sourceforge.net/projects/hpgl/">сайте
 проекта</A> в разделе Downloads.</P> 
 
-<a name="SolvedProblems"><H2>8. Solved Problems in Geostatistics </H2></a>
+<a name="SolvedProblems"><H2>9. Solved Problems in Geostatistics </H2></a>
 
 <P  STYLE="text-indent: 1.16cm">На <A HREF="https://sourceforge.net/projects/hpgl/">сайте
 проекта</A>, в разделе "solved problems" также доступны скрипты на Python, реализующие задания из книги <a href="http://www.amazon.com/Solved-Problems-Geostatistics-Oy-Leuangthong/dp/0470177926/ref=sr_1_1?ie=UTF8&s=books&qid=1240201050&sr=8-1">Oy Leuangthong, K.Daniel Khan, Clayton V. Deutsch "Solved Problems in Geostatistics"</a>. </P>
 
-<a name="Authors"><H2>9. Авторы </H2></a>
+<p style="text-indent: 1.16cm">Вы можете посмотреть примеры готовых заданий, графиков, гистограм, и проч. на <a href="solved_problems.html">странице примеров Solved Problems</a> (english only). </p>
+
+<a name="Authors"><H2>10. Авторы </H2></a>
 
 <H2><FONT SIZE=3>Руководство и математическая
 поддержка:</FONT></H2>
@@ -175,7 +208,7 @@ HPGL написан на С++/Python и в нем реализованы раз�
 	</P>
 </OL>
 
-<a name="Regards"><H2>10. Благодарности</H2></a>
+<a name="Regards"><H2>11. Благодарности</H2></a>
 
 <P STYLE="text-indent: 1.2cm">Выражаем благодарность
 Андре Журнелю за поддержку и заразительный

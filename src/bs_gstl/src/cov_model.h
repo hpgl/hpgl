@@ -11,6 +11,7 @@
 #define COV_MODEL_H_INCLUDED_IN_HPGL_SDFKSJHKJ234SDF234JSDFIW29834KJNFHDAJK234NK32JNFDSAF234
 
 #include "covariance_param.h"
+#include "hpgl_exception.h"
 
 namespace hpgl
 {
@@ -163,6 +164,7 @@ namespace hpgl
 
 		double exponential(double h)const
 		{
+
 			if(h < 0.0001)
 			{
 				return m_params.m_sill;

@@ -17,7 +17,7 @@ namespace hpgl
 		int expected_count,
 		std::vector<indicator_value_t> & result)
 	{
-		int iv_length = boost::python::len(values);
+		int iv_length = (int) boost::python::len(values);
 		int i_count = expected_count;
 		if (iv_length >= i_count)
 		{	

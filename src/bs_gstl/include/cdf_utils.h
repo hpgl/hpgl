@@ -49,6 +49,16 @@ namespace hpgl
 		}
 	}	
 
+	template <typename T, typename Cdf1, typename Cdf2>
+	void transform_cdf_ptr(const T * in, std::vector<T> & out, Cdf1 from, Cdf2 to)
+	{
+		for (size_t idx = 0, end_idx = out.size(); idx < end_idx; ++idx)
+		{
+			out[idx] = to.inverse(from.prob(in[idx]));
+		}
+	}	
+
+
 } //namespace hpgl
 
 #endif // CDF_UTILS_H_INCLUDED_ASDJASLD2134791287391KAJSHDKLASHD298237912837HIUREYR8732RH3R23

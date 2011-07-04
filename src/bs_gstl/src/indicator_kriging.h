@@ -111,7 +111,7 @@ namespace hpgl
 				{
 					indicator_probability_t prob;
 
-					ki_result_t ki_result = kriging_interpolation(ind_props[idx], is_informed_predicate_t<indicator_property_array_t>(input_property), node_idx, covariances[idx], mps[idx], nblookups[idx], weight_calculator(sk_constraints, input_property), prob);
+					ki_result_t ki_result = kriging_interpolation(ind_props[idx], is_informed_predicate_t<indicator_property_array_t>(input_property), node_idx, covariances[idx], mps[idx], nblookups[idx], sk_weight_calculator_t(), prob);
 
 					if (ki_result != KI_SUCCESS)
 					{

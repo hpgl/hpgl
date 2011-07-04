@@ -12,23 +12,23 @@
 
 #include "select.h"
 #include "combiner.h"
+#include "my_kriging_weights.h"
 
 namespace hpgl
-{
-	
-
-	template<typename constraints_t, typename value_t>
-	class weight_calculator_t
-	{};
-
-	template<typename constraints_t>
-	class weight_calculator_t<constraints_t, cont_value_t>
-	{
-		constraints_t m_constraints;
+{	
+	class sk_weight_calculator_t
+	{		
 	public:
-		weight_calculator_t(constraints_t constr)
-			: m_constraints(constr)
-		{}
+		template<typename covariances_t, typename coord_t>
+		bool operator()(
+			const coord_t & center,		
+			const std::vector<coord_t> & coords,			
+			const covariances_t & covariances,
+			std::vector<kriging_weight_t> & weights)const
+		{
+			double variance;
+			return sk_kriging_weights_3<covariances_t, false, coord_t>(center, coords, covariances, weights, variance);
+		}
 
 		template<typename covariances_t, typename means_t, typename coord_t>
 		bool operator()(
@@ -39,7 +39,86 @@ namespace hpgl
 			const covariances_t & covariances,
 			std::vector<kriging_weight_t> & weights)const
 		{
-			return kriging_weights_2(center, coords, covariances, m_constraints, weights);
+			double variance;
+			return sk_kriging_weights_3<covariances_t, false, coord_t>(center, coords, covariances, weights, variance);
+		}
+
+		template<typename covariances_t, typename coord_t>
+		bool operator()(const coord_t & center, 			
+			const std::vector<coord_t> & coords,
+			
+			const covariances_t & covariances,
+			std::vector<kriging_weight_t> & weights, double & variance)const
+		{
+			return sk_kriging_weights_3<covariances_t, true, coord_t>(center, coords, covariances, weights, variance);
+		}	
+
+		template<typename covariances_t, typename means_t, typename coord_t>
+		bool operator()(const coord_t & center, 
+			mean_t center_mean,
+			const std::vector<coord_t> & coords,
+			const means_t &,
+			const covariances_t & covariances,
+			std::vector<kriging_weight_t> & weights, double & variance)const
+		{
+			return sk_kriging_weights_3<covariances_t, true, coord_t>(center, coords, covariances, weights, variance);
+		}	
+
+		template<typename covariances_t, typename coord_t>
+		inline bool first_stage(
+						 const coord_t & center, 
+						 const std::vector<coord_t> & coords, 
+						 const covariances_t & covariances,
+						 std::vector<kriging_weight_t> & weights)const
+		{	
+			double variance;
+			return sk_kriging_weights_3<covariances_t, false, coord_t>(center, coords, covariances, weights, variance);
+		}	
+
+		template<typename means_t>
+		inline bool second_stage(
+						  std::vector<kriging_weight_t> & weights,
+						  const mean_t center_mean,
+						  const means_t & means)const
+		{
+			return true;
+		}
+	};
+	
+	class ok_weight_calculator_t
+	{
+	public:
+		template<typename covariances_t, typename coord_t>
+		bool operator()(
+			const coord_t & center,		
+			const std::vector<coord_t> & coords,		
+			const covariances_t & covariances,
+			std::vector<kriging_weight_t> & weights)const
+		{
+			double variance;
+			return ok_kriging_weights_3<covariances_t, false, coord_t>(center, coords, covariances, weights, variance);
+		}
+
+		template<typename covariances_t, typename means_t, typename coord_t>
+		bool operator()(
+			const coord_t & center,
+			mean_t center_mean,
+			const std::vector<coord_t> & coords,
+			const means_t &,
+			const covariances_t & covariances,
+			std::vector<kriging_weight_t> & weights)const
+		{
+			double variance;
+			return ok_kriging_weights_3<covariances_t, false, coord_t>(center, coords, covariances, weights, variance);
+		}
+
+		template<typename covariances_t, typename coord_t>
+		bool operator()(const coord_t & center, 			
+			const std::vector<coord_t> & coords,			
+			const covariances_t & covariances,
+			std::vector<kriging_weight_t> & weights, double & variance)const
+		{
+			return ok_kriging_weights_3<covariances_t, true, coord_t>(center, coords, covariances, weights, variance);
 		}
 
 		template<typename covariances_t, typename means_t, typename coord_t>
@@ -50,19 +129,14 @@ namespace hpgl
 			const covariances_t & covariances,
 			std::vector<kriging_weight_t> & weights, double & variance)const
 		{
-			return kriging_weights_2(center, coords, covariances, m_constraints, weights, variance);
+			return ok_kriging_weights_3<covariances_t, true, coord_t>(center, coords, covariances, weights, variance);
 		}			
 	};
-
-	template<typename constraints_t>
-	class weight_calculator_t<constraints_t, indicator_value_t>
-	{
-		constraints_t m_constraints;
+
+	
+	class corellogram_weight_calculator_t
+	{		
 	public:
-		weight_calculator_t(constraints_t constr)
-			: m_constraints(constr)
-		{}
-
 		template<typename covariances_t, typename means_t, typename coord_t>
 		bool operator()(const coord_t & center, 
 			mean_t center_mean,
@@ -71,26 +145,63 @@ namespace hpgl
 			const covariances_t & covariances,
 			std::vector<kriging_weight_t> & weights)const
 		{
-			return indicator_weights_2(center, center_mean, coords, means, covariances, m_constraints, weights);
+			return corellogramed_weights_3(center, center_mean, coords, covariances, means, weights);
 		}
 
-		template<typename covariances_t, typename means_t, typename coord_t>
-		bool operator()(const coord_t & center, 
-			mean_t center_mean,
-			const std::vector<coord_t> & coords,
-			const means_t & means,
-			const covariances_t & covariances,
-			std::vector<kriging_weight_t> & weights, double & variance)const
+		template<typename covariances_t, typename coord_t>
+		inline bool first_stage(
+						 const coord_t & center, 
+						 const std::vector<coord_t> & coords, 
+						 const covariances_t & covariances,
+						 std::vector<kriging_weight_t> & weights)const
 		{
-			return indicator_weights_2(center, center_mean, coords, means, covariances, m_constraints, weights, variance);
-		}			
+		    double variance;
+			return sk_kriging_weights_3<covariances_t, false, coord_t>(center, coords, covariances, weights, variance);
+		}
+
+		template<typename means_t>
+		inline bool second_stage(
+						  std::vector<kriging_weight_t> & weights,
+						  const mean_t center_mean,
+						  const means_t & means)const
+		{
+			int size = (int) weights.size();
+
+			double delta = 0.00001;
+			double meanc = center_mean;
+			
+			if(meanc == 0)
+			{
+				meanc += delta;
+			}
+			if(meanc == 1)
+			{
+				meanc -= delta;
+			}
+
+			double sigmac = sqrt(meanc * (1 - meanc));
+			
+			double meani = 0;
+			for (int i = 0; i < size; ++i)
+			{
+				meani = means[i];
+			
+				if(meani == 0)
+				{
+					meani += delta;
+				}
+				if(meani == 1)
+				{
+					meani -= delta;
+				}
+
+				double sigma = sqrt(meani * (1 - meani));
+				weights[i] /= sigmac / sigma;
+			}
+			return true;
+		}
 	};
 
-	template<typename constraints_t, typename prop_t>
-	weight_calculator_t<constraints_t, typename prop_t::value_type> weight_calculator(constraints_t constraints, const prop_t &)
-	{
-		return weight_calculator_t<constraints_t, typename prop_t::value_type>(constraints);
-	}
 
 	enum ki_result_t
 	{

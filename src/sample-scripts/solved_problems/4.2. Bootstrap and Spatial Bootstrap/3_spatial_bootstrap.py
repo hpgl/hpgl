@@ -18,7 +18,6 @@ sys.path.append(r'../shared')
 
 from numpy import *
 from geo import *
-from decl_grid import *
 from statistics import *
 from matplotlib import *
 from pylab import *
@@ -156,6 +155,7 @@ seismic_values = dict['Seis']
 
 print "Done."
 print "----------------------------------------------------"
+
 print "Number of bootstrapped realizations: ", n
 print "Number of points to bootstrap: ", l
 print "----------------------------------------------------"

@@ -34,7 +34,7 @@ namespace hpgl
 				const covariances_t * cov, 
 				const neighbourhood_param_t & nb_param
 				)
-				:	m_max_neighbours(nb_param.m_max_neighbours), 
+				:	m_max_neighbours((int)nb_param.m_max_neighbours), 
 					m_grid(grid), 
 					m_vectors(new std::vector<sugarbox_vector_t>())
 		{
@@ -53,7 +53,7 @@ namespace hpgl
 			const sugarbox_vector_t * vec = &vectors[0];
 			sugarbox_location_t center = (*m_grid)[node];
 			node_coord = coord_t(center[0], center[1], center[2]);
-			for (int idx = 0, end_idx = vectors.size(); idx < end_idx && count < m_max_neighbours; ++idx, ++vec)
+			for (int idx = 0, end_idx = (int) vectors.size(); idx < end_idx && count < m_max_neighbours; ++idx, ++vec)
 			{
 				sugarbox_location_t point = center + *vec; //vectors[idx];
 				int index = m_grid->get_index(point);

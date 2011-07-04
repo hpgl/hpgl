@@ -56,13 +56,12 @@ namespace hpgl
 		}
 	};
 
-	template <typename grid_t, typename mean_provider_t, typename constraints_t, typename weight_calculator_t, typename mask_t>
+	template <typename grid_t, typename mean_provider_t, typename weight_calculator_t, typename mask_t>
 	void do_sequential_gausian_simulation(
 		cont_property_array_t & property,
 		const grid_t & grid,
 		const sgs_params_t & params,
-		const mean_provider_t & mp,
-		constraints_t constraints,
+		const mean_provider_t & mp,		
 		const weight_calculator_t & weight_calculator_sgs,
 		const mask_t & mask)
 	{
@@ -119,13 +118,12 @@ namespace hpgl
 		std::cout << "\nDone. Average speed: " << report.iterations_per_second() << " point/sec." << std::endl;
 	}
 
-	template <typename grid_t, typename mean_provider_t, typename constraints_t, typename weight_calculator_t>
+	template <typename grid_t, typename mean_provider_t, typename weight_calculator_t>
 	void do_sequential_gausian_simulation_in_points(
 		cont_property_array_t & property,
 		const grid_t & grid,
 		const sgs_params_t & params,
-		const mean_provider_t & mp,
-		constraints_t constraints,
+		const mean_provider_t & mp,		
 		const weight_calculator_t & weight_calculator_sgs,
 		const std::vector<int> & points_indexes)
 	{

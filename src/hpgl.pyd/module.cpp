@@ -30,18 +30,17 @@ namespace hpgl
 		boost::python::tuple input_array,
 		boost::python::tuple output_array,
 		const py_grid_t & grid,
-		PyObject * params, 
-		bool use_vpc);	
+		boost::python::object params);	
 
 	void py_sis(
 		boost::python::tuple array, 
 		const py_grid_t & grid,
-		PyObject * params, int seed, bool use_vpc, bool use_corellogram, boost::python::object mask_data);	
+		boost::python::object params, int seed, bool use_vpc, bool use_corellogram, boost::python::object mask_data);	
 
 	void py_sis_lvm(
 			const boost::python::tuple & array,
 			const py_grid_t & grid,
-			PyObject * params,
+			boost::python::object params,
 			int seed,
 			boost::python::object mean_data,
 			bool use_corellogram,
@@ -62,7 +61,7 @@ namespace hpgl
 			int size,
 			boost::python::object data,
 			boost::python::object mask, 
-			boost::python::list ind_values);
+			boost::python::list ind_values);		
 
 		void py_simple_cokriging_markI(
 			boost::python::tuple input_array,
@@ -90,6 +89,7 @@ namespace hpgl
 			int max_neighbours,
 			boost::python::tuple out_array);		
 
+		
 	}
 }
 
@@ -152,6 +152,8 @@ py_sgs_params_t create_sgs_params()
 {
 	return py_sgs_params_t();
 }
+
+
 
 void ordinary_kriging(
 		boost::python::tuple input_array, 
@@ -252,6 +254,7 @@ void sgs_lvm_simulation(
 
 	mean_t * lvm_data = get_buffer_from_ndarray<mean_t, 'f'>(mean_data, out_prop->size(), "sgs_lvm_simulation");
 	hpgl::sequential_gaussian_simulation_lvm(*grid.m_sugarbox_geometry, param.m_sgs_params, lvm_data, *out_prop, *cdf_prop, mask);	
+	
 }
 
 BOOST_PYTHON_MODULE(hpgl)
@@ -259,8 +262,9 @@ BOOST_PYTHON_MODULE(hpgl)
 	using namespace hpgl;
 	using namespace hpgl::python;
 	using namespace boost::python;
-
+	
 	def("set_thread_num", set_thread_num);
+	def("get_thread_num", get_thread_num);
 	
 	class_<py_grid_t>("grid") 
 		.def(init<sugarbox_grid_size_t,
@@ -307,8 +311,10 @@ BOOST_PYTHON_MODULE(hpgl)
 		.def("set_mean", &py_sgs_params_t::set_mean)
 		.def("set_kriging_kind", &py_sgs_params_t::set_kriging_kind)
 		.def("set_seed", &py_sgs_params_t::set_seed)
-		.def("set_mean_kind", &py_sgs_params_t::set_mean_kind);
-		
+		.def("set_mean_kind", &py_sgs_params_t::set_mean_kind)
+		.def("set_min_neighbours", &py_sgs_params_t::set_min_neighbours);
+	
+				
 	def("read_inc_file_float", py_read_inc_file_float);
 	def("read_inc_file_byte", py_read_inc_file_byte);
 	
@@ -318,10 +324,11 @@ BOOST_PYTHON_MODULE(hpgl)
 	def("create_sugarbox_grid", create_sugarbox_grid);
 	def("create_ok_params", create_ok_params);
 	def("create_sk_params", create_sk_params);
+	
 	def("create_sgs_params", create_sgs_params);
 	def("create_median_ik_params", py_create_median_ik_params);
 
-    def("simple_kriging_weights", py_calculate_kriging_weight);
+      def("simple_kriging_weights", py_calculate_kriging_weight);
 
 	def("ordinary_kriging", ::ordinary_kriging);
 	def("simple_kriging", ::simple_kriging);
@@ -330,10 +337,10 @@ BOOST_PYTHON_MODULE(hpgl)
 	def("sis_simulation", py_sis);
 	def("sis_simulation_lvm", py_sis_lvm);
 	def("lvm_kriging", ::lvm_kriging);
-	def("sgs_lvm_simulation", sgs_lvm_simulation);
+	def("sgs_lvm_simulation", sgs_lvm_simulation);	
 	def("median_ik", py_median_ik);
-
+		
 	def("simple_cokriging_markI", hpgl::python::py_simple_cokriging_markI);
 	def("simple_cokriging_markII", hpgl::python::py_simple_cokriging_markII);
-	
+
 }

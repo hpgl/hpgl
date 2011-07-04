@@ -1,0 +1,11 @@
+Arithmetic variance: 3.23284634677
+Geometric variance: 3.26164002852
+Harmonic variance: 3.29291846535
+Point scale variance: 3.61991197546
+var_back_krigged_transformed_data: 3.82252807617
+The diff_variance between point scale and kriged values: -0.202616100712
+Sgs on arithmetic data variance: 2.6416104126
+The differential variance between point scale and simulated values: 0.978301562862
+12.9032258065 % of the data lies above the threshold
+4.0 % value of the kriged model falls above the threshold
+10.0 % value of the simulated model falls above the threshold

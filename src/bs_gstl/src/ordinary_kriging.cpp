@@ -38,7 +38,7 @@ namespace hpgl
 			cov_model_t covariance(params);
 
 			hpgl::cont_kriging(input, grid, params, no_mean_t(), covariance,
-				weight_calculator(ok_constraints, input), 
+				ok_weight_calculator_t(), 
 				output, report, stats, undefined_on_failure);
 		}
 		else
@@ -47,7 +47,7 @@ namespace hpgl
 			covariances_t pcov(cov_model_t(params), params.m_radiuses);
 
 			hpgl::cont_kriging(input, grid, params, no_mean_t(), pcov, 
-				weight_calculator(ok_constraints, input), 
+				ok_weight_calculator_t(), 
 				output, report, stats, undefined_on_failure);
 		}
 

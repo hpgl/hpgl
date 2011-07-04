@@ -30,5 +30,5 @@ def load_gslib_file(filename):
 		points = line.split()
 		for j in xrange(len(points)):
 			dict[ list_prop[j] ] = concatenate( (dict[ list_prop[j] ],  array([float64(points[j])])) )
-
+	f.close()
 	return dict

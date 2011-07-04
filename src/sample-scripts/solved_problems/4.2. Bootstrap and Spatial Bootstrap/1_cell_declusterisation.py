@@ -19,9 +19,8 @@ sys.path.append(r'../shared')
 from statistics import *
 from numpy import *
 from geo import *
-from decl_grid import *
+from grid_3d import *
 from gslib import *
-from opt_x_y import *
 
 # ---------------------------------------------------
 #	Problem:
@@ -34,58 +33,47 @@ print "----------------------------------------------------"
 print "Loading data & initializing..."
 
 # Loading sample data from file
-x = 62
-y = 6
-d_x = 10
-d_y = 10
+dx = 10
+dy = 10
+dz = 1
 
 dict = load_gslib_file("welldata.txt")
 
 print "Done."
 print "----------------------------------------------------"
 
-array1 = dict['X']
-array2 = dict['Y']
-array3 = dict['Por']
+array3 = zeros( (len(dict['X'])), dtype = float)
+PointSet = (dict['X'], dict['Y'], array3)
 
-min_max = get_rect(array1, array2)
+nx = 10 + (max(dict['X']) - min(dict['X']))/dx
+ny = 10 + (max(dict['Y']) - min(dict['Y']))/dy
+nz = (max(array3) - min(array3))/dz
 
-# Lets find optimal dx & dy values (property mean must be minimal)
-dx, dy = optimal_dx_dy(array1, array2, array3, d_x, d_y, min_max, x)
+# Lets define 3D grid with dx*dy*dz cells and nx, ny, nz cells length
+array_grid = Grid(min(PointSet[0]), min(PointSet[1]), min(PointSet[2]), dx, dy, dz, nx, ny, nz)
 
-print "Optimal dx = ", dx
-print "Optimal dy = ", dy
-
-l1 = (min_max[2] - min_max[0])/dx
-l2 = (min_max[3] - min_max[1])/dy
-
-# Lets define 2D grid with dx*dy cells and l1/l2 cells length
-array_grid = Grid(min_max[0], min_max[1], dx, dy, l1, l2)
-
-# Add points to 2D grid
-for i in xrange(x):
-	array_grid.add_point(array1[i], array2[i])
+array4 = dict['Por']
 
 #Cell declustering calculation
-w_cell = array_grid.get_weights_cell()
+w_cell = get_weights_cell(array_grid, PointSet)
 
 # Weights standardization
-w_cell = stand_weight(w_cell, x)
+w_cell = stand_weight(w_cell, (len(dict['X'])))
 
 #Calculate porosity mean
-por_mean = calc_mean_array(array3)
+por_mean = calc_mean_array(array4)
 print "Porosity mean =", por_mean
 
 # Calculate porosity standard deviation
-por_quadr_var = calc_quadr_var(array3, por_mean)
+por_quadr_var = calc_quadr_var(array4, por_mean)
 #print "Porosity standart deviation =", por_quadr_var
 
 #Calculate porosity mean with cell declustering
-por_cell_mean = w_mean(w_cell, array3)
+por_cell_mean = w_mean(w_cell, array4)
 print "Porosity mean with cell declustering =", por_cell_mean
 
 # Calculate porosity variance with cell declustering
-por_cell_var = w_var(w_cell, array3, por_cell_mean)
+por_cell_var = w_var(w_cell, array4, por_cell_mean)
 print "Porosity variance with cell declustering =", por_cell_var
 
 print "Difference between means = ", por_mean-por_cell_mean

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="8,00"
 	Name="python_pkg"
 	ProjectGUID="{37A2F67D-DE60-4C8C-A3AE-01FF142E0AE2}"
 	Keyword="MakeFileProj"
@@ -44,7 +44,7 @@
 				Name="VCNMakeTool"
 				BuildCommandLine="deploy.bat"
 				ReBuildCommandLine="deploy_rebuild.bat"
-				CleanCommandLine="python setup.py clean"
+				CleanCommandLine="clean.bat"
 				Output="python_pkg.exe"
 				PreprocessorDefinitions="WIN32;NDEBUG"
 				IncludeSearchPath=""
@@ -76,6 +76,18 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 		</Filter>
+		<File
+			RelativePath=".\clean.bat"
+			>
+		</File>
+		<File
+			RelativePath=".\deploy.bat"
+			>
+		</File>
+		<File
+			RelativePath=".\deploy_rebuild.bat"
+			>
+		</File>
 		<File
 			RelativePath=".\readme.txt"
 			>

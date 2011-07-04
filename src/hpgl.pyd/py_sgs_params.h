@@ -17,7 +17,8 @@ namespace hpgl
 	class py_sgs_params_t
 	{
 	public:
-		sgs_params_t m_sgs_params;
+		sgs_params_t m_sgs_params;		
+		bool m_auto_region_size;
 		void set_covariance_type(int type);
 		void set_ranges(double r1, double r2, double r3);
 		void set_angles(double a1, double a2, double a3);
@@ -28,7 +29,8 @@ namespace hpgl
 		void set_mean(double mean);
 		void set_kriging_kind(int kind);
 		void set_seed(long int seed);
-		void set_mean_kind(const std::string & mean_kind);
+		void set_mean_kind(const std::string & mean_kind);		
+		void set_min_neighbours(long int min_n);
 	};
 }
 

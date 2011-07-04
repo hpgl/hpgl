@@ -14,7 +14,7 @@
 
 namespace hpgl
 {	
-	void parse_sis_params(PyObject * params, ik_params_t & ik_params);
+	void parse_sis_params(boost::python::object params, ik_params_t & ik_params);
 }
 
 #endif //__PY_SIS_PARAMS_H__BD1564B9_4612_4F90_B776_BD7EA16FFDC8

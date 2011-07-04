@@ -68,7 +68,50 @@ namespace hpgl
 
 			m_cdf.reserve(pdf.size());
 			m_cdf.push_back(pdf[0]);
-			for (int i = 1; i < pdf.size()-1; ++i)
+			for (size_t i = 1; i < pdf.size()-1; ++i)
+			{				
+				m_cdf.push_back(make_pair(pdf[i].first, pdf[i].second + m_cdf[i-1].second));
+			}			
+		}
+
+		template <typename T>
+		non_parametric_cdf_t(std::vector<T> & data)
+		{
+			using namespace std;
+			typedef map<value_t, int> occ_map_t;
+			typedef typename occ_map_t::iterator occ_iterator_t;
+
+			occ_map_t occ;
+			int size = data.size();
+			int count = 0;
+			for (int i = 0; i < size; ++i)
+			{
+					pair<occ_iterator_t, bool> result = occ.insert(make_pair(data[i], 1));
+					if (!result.second)
+					{
+						result.first->second += 1;
+					}
+					++count;
+				
+			}		
+
+			if (count <= 0)
+				return;
+
+			assert(occ.size() > 0);
+
+			vector<pair<value_t, prob_t> > pdf;
+			pdf.reserve(occ.size());
+
+			for (occ_iterator_t it = occ.begin(), it_end = occ.end(); it != it_end; ++it)
+			{
+				pdf.push_back(make_pair(it->first, double(it->second) / double(count)));
+			}
+			std::sort(pdf.begin(), pdf.end());
+
+			m_cdf.reserve(pdf.size());
+			m_cdf.push_back(pdf[0]);
+			for (size_t i = 1; i < pdf.size()-1; ++i)
 			{				
 				m_cdf.push_back(make_pair(pdf[i].first, pdf[i].second + m_cdf[i-1].second));
 			}			

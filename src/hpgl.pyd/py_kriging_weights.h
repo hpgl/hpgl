@@ -69,7 +69,7 @@ namespace hpgl
 
         boost::python::list result_weights;
         
-        for (int i=0; i< weights.size(); i++)
+        for (int i=0; i < (int) weights.size(); i++)
         {
             result_weights.append(double(weights[i]));
         }

@@ -40,7 +40,7 @@ void lvm_kriging(
 	covariances_t pcov(cov_model_t(params), params.m_radiuses);
 
 	hpgl::cont_kriging(input, grid, params, mean_data, pcov, 
-		weight_calculator(sk_constraints, input), 
+		sk_weight_calculator_t(), 
 		output, reporter, stats, mean_on_failure); 
 	
 	std::cout << stats << std::endl;

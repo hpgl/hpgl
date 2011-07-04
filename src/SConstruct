@@ -1,13 +1,183 @@
-libbsgstl_d, libbsgstl = SConscript('bs_gstl/SConscript')
-hpgl_d_so, hpgl_so = SConscript('hpgl.pyd/SConscript', exports='libbsgstl_d libbsgstl')
-InstallAs('exe/release/hpgl.so', source=[hpgl_so])
-InstallAs('exe/debug/hpgl.so', source=[hpgl_d_so])
-InstallAs('gist/geo/hpgl.so', source=[hpgl_so])
-Install("exe/release/", source="hpgl.pyd/geo.py")
-Install("exe/debug/", source="hpgl.pyd/geo.py")
+from os import path
 
-test_dirs = [Dir('exe/release/'), Dir('exe/debug/')]
-SConscript('geo_testing/SConscript', exports='test_dirs')
+cl_defines = []
+for key, value in ARGLIST:
+	if key == 'define':
+		cl_defines.append(value)
+
+python_ver = "2.5"
+
+def build_hpgl_os(env):	
+	env.VariantDir('$TEMPDIR1/hpgl', 'bs_gstl', duplicate=0)
+	for src_file in env.Glob('${TEMPDIR1}/hpgl/src/*.cpp', strings=True):
+		env.SharedObject(
+			target = path.splitext(src_file)[0],
+			source = src_file)
+
+def get_hpgl_os(env):
+	result = []
+	for src_file in env.Glob('${TEMPDIR1}/hpgl/src/*.cpp', strings = True):
+		result.append(env.subst(path.splitext(src_file)[0] + '$SHOBJSUFFIX') )
+	return result
+					     
+					     
+def hpgl_pyd_source(env):
+	env.VariantDir('${TEMPDIR2}/hpgl.pyd', 'hpgl.pyd', duplicate=0)
+	return env.Glob('${TEMPDIR2}/hpgl.pyd/*.cpp', strings=True)
+
+
+def build_so(env):
+	src = get_hpgl_os(env) + hpgl_pyd_source(env)
+	
+	env.SharedLibrary('${LIBNAME}', src)
+
+def build_python_package(env):	
+	env.Command('$PY_PKG_DIR/geo/geo.py', 'geo/geo.py', Copy('$TARGET', '$SOURCE'))
+	env.Command('$PY_PKG_DIR/geo/__init__.py', 'geo/__init__.py', Copy('$TARGET', '$SOURCE'))
+	env.Command('$PY_PKG_DIR/geo/hpgl.so', '$HPGL_SO', Copy('$TARGET', '$SOURCE'))
+	env.Command('$PY_PKG_DIR/geo/routines.py', 'geo/routines.py', Copy('$TARGET', '$SOURCE'))
+	env.Command('$PY_PKG_DIR/geo/variogram.py', 'geo/variogram.py', Copy('$TARGET', '$SOURCE'))
+
+def build_deb(env):
+	src_dir_py26 = 'out/py26/geo'
+	src_dir_py25 = 'out/py25/geo'
+	env['PKGNAME'] = env.subst('hpgl-BSD-$HPGLVER-$ARCH')
+	env['PY26PKG'] = src_dir_py26
+	env['PY25PKG'] = src_dir_py25
+	env['DEBNAME'] = env.subst('${PKGNAME}.deb')
+	env['ARCH']
+	env.Command('out/$DEBNAME', [src_dir_py25, src_dir_py26, 'dist/deb/prerm', 'dist/deb/$ARCH/control'],
+		[Delete('temp/$PKGNAME'),
+		 Mkdir('temp/$PKGNAME'),
+		 Mkdir('temp/$PKGNAME/DEBIAN'),
+		 Copy('temp/$PKGNAME/DEBIAN/control', 'dist/deb/$ARCH/control'),
+		 Copy('temp/$PKGNAME/DEBIAN/prerm', 'dist/deb/prerm'),
+		 Chmod('temp/$PKGNAME/DEBIAN/prerm', 0555),
+		 Copy('temp/$PKGNAME/usr/lib/python2.5/site-packages/geo', '$PY25PKG'),
+		 Copy('temp/$PKGNAME/usr/lib/python2.6/dist-packages/geo', '$PY26PKG'),
+		 "dpkg -b temp/$PKGNAME",
+		 Copy('out/$DEBNAME', 'temp/$DEBNAME'),
+		 Delete('temp/$PKGNAME')
+		 ])
+			     
+
+env = Environment(
+	CPPDEFINES = ['BOOST_PYTHON_STATIC_LIB'] + cl_defines ,
+	CPPPATH = [ 
+		'/opt/boost_1_38_src/',
+		'tnt_126',
+		'bs_gstl/include', 'bs_gstl/src',
+		'hpgl.pyd'],
+	LIBS = ['libgomp'],
+	LIBPATH =  ['/opt/boost_1_38_builded_fPIC/'],	
+	)
+
+def CreateEnv1(env, debug):
+	dbg_suffixes = {True: '-d', False: ''}
+	py_pkg_suffixes = {True: '-dbg', False: ''}
+	ccflags = {True: '-ggdb -fPIC', 
+		   False: '-ggdb -fPIC -O2 -finline-functions -fmove-loop-invariants -fopenmp -funroll-loops -msse -msse2 -mfpmath=sse'}
+
+	cppdefines = {True: ['DEBUG'],
+	     False: ['NDEBUG']}
+
+	boost_libs = {True: 'libboost_python-mt-d',
+		False: 'libboost_python-mt'}
+
+	dir1 = {True: 'debug', False:'release'}
+
+
+	lib_name = 'hpgl%s' % dbg_suffixes[debug]
+
+	temp_dir1 = path.join('temp', dir1[debug])
+		
+	result = env.Clone(
+		ISDEBUG = debug,
+		LIBNAME1 = lib_name,
+		CCFLAGS = ccflags[debug],
+		BOOST_LIB1 = boost_libs[debug],
+		PY_PKG_SUFFIX = py_pkg_suffixes[debug],
+		TEMPDIR1 = temp_dir1)
+	result.Append(
+		CPPDEFINES = cppdefines[debug])
+	return result
+
+def CreateEnv2(env, py_ver):
+	py_suffixes = {'2.5':'py25', '2.6':'py26'}
+	py_includes =  {'2.5': ['/usr/include/python2.5'],
+	    '2.6': ['/usr/include/python2.6']}
+
+	py_pkg_dir = env.subst('out/%s${PY_PKG_SUFFIX}' % py_suffixes[py_ver])
+	boost_lib = env.subst('$BOOST_LIB1-%s' % py_suffixes[py_ver])
+	lib_name = env.subst('${LIBNAME1}-%s' % py_suffixes[py_ver])
+	full_so_name = '${SHLIBPREFIX}%s${SHLIBSUFFIX}' % lib_name
+
+
+	temp_dir2 = env.subst('${TEMPDIR1}/%s' % py_suffixes[py_ver])
+		
+	result = env.Clone(
+		PY_VER = py_ver,
+		ISDEBUG = debug,
+		PY_PKG_DIR = py_pkg_dir,
+		LIBNAME = lib_name,
+		HPGL_SO = full_so_name,
+		PYHEADERS = py_includes[py_ver],
+		TEMPDIR2 = env.subst('$TEMPDIR1/%s' % py_suffixes[py_ver]))
+	result.Append(
+		CPPPATH=py_includes[py_ver],
+		LIBS=[boost_lib])
+	return result
+
+
+envs = []
+
+Command('geo/routines.py' , 'andrey/geo_routines.py'      , Copy('$TARGET', '$SOURCE'))
+Command('geo/variogram.py', 'andrey/variogram_routines.py', Copy('$TARGET', '$SOURCE'))
+
+
+for debug in [False, True]:
+	env2 = CreateEnv1(env, debug)
+	build_hpgl_os(env2)
+	for py_ver in ['2.5', '2.6']:
+		env3 = CreateEnv2(env2, py_ver)
+		build_so(env3)
+		build_python_package(env3)
+		
+
+env = Environment(ARCH='i386', HPGLVER='0.9.6')
+
+build_deb(env)
+
+#Setting test environments
+
+hpgl_d_so = '${SHLIBPREFIX}hpgl-d-py25$SHLIBSUFFIX'
+hpgl_so = '${SHLIBPREFIX}hpgl-py25$SHLIBSUFFIX'
+
+for td, od in [('exe/release', 'out/py25'), ('exe/debug', 'out/py25-dbg')]:
+	env = Environment(TESTDIR = td, OUTDIR=od)
+	env.Command('$TESTDIR/geo/hpgl.so', '$OUTDIR/geo/hpgl.so', Copy('$TARGET', '$SOURCE'))
+	env.Command('$TESTDIR/geo/__init__.py', '$OUTDIR/geo/__init__.py', Copy('$TARGET', '$SOURCE'))
+	env.Command('$TESTDIR/geo/geo.py', '$OUTDIR/geo/geo.py', Copy('$TARGET', '$SOURCE'))
+	env.Command('$TESTDIR/geo/routines.py', '$OUTDIR/geo/routines.py', Copy('$TARGET', '$SOURCE'))
+	env.Command('$TESTDIR/geo/variogram.py', '$OUTDIR/geo/variogram.py', Copy('$TARGET', '$SOURCE'))
+
+def nodirs(f):
+	return not path.isdir(f)
+
+def copyfiles(files, dst):
+	for f in files:
+		Command(path.join(dst, path.split(f)[1]), f, Copy('$TARGET', '$SOURCE'))
+
+test_scripts = filter(lambda f: not path.isdir(f), Glob('geo_testing/test_scripts/*.py', strings=True))
+test_data = filter(lambda f: not path.isdir(f), Glob('geo_testing/test_data/*', strings=True))
+fixed_data = filter(lambda f: not path.isdir(f), Glob('geo_testing/fixed/*', strings=True))
+
+test_dirs = ['exe/release', 'exe/debug']
+for td in test_dirs:
+	copyfiles(test_scripts, td)
+	copyfiles(test_data, path.join(td, 'test_data'))
+	copyfiles(fixed_data, path.join(td, 'fixed'))
+	
 
 Default(['exe', 'dist'])
 

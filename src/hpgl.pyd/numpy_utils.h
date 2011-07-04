@@ -10,14 +10,27 @@
 #ifndef __NUMPY_UTILS_H__5A160939_4007_4FAE_94CD_277C1F492D31____
 #define __NUMPY_UTILS_H__5A160939_4007_4FAE_94CD_277C1F492D31____
 
+#include "hpgl_exception.h"
+
 namespace hpgl
 {
+	inline bool check_axis_order(boost::python::object obj)
+	{
+		using namespace boost::python;
+		bool is_f_contiguous = extract<bool>(obj.attr("flags")["F_CONTIGUOUS"]);
+		return is_f_contiguous;
+	}
+  
+
 	template<typename T, char kind>
 	T * get_buffer_from_ndarray(boost::python::object obj, int size, const std::string & context)
 	{
 		using namespace std;
-			using namespace boost;
-			using namespace boost::python;
+		using namespace boost;
+		using namespace boost::python;
+
+		if (!check_axis_order(obj))
+			throw hpgl_exception(context, "Array is not F_CONTIGUOUS");
 
 		string strkind = extract<string>(obj.attr("dtype").attr("kind"));
 		
@@ -52,7 +65,7 @@ namespace hpgl
 	inline int get_ndarray_len(boost::python::object obj)
 	{
 		using namespace boost::python;
-		return len(obj.attr("data")) / (int)extract<int>(obj.attr("itemsize"));
+		return (int) len(obj.attr("data")) / (int)extract<int>(obj.attr("itemsize"));
 	}
 
 	inline boost::shared_ptr<indicator_property_array_t> ind_prop_from_tuple(

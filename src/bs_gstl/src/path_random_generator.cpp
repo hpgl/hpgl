@@ -51,7 +51,16 @@ void init_rnd(rnd_state_t & state, long int size, long int seed)
 	idx = 0;
 	while (primes[idx+1] > 0 && primes[idx+1] <= size / 3)
 		++idx;
-	state.C = primes[idx];
+	
+	for (int k = idx; k >= 0; k--)
+	{
+		state.C = primes[k];
+		if(floor(double(size) / double(state.C)) != (double(size) / double(state.C)))
+		{
+			break;
+		}
+	}
+
 	state.R = seed % size;
 }
 

@@ -1,0 +1,6 @@
+Package: hpgl-BSD
+Version: 0.9.6
+Architecture: i386
+Maintainer: Artur Muharlyamov <muharlyamovar@ufanipi.ru>
+Description: High Performance Geostatistical Library
+

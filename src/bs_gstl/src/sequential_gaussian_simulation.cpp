@@ -63,24 +63,26 @@ void sequential_gaussian_simulation(
 	build_cdf_from_property(cdf_property, target_cdf);
 	transform_cdf(output, target_cdf, Gaussian_cdf());*/
 	non_parametric_cdf_t<cont_value_t, double> new_cdf(cdf_property);
+
 	transform_cdf_p(output, new_cdf, gaussian_cdf_t());
 
 	if (params.m_kriging_kind == KRIG_SIMPLE)
 	{
-		double mean = get_mean(output, params, new_cdf);
+		//double mean = get_mean(output, params, new_cdf);
+		double mean = 0;
 		
 		if (mask != NULL)
 		{
 			do_sequential_gausian_simulation( output, grid, params, 
-					single_mean_t(mean), sk_constraints, 
-					weight_calculator(sk_constraints, output), 
+					single_mean_t(mean), 
+					sk_weight_calculator_t(),
 					mask);
 		}
 		else
 		{
 			do_sequential_gausian_simulation( output, grid, params, 
-					single_mean_t(mean), sk_constraints, 
-					weight_calculator(sk_constraints, output),
+					single_mean_t(mean), 
+					sk_weight_calculator_t(),
 					no_mask_t());
 			
 		}
@@ -88,13 +90,13 @@ void sequential_gaussian_simulation(
 		if (mask != NULL)
 		{
 			do_sequential_gausian_simulation( output, grid, params,
-				no_mean_t(), ok_constraints,
-				weight_calculator(ok_constraints, output),
+				no_mean_t(),
+				ok_weight_calculator_t(),
 				mask);
 		} else {
 			do_sequential_gausian_simulation( output, grid, params,
-				no_mean_t(), ok_constraints,
-				weight_calculator(ok_constraints, output),
+				no_mean_t(), 
+				ok_weight_calculator_t(),
 				no_mask_t());
 		}
 	}
@@ -119,12 +121,49 @@ void sequential_gaussian_simulation_lvm(
 		throw hpgl_exception("sequential_gaussian_simulation_lvm",
 		boost::format("Input property size: %s. Grid size: %s. Must be equal.") % output.size() % grid.size());	
 
-	subtract_means(output, mean_data);	
+	//subtract_means(output, mean_data);	
 
-	sequential_gaussian_simulation(grid, params, output, cdf_property, mask);	
+	//sequential_gaussian_simulation(grid, params, output, cdf_property, mask);	
 	
-	add_means(output, mean_data);
+	//add_means(output, mean_data);
+
+	if (output.size() != grid.size())
+		throw hpgl_exception("sequential_gaussian_simulation",
+		boost::format("Input property size: %s. Grid size: %s. Must be equal.") % output.size() % grid.size());
 	
+	/*No_TI no_ti;
+	Tail_interpolator ti(&no_ti);
+	Non_param_cdf<> target_cdf(ti, Linear_interpol(), ti);
+	build_cdf_from_property(cdf_property, target_cdf);
+	transform_cdf(output, target_cdf, Gaussian_cdf());*/
+	std::vector<mean_t> mean_data_vec;
+	mean_data_vec.assign(mean_data, mean_data + output.size() );
+
+	non_parametric_cdf_t<cont_value_t, double> new_cdf(cdf_property);
+	//non_parametric_cdf_t<mean_t, double> new_cdf_mean(mean_data_vec);
+	
+	transform_cdf_p(output, new_cdf, gaussian_cdf_t());
+	transform_cdf_ptr(mean_data, mean_data_vec, new_cdf, gaussian_cdf_t());
+
+	//double mean = get_mean(output, params, new_cdf);
+		
+		if (mask != NULL)
+		{
+			do_sequential_gausian_simulation( output, grid, params, 
+					mean_data_vec, 
+					sk_weight_calculator_t(),
+					mask);
+		}
+		else
+		{
+			do_sequential_gausian_simulation( output, grid, params, 
+					mean_data_vec, 
+					sk_weight_calculator_t(),
+					no_mask_t());
+			
+		}
+		
+	transform_cdf_p(output, gaussian_cdf_t(), new_cdf);	
 }
 
 }

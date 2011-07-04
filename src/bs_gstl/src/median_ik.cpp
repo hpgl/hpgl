@@ -84,7 +84,7 @@ void median_ik_for_two_indicators(
 				idx, 				 
 				cov_field, 
 				single_mean_t(params.m_marginal_probs[1]), 
-				nl, weight_calculator(sk_constraints, input_property), prob);
+				nl, sk_weight_calculator_t(), prob);
 		
 			ind_index = choose_indicator(prob);
 			output_property.set_at(idx, ind_index);

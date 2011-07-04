@@ -13,7 +13,6 @@
 #include <typedefs.h>
 #include <sugarbox_grid.h>
 #include <property_array.h>
-#include <search_ellipsoid.h>
 #include <ok_params.h>
 
 namespace hpgl

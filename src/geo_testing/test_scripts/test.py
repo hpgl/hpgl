@@ -155,4 +155,7 @@ if 'sis' in enabled_algos:
 	sis_result = sis_simulation(ik_prop, grid, ik_data, seed=3241347)
 	write_property(sis_result, "results/RESULT_SIS.INC", "SIS_RESULT", -99)
 
+	psis_result = parallel_sis_simulation(ik_prop, grid, ik_data, seed=3241347)
+	write_property(psis_result, "results/small/psis.inc", "psis_result", -99)
+
 stdin.readline()

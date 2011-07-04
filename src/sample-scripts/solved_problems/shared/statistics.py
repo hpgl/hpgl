@@ -111,6 +111,10 @@ def calc_distance(x1,y1,x2,y2):
 	h = sqrt((x2-x1)**2+(y2-y1)**2)
 	return h
 
+def calc_distance_3d(x1, y1, z1, x2, y2, z2):
+	h = sqrt((x2 - x1)**2 + (y2 - y1)**2 + (z1 - z2)**2)
+	return h
+
 from numpy import mean, std, sum, sqrt, sort, corrcoef, tanh, arctanh
 from numpy.random import randint
 

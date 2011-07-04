@@ -13,8 +13,6 @@
 
 #include <typedefs.h>
 #include <property_array.h>
-#include <search_ellipsoid.h>
-
 #include "geometry.h"
 
 namespace hpgl

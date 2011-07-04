@@ -30,11 +30,10 @@ namespace hpgl
                 double & variance)
             {
                 cov_model_t cov(*cov_params);
-               bool result = kriging_weights_2(
+               bool result = sk_kriging_weights_3<cov_model_t, true, real_location_t>(
 					center_point,
 					neighbourhoods_coords,
-					cov,
-					sk_constraints,
+					cov,					
 					weights,
 					variance);
 
@@ -75,7 +74,7 @@ namespace hpgl
 		covariances_t pcov(covariance, params.m_radiuses);
 
 		hpgl::cont_kriging(input, grid, params, single_mean_t(mean), pcov, 
-			weight_calculator(sk_constraints, input), 
+			sk_weight_calculator_t(), 
 			output, report, stats, mean_on_failure); 
 
 		std::cout << stats << std::endl;

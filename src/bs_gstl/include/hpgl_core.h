@@ -37,6 +37,7 @@ namespace hpgl
 	};
 
 	void set_thread_num(int n_threads);
+	int get_thread_num();
 
 	void read_inc_file_float(
 			const char * file_name,
@@ -124,6 +125,7 @@ namespace hpgl
 			bool use_corellogram,
 			const unsigned char * mask = NULL);
 
+	//parallel sis
 	struct sis_mean_params_t
 	{
 		mean_kind_t m_mean_kind;
@@ -131,6 +133,8 @@ namespace hpgl
 		mean_t ** m_lvm_means;
 		bool m_use_corellograms;
 	};
+
+	
 
 void simple_cokriging_markI(
 		const sugarbox_grid_t & grid,
@@ -156,8 +160,13 @@ void simple_cokriging_markII(
 		const covariance_param_t & secondary_cov_params,
 		cont_property_array_t & output_prop);
 
-	
+	//dual_kriging
+
+
+
 bool calc_mean(const cont_property_array_t * prop, double * mean);	
+
+
 
 }
 

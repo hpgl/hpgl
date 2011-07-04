@@ -11,8 +11,6 @@
 #define COVARIANCE_FIELD_H_INCLUDED_IN_BLUE_SKY_GSTL_AND_SOME_RANDOM_SYMBOLS_AFKJSDFKSJFKSDLKASDHKLWIUEWRWIWEIURH
 
 #include <typedefs.h>
-#include <search_ellipsoid.h>
-#include <covariance_model.h>
 #include "var_radix_utils.h"
 #include "cov_model.h"
 #include "sugarbox_grid.h"
@@ -103,7 +101,7 @@ namespace hpgl
 
 		double treshold = cov(coord_t(0, 0, 0), coord_t(0,0,0)) / 100;
 
-		for (int idx = 0, end_idx = vectors.size(); idx < end_idx; ++idx)
+		for (int idx = 0, end_idx = (int) vectors.size(); idx < end_idx; ++idx)
 		{
 			sugarbox_vector_t vec = vectors[idx];
 			if (cov(coord_t(0,0,0), coord_t(vec[0], vec[1], vec[2])) < treshold)
@@ -140,11 +138,7 @@ public:
 	covariance_field_t(
 			const sugarbox_search_ellipsoid_t & ellipsoid,
 			const cov_model_t &);
-
-	covariance_field_t(
-			const search_area_t &,
-			const covariance_model_t &);
-	
+		
 	inline double value(int x, int y, int z)const;
 	const std::vector<sugarbox_vector_t> & vectors()const
 	{

@@ -12,6 +12,7 @@
 #include "bs_assert.h"
 #include <clusterizer.h>
 #include "sugarbox_grid.h"
+#include "hpgl_exception.h"
 
 namespace hpgl
 {

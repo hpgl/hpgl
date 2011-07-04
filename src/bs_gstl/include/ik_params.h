@@ -10,9 +10,9 @@
 #ifndef __IK_PARAMS_H__A5485C4B_DFF9_4BA2_B8F5_B97C66A904B2__
 #define __IK_PARAMS_H__A5485C4B_DFF9_4BA2_B8F5_B97C66A904B2__
 
+#include <typedefs.h>
 #include <covariance_type.h>
 #include <indicator_param.h>
-#include <search_ellipsoid.h>
 
 namespace hpgl
 {

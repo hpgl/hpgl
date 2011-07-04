@@ -45,7 +45,7 @@
 				PreprocessorDefinitions="BS_PROPERTY_ARRAY_EXPORTS;BS_PROPERTY_SERVER_EXPORTS;BS_GSTL_EXPORTS;BS_EXPORTING_PLUGIN;WIN32;GSTL_NOWARNING;NOMINMAX;HGPL_ENABLE_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				OpenMP="true"
 				UsePrecompiledHeader="2"
 				BrowseInformation="1"
@@ -115,7 +115,7 @@
 				WholeProgramOptimization="true"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\tnt_126&quot;;include"
 				PreprocessorDefinitions="BS_PROPERTY_ARRAY_EXPORTS;BS_PROPERTY_SERVER_EXPORTS;BS_GSTL_EXPORTS;BS_EXPORTING_PLUGIN;GSTL_NOWARNING;NDEBUG;WIN32;NOMINMAX"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				BufferSecurityCheck="false"
 				EnableEnhancedInstructionSet="2"
 				OpenMP="true"
@@ -313,10 +313,6 @@
 				RelativePath=".\src\sugarbox_grid.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\src\sugarbox_indexed_neighbour_lookup.h"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
@@ -394,23 +390,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\covariance_model.h"
-				>
-			</File>
-			<File
 				RelativePath=".\include\covariance_param.h"
 				>
 			</File>
 			<File
 				RelativePath=".\include\covariance_type.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\dump_cdf.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\dump_property.h"
 				>
 			</File>
 			<File
@@ -427,14 +411,6 @@
 			</File>
 			<File
 				RelativePath=".\src\geometry.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\geometry_server_fwd.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\get_compile_time.h"
 				>
 			</File>
 			<File
@@ -483,6 +459,10 @@
 			</File>
 			<File
 				RelativePath=".\src\locale_keeper.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\looped_sugarbox_grid.h"
 				>
 			</File>
 			<File
@@ -558,10 +538,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\search_ellipsoid.h"
-				>
-			</File>
-			<File
 				RelativePath=".\src\select.h"
 				>
 			</File>
@@ -578,10 +554,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\sis_params.h"
-				>
-			</File>
-			<File
 				RelativePath=".\include\sk_params.h"
 				>
 			</File>
@@ -591,6 +563,10 @@
 			</File>
 			<File
 				RelativePath=".\include\sugarbox_grid.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\sugarbox_indexed_neighbour_lookup.h"
 				>
 			</File>
 			<File
@@ -615,14 +591,6 @@
 			</File>
 			<File
 				RelativePath=".\src\variable.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\weight_data.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\weights_and_indices.h"
 				>
 			</File>
 		</Filter>

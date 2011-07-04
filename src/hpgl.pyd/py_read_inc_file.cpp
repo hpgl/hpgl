@@ -25,7 +25,7 @@ namespace hpgl
 				int size,
 				const std::vector<indicator_value_t> & remap_table)
 			{
-				int ic = remap_table.size();
+				int ic = (int) remap_table.size();
 				for (int i = 0; i < size; ++i)
 				{
 					if (mask[i] != 0)
@@ -58,7 +58,7 @@ namespace hpgl
 			float * data_ptr = get_buffer_from_ndarray<float, 'f'>(odata, size, "py_read_inc_file_float");			
 			unsigned char * mask_ptr = get_buffer_from_ndarray<unsigned char, 'u'>(omask, size, "py_read_inc_file_float");			
 
-			read_inc_file_float(filename.c_str(), undefined_value, size, data_ptr, mask_ptr);
+			read_inc_file_float(filename.c_str(), (float)undefined_value, size, data_ptr, mask_ptr);
 		}
 
 		void py_read_inc_file_byte(
@@ -74,7 +74,7 @@ namespace hpgl
 			read_inc_file_byte(filename.c_str(), undefined_value, size, data_ptr, mask_ptr);
 
 			std::vector<indicator_value_t> remap_table;
-			extract_indicator_values(ind_values, boost::python::len(ind_values), remap_table);
+			extract_indicator_values(ind_values, (int) boost::python::len(ind_values), remap_table);
 			transform_values_to_indices(data_ptr, mask_ptr, size, remap_table);
 		}
 	}

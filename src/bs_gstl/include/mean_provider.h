@@ -16,11 +16,7 @@ namespace hpgl
 {
 	class no_mean_t
 	{
-	public:
-		/*inline double mean(node_index_t)const
-		{
-			return 0;
-		}*/		
+	public:				
 		inline double operator[](node_index_t index)const
 		{
 			return 0;
@@ -39,10 +35,6 @@ namespace hpgl
 			: m_mean(mean)
 		{}
 
-		/*inline double mean(node_index_t)const
-		{
-			return m_mean;
-		}*/
 		inline double operator[](node_index_t index)const
 		{
 			return m_mean;

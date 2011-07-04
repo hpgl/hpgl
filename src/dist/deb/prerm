@@ -1,0 +1,3 @@
+#!/bin/sh
+rm -f /usr/lib/python2.5/site-packages/geo/*.pyc
+rm -f /usr/lib/python2.6/dist-packages/geo/*.pyc

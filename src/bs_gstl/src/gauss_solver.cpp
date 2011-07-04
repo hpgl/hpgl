@@ -73,21 +73,8 @@ namespace hpgl
 		return true;
 	}
 
-	bool cholesky_solve(double * A, double * B, double * X, int size)
+	bool cholesky_decomposition(double * A, double * A_U, double * A_L, int size)
 	{
-		// A[j * size + i]
-		// B[i]
-		// X[i]
-
-		std::vector<double> copy_B(size,0.0);
-		for (int i=0; i<size; i++)
-		{
-			copy_B[i] = B[i];
-		}
-
-
-		std::vector<double> A_U(size*size,0.0);
-		std::vector<double> A_L(size*size,0.0);
 		double V = 0.0;
 		
 		// inside matrix [L(i,j)]
@@ -106,6 +93,11 @@ namespace hpgl
 						{
 							V -= (A_U[k*size + i] * A_U[k * size + i]);
 						}
+						
+						if( V <= 0)
+						{
+							return false;
+						}
 
 						A_L[i*size + i] = sqrt(V);
 						A_U[i*size + i] = sqrt(V);
@@ -119,6 +111,98 @@ namespace hpgl
 							V += A_U[k*size + i] * A_U[k*size + j];
 						}
 
+						if( A_U[j*size + j] == 0)
+						{
+							return false;
+						}
+						
+						A_U[j*size + i] = (1 / A_U[j*size + j]) * (A[j*size + i] - V);
+						A_L[i*size + j] = A_U[j*size + i];
+				}
+			}
+		}
+		return true;
+	}
+
+	void cholesky_solve(double * A_L, double * A_U, double * B, double * X, int size)
+	{
+		// A[j * size + i]
+		// B[i]
+		// X[i]
+
+		std::vector<double> X_R(size,0.0);
+
+//		gauss_solve(&A_L[0], &B[0], &X_R[0], size);
+
+		for (int i = 0; i <size ; i++)
+		{
+			X_R[i] = B[i];
+			for (int j = 0; j <i; j++)
+			{
+				X_R[i] -= A_L[i * size + j] * X_R[j];
+			}	
+			X_R[i] /= A_L[i * size + i];
+		}
+
+//	  gauss_solve(&A_U[0], &X_R[0], X, size);
+		
+		for (int i = size-1; i >=0 ; --i)
+		{
+			X[i] = X_R[i];
+			for (int j = size-1; j >i; --j)
+			{
+				X[i] -= A_U[i * size + j] * X[j];
+			}	
+			X[i] /= A_U[i * size + i];
+		}
+    }
+
+	bool cholesky_old(double * A, double * B, double * X, int size)
+	{
+		double V = 0.0;
+
+		std::vector<double> A_U(size*size,0.0);
+		std::vector<double> A_L(size*size,0.0);
+		
+		// inside matrix [L(i,j)]
+		for (int j = 0; j < size; j++)
+		{
+			for(int i = j; i < size; i++)
+			{
+				if(i==j)
+				{
+					// main diagonals [L(i,i)]
+					//for (int i = 0; i < size; i++)
+					//{
+						V = 0.0;
+						V += A[i*size + i];
+						for (int k = 0; k <= i-1; k++)
+						{
+							V -= (A_U[k*size + i] * A_U[k * size + i]);
+						}
+						
+						if( V <= 0)
+						{
+							return false;
+						}
+
+						A_L[i*size + i] = sqrt(V);
+						A_U[i*size + i] = sqrt(V);
+					//}
+				}
+				else
+				{
+						V = 0.0;
+						for (int k = 0; k <= j-1; k++)
+						{
+							V += A_U[k*size + i] * A_U[k*size + j];
+						}
+
+						if( A_U[j*size + j] == 0)
+						{
+							return false;
+						}
+						
 						A_U[j*size + i] = (1 / A_U[j*size + j]) * (A[j*size + i] - V);
 						A_L[i*size + j] = A_U[j*size + i];
 				}
@@ -127,10 +211,30 @@ namespace hpgl
 
 		std::vector<double> X_R(size,0.0);
 
-		gauss_solve(&A_L[0], &copy_B[0], &X_R[0], size);
-		gauss_solve(&A_U[0], &X_R[0], X, size);
+//		gauss_solve(&A_L[0], &B[0], &X_R[0], size);
+
+		for (int i = 0; i <size ; i++)
+		{
+			X_R[i] = B[i];
+			for (int j = 0; j <i; j++)
+			{
+				X_R[i] -= A_L[i * size + j] * X_R[j];
+			}	
+			X_R[i] /= A_L[i * size + i];
+		}
+
+//	  gauss_solve(&A_U[0], &X_R[0], X, size);
 		
-		return true;
+		for (int i = size-1; i >=0 ; --i)
+		{
+			X[i] = X_R[i];
+			for (int j = size-1; j >i; --j)
+			{
+				X[i] -= A_U[i * size + j] * X[j];
+			}	
+			X[i] /= A_U[i * size + i];
+		}
     }
+
 
 	}

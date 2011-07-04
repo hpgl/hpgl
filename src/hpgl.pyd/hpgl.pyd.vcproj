@@ -41,10 +41,10 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\bs_gstl\include&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;HPGLPYD_EXPORTS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;HPGLPYD_EXPORTS;BOOST_PYTHON_STATIC_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
@@ -63,6 +63,7 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\hpgl.pyd"
 				LinkIncremental="2"
+				ForceSymbolReferences="_HPGLExtraModule"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				ImportLibrary="$(TargetDir)$(TargetName).pyd.lib"
@@ -96,7 +97,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)\exe\$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)\exe\$(ConfigurationName)\geo\"
 			IntermediateDirectory="$(SolutionDir)\temp\$(ProjectName)\$(ConfigurationName)\"
 			ConfigurationType="2"
 			CharacterSet="1"
@@ -120,8 +121,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\bs_gstl\include&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;HPGLPYD_EXPORTS;BOOST_PYTHON_STATIC_LIB "
-				RuntimeLibrary="2"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;HPGLPYD_EXPORTS;BOOST_PYTHON_STATIC_LIB"
+				RuntimeLibrary="0"
 				OpenMP="true"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
@@ -141,6 +142,7 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\hpgl.pyd"
 				LinkIncremental="1"
+				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -154,6 +156,8 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
+				UseFAT32Workaround="true"
+				GenerateCatalogFiles="false"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -172,7 +176,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy geo.py &quot;$(OutDir)&quot;&#x0D;&#x0A;"
+				CommandLine="copy ..\geo\* &quot;$(OutDir)\*&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 	</Configurations>
@@ -186,14 +190,6 @@
 			>
 			<File
 				RelativePath=".\extract_indicator_values.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\generate_complement_array.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\hpgl.pyd.cpp"
 				>
 			</File>
 			<File
@@ -264,14 +260,6 @@
 			>
 			<File
 				RelativePath=".\extract_indicator_values.h"
-				>
-			</File>
-			<File
-				RelativePath=".\generate_complement_array.h"
-				>
-			</File>
-			<File
-				RelativePath=".\hpgl.pyd.h"
 				>
 			</File>
 			<File

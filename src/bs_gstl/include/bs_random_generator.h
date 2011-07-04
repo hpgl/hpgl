@@ -14,15 +14,8 @@
 #include <typedefs.h>
 
 namespace hpgl
-{
-	class random_generator_t
-	{
-	public:
-		//virtual void seed(long int seed) = 0;
-		virtual long int operator() (long int N) = 0;
-	};
-
-	class mt_random_generator_t : public random_generator_t
+{	
+	class mt_random_generator_t
 	{
 		boost::mt11213b gen;
 	public:
@@ -30,9 +23,9 @@ namespace hpgl
 		mt_random_generator_t(long int seed)
 			: gen((boost::mt11213b::result_type)seed)
 		{}
-		virtual void seed(long int seed);
-		virtual long int operator() (long int N);	
-		virtual double operator()();
+		void seed(long int seed);
+		long int operator() (long int N);	
+		double operator()();
 	};	
 }
 

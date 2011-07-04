@@ -23,7 +23,7 @@ namespace hpgl
 	void py_sis(
 		boost::python::tuple array, 
 		const py_grid_t & grid,
-		PyObject * params, int seed, bool use_vpc, bool use_corellogram, boost::python::object mask_data)
+		boost::python::object params, int seed, bool use_vpc, bool use_corellogram, boost::python::object mask_data)
 	{
 		if (use_vpc)
 			throw hpgl_exception("py_sis", "use_vpc no longer supported. Use lvm instead.");
@@ -55,7 +55,7 @@ namespace hpgl
 	void py_sis_lvm(
 			const boost::python::tuple & array,
 			const py_grid_t & grid,
-			PyObject * params,
+			boost::python::object params,
 			int seed,
 			boost::python::object mean_data,
 			bool use_corellogram,

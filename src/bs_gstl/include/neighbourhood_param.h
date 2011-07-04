@@ -10,7 +10,7 @@
 #ifndef __NEIGHBOURHOOD_PARAM_H__BDE0925A_D03A_4288_8306_3ADE14B0004E__
 #define __NEIGHBOURHOOD_PARAM_H__BDE0925A_D03A_4288_8306_3ADE14B0004E__
 
-#include <search_ellipsoid.h>
+#include <typedefs.h>
 
 namespace hpgl
 {

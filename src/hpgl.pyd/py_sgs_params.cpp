@@ -11,6 +11,7 @@
 #include "stdafx.h"
 
 #include "py_sgs_params.h"
+#include "hpgl_exception.h"
 
 namespace hpgl
 {
@@ -62,6 +63,11 @@ namespace hpgl
 	void py_sgs_params_t::set_seed(long int seed)
 	{
 		m_sgs_params.m_seed = seed;
+	}
+
+	void py_sgs_params_t::set_min_neighbours(long int min_n)
+	{
+		m_sgs_params.m_min_neighbours = min_n;
 	}
 
 	void py_sgs_params_t::set_mean_kind(const std::string & mean_kind)

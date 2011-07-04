@@ -18,7 +18,7 @@ sys.path.append(r'../shared')
 
 from numpy import *
 from geo import *
-from decl_grid import *
+from grid_3d import *
 from statistics import *
 from matplotlib import *
 from pylab import *
@@ -35,46 +35,39 @@ print "----------------------------------------------------"
 print "Loading data & initializing..."
 
 # Loading sample data from file
-
-x = 62
-y = 6
 n = 62
 l = 1000
 dx = 7
 dy = 8
+dz = 1
 
 dict = load_gslib_file("welldata.txt")
 
-x_coord = dict['X']
-y_coord = dict['Y']
 poro_values = dict['Por']
 seismic_values = dict['Seis']
 
 print "Done."
 print "----------------------------------------------------"
 
+array3 = zeros( (len(dict['X'])), dtype = float)
+PointSet = (dict['X'], dict['Y'], array3)
+
+nx = 10 + (max(dict['X']) - min(dict['X']))/dx
+ny = 10 + (max(dict['Y']) - min(dict['Y']))/dy
+nz = (max(array3) - min(array3))/dz
+
+# Lets define 3D grid with dx*dy*dz cells and nx, ny, nz cells length
+array_grid = Grid(min(PointSet[0]), min(PointSet[1]), min(PointSet[2]), dx, dy, dz, nx, ny, nz)
+
 # Correlation coefficient calculation
 coef = corr_coef(poro_values, seismic_values)
 print "Correlation between porosity and seismic: ", coef
 
-# Weights calculation using cell declutering
-# ---------------------------------------
-min_max = get_rect(x_coord, y_coord)
-l1 = (min_max[2] - min_max[0])/dx
-l2 = (min_max[3] - min_max[1])/dy
-
-# Lets define 2D grid with dx*dy cells and l1/l2 cells length
-array_grid = Grid(min_max[0], min_max[1], dx, dy, l1, l2)
-
-# Add points to 2D grid
-for i in xrange(x):
-	array_grid.add_point(x_coord[i], y_coord[i])
-
 #Cell declustering calculation
-w_cell = array_grid.get_weights_cell()
+w_cell = get_weights_cell(array_grid, PointSet)
 
 # Weights standardization
-w_cell = stand_weight(w_cell, x)
+w_cell = stand_weight(w_cell, (len(dict['X'])))
 # ----------------------------------------
 
 # Weighted correlation coefficient calculation

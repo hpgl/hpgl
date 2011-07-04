@@ -1,0 +1,10 @@
+----------------------------------------------------
+Probability interval is: [ 4.16014400549 , 19.8398559945 ]
+----------------------------------------------------
+Probability interval for standartized normal data is: [ -1.95996399863 , 1.95996399863 ]
+----------------------------------------------------
+Variance of standartized data in presense of corellation is:  0.154686035265
+Probability interval for standartized data in presense of corellation is: [ -7.68516995924 , 7.99454202977 ]
+----------------------------------------------------
+Variance of data in presense of corellation is:  2.47497656424
+Probability interval for data in presense of corellation is: [ -5.36487943027 , 10.3148325587 ]

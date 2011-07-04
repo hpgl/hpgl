@@ -1,0 +1,8 @@
+----------------------------------------------------
+Correlation between porosity and seismic:  0.627627936802
+Weighted correlation between porosity and seismic:  0.570620708566
+----------------------------------------------------
+Doing boostrap for poro mean and correlation with seismic data... 
+Number of random realizations:  1000
+Bootstrap calculation completed.
+----------------------------------------------------

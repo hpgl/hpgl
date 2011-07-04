@@ -86,23 +86,26 @@ namespace hpgl
 			sp_double_property_array_t out_prop =
 				cont_prop_from_tuple(out_array);
 						
-			mean_t primary_mean = boost::python::extract<mean_t>(primary_data["mean"]);
-			mean_t secondary_mean = boost::python::extract<mean_t>(secondary_data["mean"]);
+			mean_t primary_mean = extract<mean_t>(primary_data["mean"]);
+			mean_t secondary_mean = extract<mean_t>(secondary_data["mean"]);
+			
+			object primary_cov_model = primary_data["cov_model"];
+			object secondary_cov_model = secondary_data["cov_model"];
+			
+			boost::python::object primary_ranges = primary_cov_model.attr("ranges");
+			boost::python::object secondary_ranges = secondary_cov_model.attr("ranges");
 
-			boost::python::object primary_ranges = primary_data["ranges"];
-			boost::python::object secondary_ranges = secondary_data["ranges"];
+			boost::python::object primary_angles = primary_cov_model.attr("angles");
+			boost::python::object secondary_angles = secondary_cov_model.attr("angles");
 
-			boost::python::object primary_angles = primary_data["angles"];
-			boost::python::object secondary_angles = secondary_data["angles"];
+			double primary_sill = boost::python::extract<double>(primary_cov_model.attr("sill"));
+			double secondary_sill = boost::python::extract<double>(secondary_cov_model.attr("sill"));
 
-			double primary_sill = boost::python::extract<double>(primary_data["sill"]);
-			double secondary_sill = boost::python::extract<double>(secondary_data["sill"]);
+			double primary_nugget = boost::python::extract<double>(primary_cov_model.attr("nugget"));
+			double secondary_nugget = boost::python::extract<double>(secondary_cov_model.attr("nugget"));
 
-			double primary_nugget = boost::python::extract<double>(primary_data["nugget"]);
-			double secondary_nugget = boost::python::extract<double>(secondary_data["nugget"]);
-
-			covariance_type_t primary_cov_type =  (covariance_type_t)((int)boost::python::extract<int>(primary_data["cov_type"]));
-			covariance_type_t secondary_cov_type =   (covariance_type_t)((int)boost::python::extract<int>(secondary_data["cov_type"]));
+			covariance_type_t primary_cov_type =  (covariance_type_t)((int)boost::python::extract<int>(primary_cov_model.attr("type")));
+			covariance_type_t secondary_cov_type =   (covariance_type_t)((int)boost::python::extract<int>(secondary_cov_model.attr("type")));
 
 			covariance_param_t primary_cov_params;
 			covariance_param_t secondary_cov_params;

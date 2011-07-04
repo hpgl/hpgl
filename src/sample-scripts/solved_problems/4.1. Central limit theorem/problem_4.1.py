@@ -83,9 +83,9 @@ hist(random_variables)
 xlabel("Random variables")
 ylabel("Number")
 title("Histogram of random variables")
-figure()
 
 # Histogram of summary random variables statistics
+figure()
 hist(summary_vec)
 xlabel("Summary random variables")
 ylabel("Number")

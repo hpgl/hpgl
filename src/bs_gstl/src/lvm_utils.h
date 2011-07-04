@@ -15,7 +15,7 @@ namespace hpgl
 	template<typename data_t, typename lvm_t>
 	void subtract_means(data_t & prop, const lvm_t means)
 	{
-		for (size_t idx = 0, end_idx = prop.size(); idx < end_idx; ++idx)
+		for (typename data_t::size_type idx = 0, end_idx = prop.size(); idx < end_idx; ++idx)
 		{
 			if (prop.is_informed(idx))
 				prop.set_at(idx, prop[idx] - means[idx]);
@@ -25,7 +25,7 @@ namespace hpgl
 	template<typename data_t, typename lvm_t>
 	void add_means(data_t & prop, const lvm_t means)
 	{
-		for (size_t idx = 0; idx < prop.size(); ++idx)
+		for (typename data_t::size_type idx = 0; idx < prop.size(); ++idx)
 		{
 			if (prop.is_informed(idx))
 				prop.set_at(idx, prop[idx] + means[idx]);

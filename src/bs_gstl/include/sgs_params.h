@@ -24,7 +24,8 @@ namespace hpgl
 		kriging_kind_t m_kriging_kind;
 		long int m_seed;
 		mean_kind_t m_mean_kind;
-		mean_t * m_lvm;
+		mean_t * m_lvm;		
+		int m_min_neighbours;
 	};
 	
 	inline std::ostream & operator<<(std::ostream & o, const sgs_params_t & p)

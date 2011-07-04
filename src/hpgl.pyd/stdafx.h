@@ -17,6 +17,7 @@
 #include <vector>
 #include <deque>
 #include <list>
+#include <map>
 #include <string>
 #include <iostream>
 #include <time.h>

@@ -22,6 +22,7 @@
 #include "sugarbox_indexed_neighbour_lookup.h"
 #include "is_informed_predicate.h"
 #include "cov_model.h"
+#include "hpgl_exception.h"
 
 namespace hpgl
 {
@@ -58,6 +59,11 @@ void do_sis(
 	mt_random_generator_t gen(seed);
 	reporter.start();
 
+	if(params.m_category_count == 2)
+	{
+		std::cout << "Only 2 indicators found, Median SIS will be performed." << std::endl;
+	}
+
 	while (!path.end_of_path())	
 	{
 		node_index_t node = path.get_next();
@@ -69,21 +75,47 @@ void do_sis(
 			continue;
 
 		std::vector<indicator_probability_t> probs;		
-		for (indicator_index_t idx = 0; idx < params.m_category_count; ++idx)
-		{
-			double prob;
-			std::vector<node_index_t> indices;
-			std::vector<kriging_weight_t> weights;				
-			
-			ki_result_t ki_result = kriging_interpolation(
-				ind_props[idx], is_informed_predicate_t<indicator_property_array_t>(property), 
-				node, covariances[idx], marginal_probs[idx], nblookups[idx], weight_calculator_sis, prob);
 
-			if (ki_result != KI_SUCCESS)
+		// median SIS
+		if(params.m_category_count == 2)
+		{
+				int idx = 0;
+
+				double prob;
+				std::vector<node_index_t> indices;
+				std::vector<kriging_weight_t> weights;				
+				
+				ki_result_t ki_result = kriging_interpolation(
+					ind_props[idx], is_informed_predicate_t<indicator_property_array_t>(property), 
+					node, covariances[idx], marginal_probs[idx], nblookups[idx], weight_calculator_sis, prob);
+
+				if (ki_result != KI_SUCCESS)
+				{
+					prob = marginal_probs[idx][node];
+				}
+
+				probs.push_back(prob);
+				probs.push_back(1 - prob);
+
+		}
+		else
+		{
+			for (indicator_index_t idx = 0; idx < params.m_category_count; ++idx)
 			{
-				prob = marginal_probs[idx][node];
+				double prob;
+				std::vector<node_index_t> indices;
+				std::vector<kriging_weight_t> weights;				
+				
+				ki_result_t ki_result = kriging_interpolation(
+					ind_props[idx], is_informed_predicate_t<indicator_property_array_t>(property), 
+					node, covariances[idx], marginal_probs[idx], nblookups[idx], weight_calculator_sis, prob);
+
+				if (ki_result != KI_SUCCESS)
+				{
+					prob = marginal_probs[idx][node];
+				}
+				probs.push_back(prob);
 			}
-			probs.push_back(prob);
 		}
 		property.set_at(node, sample(gen, probs));
 	}
@@ -119,9 +151,9 @@ void sequential_indicator_simulation(
 	std::vector<single_mean_t> single_means;
 	create_means(params.m_marginal_probs, single_means);	
 	if (mask == NULL)	
-		do_sis(property, grid, params, seed, single_means, report, weight_calculator(sk_constraints, property), no_mask_t());
+		do_sis(property, grid, params, seed, single_means, report, sk_weight_calculator_t(), no_mask_t());
 	else
-		do_sis(property, grid, params, seed, single_means, report, weight_calculator(sk_constraints, property), mask);
+		do_sis(property, grid, params, seed, single_means, report, sk_weight_calculator_t(), mask);
 
 }
 	
@@ -143,15 +175,15 @@ void sequential_indicator_simulation_lvm(
 	{
 		print_param("Corellogram", "on");
 		if (mask == NULL)
-			do_sis(property, grid, params, seed, mean_data, report, weight_calculator(corellogram_constraints, property), no_mask_t());
+			do_sis(property, grid, params, seed, mean_data, report, corellogram_weight_calculator_t(), no_mask_t());
 		else
-			do_sis(property, grid, params, seed, mean_data, report, weight_calculator(corellogram_constraints, property), mask);
+			do_sis(property, grid, params, seed, mean_data, report, corellogram_weight_calculator_t(), mask);
 	} else {
 		print_param("Corellogram", "off");
 		if (mask == NULL)
-			do_sis(property, grid, params, seed, mean_data, report, weight_calculator(sk_constraints, property), no_mask_t());
+			do_sis(property, grid, params, seed, mean_data, report, sk_weight_calculator_t(), no_mask_t());
 		else
-			do_sis(property, grid, params, seed, mean_data, report, weight_calculator(sk_constraints, property), mask);
+			do_sis(property, grid, params, seed, mean_data, report, sk_weight_calculator_t(), mask);
 	}
 }
 

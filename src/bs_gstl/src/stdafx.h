@@ -15,11 +15,11 @@
 #include <tnt.h>
 #include <vector>
 #include <deque>
+#include <map>
 #include <list>
 #include <string>
 #include <iostream>
 #include <set>
-#include <map>
 #include <time.h>
 #include <fstream>
 #include <ostream>

@@ -1,3 +1,2 @@
-include geo/*.pyd
 include geo/*.py
 include geo/*.so
