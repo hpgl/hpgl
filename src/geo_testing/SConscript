@@ -1,0 +1,17 @@
+import glob
+import os.path
+
+Import ('test_dirs')
+
+test_scripts = glob.glob('test_scripts/*.py')
+test_data = glob.glob('test_data/**')
+for sc in test_scripts:
+	for dir in test_dirs:
+		Install(dir, sc)
+
+for df in test_data:
+	for dir in test_dirs:
+		dst_path = os.path.join(str(dir), df)
+		if (os.path.isfile(df)):
+			InstallAs(dst_path, df)
+

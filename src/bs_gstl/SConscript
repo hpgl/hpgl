@@ -1,0 +1,51 @@
+import os.path
+import os
+import glob
+import tempfile
+
+BuildDir('debug', 'src', duplicate=0)
+BuildDir('release', 'src', duplicate=0)
+
+Alias('bs_gstl', '../exe/release')
+Alias('bs_dist', '../dist/geo')
+Default(['bs_gstl','bs_dist'])
+
+src_files = glob.glob('src/*.cpp')
+
+debug_files = [x.replace('src', 'debug', 1) for x in src_files]
+release_files = [x.replace('src', 'release', 1) for x in src_files]
+
+includes = [
+		'include', 
+		'src', 
+		'/usr/include/python2.5', 
+		'../GsTL-1.3',
+		];
+
+
+custom_defines = []
+for key, value in ARGLIST:
+	if key == 'define':
+		custom_defines.append(value)
+ 
+libbsgstl_d = StaticLibrary('bs_gstl_d', debug_files, 
+	CPPPATH=includes,
+	CPPDEFINES=['DEBUG', 'GSTL_NOWARNING', 'BS_GSTL_EXPORTS', 'BS_EXPORINTG_PLUGIN', 'BS_PROPERTY_ARRAY_EXPORTS', 'BS_PROPERTY_SERVER_EXPORTS'] + custom_defines,
+	CCFLAGS='-ggdb -fPIC',
+	LIBS=['libboost_python-mt-d',
+                'libboost_thread-mt-d',
+                ],
+	)
+
+libbsgstl = StaticLibrary('bs_gstl', release_files, 
+	CPPPATH=includes,
+	CPPDEFINES=['NDEBUG', 'GSTL_NOWARNING', 'BS_GSTL_EXPORTS', 'BS_EXPORINTG_PLUGIN', 'BS_PROPERTY_ARRAY_EXPORTS', 'BS_PROPERTY_SERVER_EXPORTS'] + custom_defines,
+	CCFLAGS='-g -O3 -finline-functions -fmove-loop-invariants -fopenmp -fPIC',
+        LIBS=['libboost_python-mt',
+                'libboost_thread-mt',
+                'libgomp'
+                ],
+	)
+
+Return('libbsgstl_d', 'libbsgstl')
+

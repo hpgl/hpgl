@@ -1,0 +1,13 @@
+libbsgstl_d, libbsgstl = SConscript('bs_gstl/SConscript')
+hpgl_d_so, hpgl_so = SConscript('hpgl.pyd/SConscript', exports='libbsgstl_d libbsgstl')
+InstallAs('exe/release/hpgl.so', source=[hpgl_so])
+InstallAs('exe/debug/hpgl.so', source=[hpgl_d_so])
+InstallAs('gist/geo/hpgl.so', source=[hpgl_so])
+Install("exe/release/", source="hpgl.pyd/geo.py")
+Install("exe/debug/", source="hpgl.pyd/geo.py")
+
+test_dirs = [Dir('exe/release/'), Dir('exe/debug/')]
+SConscript('geo_testing/SConscript', exports='test_dirs')
+
+Default(['exe', 'dist'])
+

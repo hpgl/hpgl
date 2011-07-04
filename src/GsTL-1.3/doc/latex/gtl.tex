@@ -1,0 +1,4507 @@
+\documentclass[12pt,twoside]{report}
+
+%___________________________
+%\usepackage{suthesis}
+
+\usepackage{graphicx}
+\usepackage{graphics}
+\usepackage{verbatim}
+\usepackage{moreverb}
+%\usepackage{/home/nremy/LaTex/misc/relsize}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+\usepackage[hang]{subfigure}
+\usepackage{epsfig}
+
+\usepackage{html}
+
+
+% Bibliography style
+%\usepackage[abbr,dcucite]{/home/nremy/LaTex/Harvard/harvard}
+%\harvardparenthesis{square}
+%\harvardyearparenthesis{round}
+
+\usepackage{fancyvrb}
+	
+%______________________________
+
+% Le truc pour eviter que toutes les figures se retrouvent a la fin
+% =========================================
+\renewcommand{\floatpagefraction}{0.90}
+\renewcommand{\topfraction}{0.90}
+\renewcommand{\textfraction}{0.10}
+
+
+% Define some short cuts:
+\newcommand{\gslib}{\emph{GSLIB}}
+\newcommand{\gslibv}{\emph{GSLIB},}
+\newcommand{\cpp}{C++}
+\newcommand{\stl}{\emph{STL}}
+\newcommand{\oop}{object-oriented programming}
+\newcommand{\oo}{object-oriented}
+\newcommand{\OOP}{Object-Oriented programming}
+\newcommand{\gtl}{$\rm{G_STL}$}
+\newcommand{\tnt}{\emph{TNT}}
+\newcommand{\gocad}{\emph{gOcad}}
+\newcommand{\bool}{a type that is convertible to bool}
+\newcommand{\size}{a type that represents a positive integer}
+\newcommand{\gstat}{geostatistics}
+\newcommand{\Gstat}{Geostatistics}
+
+% command for a location and a set (with math font)
+\newcommand{\loc}[1]{{\bf #1}}
+\newcommand{\mloc}[1]{\rm{\bf #1}}
+%\newcommand{\mloc}[1]{\boldsymbol{#1}}
+\newcommand{\argmin}{\mathop{\mbox{argmin}}}
+
+
+\newcommand{\SET}[1]{$\mathbb{#1}$} 
+\newcommand{\MSET}[1]{\mathbb{#1}}
+
+% Define a verbatim environment for quoting source code
+% (uses package fancyvrb). Two new environments: 
+%    - code
+%    - linedcode : each line of the code is numbered
+\DefineVerbatimEnvironment%
+  {code}{Verbatim}
+  {samepage=true,fontsize=\small}
+
+\DefineVerbatimEnvironment%
+  {linedcode}{Verbatim}
+  {numbers=left,samepage=true,fontsize=\small}
+
+
+% Define a new verbatim delimiter: |verbatim|
+\DefineShortVerb{\|}
+
+
+\newcommand{\clearemptydoublepage}{\newpage{\pagestyle{empty}\cleardoublepage}}
+%_______________________
+%\setlength{\textwidth}{15cm}\setlength{\evensidemargin}{1cm}
+
+%\renewcommand{\baselinestretch}{1.0}
+%\renewcommand{\textfraction}{0.7}
+
+
+
+
+
+
+%____________________
+% Double line spacing
+
+\bodytext{bgcolor="#FFFFFF" TEXT="#000000" LINK="#0000FF" VLINK="#0000AF"}
+\begin{document}
+\chapter{Concepts Definitions}
+\label{definition}
+
+This is the thorough definition the concepts used by \gtl{} algorithms.
+
+\vspace{0.5cm}
+
+The different fields of the description are the following:
+\begin{description}
+\item[Refinement of:] concept B is said to be a refinement of concept A if the requirements of A are a subset of the requirements of B. Consider the example of a Forward Iterator. A forward iterator is an object that points to other objects. It is used to iterate over a range of objects, in a single direction: it does not allow to go backward. The concept of Forward Iterator hence requires an operator |++| to advance to the next object of the range, an operator |*| which allows access to the value the iterator is pointing to, an operator |!=| to compare two iterators, and an operator |=| which assigns an iterator to another. A Bidirectional Iterator is an iterator which allows to iterate over a range of objects in both forward and backward directions. It thus requires the same four operators as Forward Iterator, plus operator |--|, which moves the iterator to the previous object in the range. Since the requirements of Forward Iterator are a subset of the requirements of Bidirectional Iterator, Bidirectional Iterator is a refinement of a Forward Iterator.
+Following this definition, if concept B is a refinement of concept A, any \emph{model} of B is also a \emph{model} of A.
+
+\item[Associated types:] a list of \cpp{} types associated to the concept
+
+\item[Notations:] some notations used in the remaining of the description of the concept
+
+\item[Valid expressions:]  a list of expressions that can be applied to a model of the concept. For instance, if |iter| is a model of the afore-mentioned Forward Iterator concept, such valid expression could be |iter++| or |*iter|.
+
+\item[Models:] some examples of models of the concept. 
+\end{description}
+
+
+
+
+
+\section{Basic concepts}
+% ____________________________________________
+% Requirements of Forward Iterator
+% 
+
+\subsection{Assignable}
+\label{concept:assignable}
+\begin{htmlonly}
+<div align=right><img SRC="icons/concept.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+This is concept is defined in the \hyperref{STL}{STL (see M. Austern, Generic Programming and the STL, Addison Wesley Longman, 1999) }{}{http://www.sgi.com/tech/stl/}.
+
+
+\subsubsection*{Notations}
+
+\begin{tabular}[!h]{l l l}
+A & & A type that is a model of Assignable\\
+a,b & & objects of type A\\
+\end{tabular}
+
+
+\htmlrule[CLEAR=all]
+ 
+
+\subsubsection*{Valid Expressions}
+\begin{itemize}
+
+
+\item {\bf Copy Constructor}
+  
+  |A(a)|
+  
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & |A| \\
+    Semantics: & & |A(a)| is a copy of |a|\\
+  \end{tabular}
+   
+
+\item {\bf Copy Constructor}
+  
+  |A a(b)|
+  
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & |A| \\
+    Semantics: & & |a| is a copy of |b|\\
+  \end{tabular}
+
+   
+\item {\bf Assignment}
+  
+  |a=b|
+  
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & |A&| \\
+    Semantics: & & |b| is assigned to |a|\\
+  \end{tabular}
+                               
+ 
+
+\end{itemize}
+
+
+\subsection{Default Constructible}
+\label{concept:default_constructible}
+\begin{htmlonly}
+<div align=right><img SRC="icons/concept.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+This is concept is defined in the \hyperref{STL}{STL (see M. Austern, Generic Programming and the STL, Addison Wesley Longman, 1999) }{}{http://www.sgi.com/tech/stl/}.
+
+
+\subsubsection*{Notations}
+
+\begin{tabular}[!h]{l l l}
+A & & A type that is a model of Default Constructible\\
+a & & objects of type A\\
+\end{tabular}
+
+
+\htmlrule[CLEAR=all]
+ 
+
+\subsubsection*{Valid Expressions}
+\begin{itemize}
+
+
+\item {\bf Default Constructor}
+  
+  |A()|
+  
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & |A| \\
+  \end{tabular}
+   
+
+\item {\bf Default Constructor}
+  
+  |A a()|
+  
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & |A| \\
+  \end{tabular}
+
+\end{itemize}
+
+
+
+
+\subsection{Equality Comparable}
+\label{concept:equality_comparable}
+\begin{htmlonly}
+<div align=right><img SRC="icons/concept.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+This is concept is defined in the \hyperref{STL}{STL (see M. Austern, Generic Programming and the STL, Addison Wesley Longman, 1999) }{}{http://www.sgi.com/tech/stl/}.
+
+
+\subsubsection*{Notations}
+
+\begin{tabular}[!h]{l l l}
+A & & A type that is a model of Assignable\\
+a,b & & objects of type A\\
+\end{tabular}
+
+
+\htmlrule[CLEAR=all]
+ 
+
+\subsubsection*{Valid Expressions}
+\begin{itemize}
+
+
+\item {\bf Equality}
+  
+  |a == b|
+  
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & \bool \\
+    Semantics: & & is true if |a| is equal to |b|\\
+  \end{tabular}
+   
+
+\item {\bf Inequality}
+  
+  |a != b|
+  
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & \bool \\
+    Semantics: & & same as |!(a==b)|\\
+  \end{tabular}
+
+\end{itemize}
+
+
+
+
+
+
+\subsection{Forward Iterator}
+\label{concept:forwarditerator}
+\begin{htmlonly}
+<div align=right><img SRC="icons/concept.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Refinement of}
+
+\hyperref{Assignable}{Assignable (see Section}{)}{concept:assignable}, \hyperref{Equality Comparable}{Equality Comparable (see Section}{)}{concept:equality_comparable}
+%\vspace{0.5cm}
+
+
+\subsubsection*{Associated Types}
+
+
+\begin{itemize}
+\item {\bf Value Type}
+
+  |I::value_type|
+
+  The type obtained by dereferencing (applying operator |*|) to a model of Forward Iterator.
+
+\end{itemize}
+
+
+\htmlrule[CLEAR=all]
+ 
+
+\subsubsection*{Notations}
+
+\begin{tabular}[!h]{l l l}
+I & & A type that is a model of Forward Iterator\\
+i,j & & objects of type I\\
+\end{tabular}
+
+
+\htmlrule[CLEAR=all]
+ 
+
+\subsubsection*{Valid Expressions}
+\begin{itemize}
+
+%  \begin{minipage}[c]{4cm}
+  \item {\bf Assignment}
+    
+    |i=j|
+    
+    \begin{tabular}[!h]{l p{1cm} p{10cm}}
+      Return type: & & |I&| \\
+      Semantics: & & |j| is assigned to |i|\\
+    \end{tabular}
+%  \end{minipage}
+  
+\item {\bf Preincrement}
+
+  |++i|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & I\\
+    Precondition: & & i is dereferenceable\\
+    Semantics: & & |i| is modified to point to the next value\\
+    Postcondition: & & |i| is dereferenceable or one past the end\\
+  \end{tabular}
+
+
+\item {\bf Postincrement}
+
+  |i++|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & I\\
+    Precondition: & & |i| is dereferenceable\\
+    Semantics: & & |i| is modified to point to the next value\\
+    Postcondition: & & |i| is dereferenceable or past the end\\
+  \end{tabular}
+
+
+\item {\bf Difference}
+
+  |i-j|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & |int|\\
+    Semantics: & & returns the size of range delimited by |i| and |j|\\
+    Postcondition: & & |i| is dereferenceable or past the end\\
+  \end{tabular}
+
+
+\item {\bf dereference}
+
+  |*i|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & |value_type|\\
+    Precondition: & & |i| is incrementable (operator |++| can be applied to |i|)\\
+    Semantics: & & Returns the element |i| is pointing to.\\
+  \end{tabular}
+
+
+\item {\bf comparison}
+
+  |i!=j|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & a type convertible to |bool|\\
+    Semantics: & & Returns true if |i| is different from |j|, i.e |i| and |j| are pointing to different elements.\\
+  \end{tabular}
+
+
+
+\end{itemize}
+
+
+
+
+
+
+
+
+\subsection{Container}
+\label{concept:container}
+\begin{htmlonly}
+<div align=right><img SRC="icons/concept.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+A Container is an object that stores other objects (the container elements) and has facilities to access its elements. 
+
+\htmlrule[CLEAR=all]  \subsubsection*{Associated Types}
+
+
+\begin{itemize}
+\item {\bf Value Type}
+
+  |A::value_type|
+
+  The type of the elements of the container.
+
+
+\item {\bf Iterator type}
+
+  |A::iterator|
+
+  An iterator that points to the Container's elements.
+
+
+\item {\bf const Iterator type}
+
+  |A::const_iterator|
+
+  An iterator that points to the Container's elements. This iterator can not be used to modify the value it points to.
+
+
+
+\end{itemize}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Notations}
+
+\begin{tabular}[!h]{l l l}
+A & & A type that is a model of Container\\
+a,b & & objects of type A\\
+\end{tabular}
+
+
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Valid Expressions}
+\begin{itemize}
+
+  \item {\bf Copy constructor}
+    
+    |X(a)|
+    
+    \begin{tabular}[!h]{l p{1cm} p{10cm}}
+      Return type: & & |X| \\
+      Semantics: & & |X()| contains a copy of each element of a\\
+    \end{tabular}
+  
+
+\item {\bf Copy constructor}
+    
+    |X b(a)|
+    
+    \begin{tabular}[!h]{l p{1cm} p{10cm}}
+      Semantics: & & b contains a copy of each element of a\\
+    \end{tabular}
+  
+
+\item {\bf Assignment operator}
+    
+    |a=b|
+    
+    \begin{tabular}[!h]{l p{1cm} p{10cm}}
+      Return type: & & |X&| \\
+      Semantics: & & b contains a copy of each element of a\\
+    \end{tabular}
+  
+
+\item {\bf Beginning of range}
+    
+    |a.begin()|
+    
+    \begin{tabular}[!h]{l p{1cm} p{10cm}}
+      Return type: & & |iterator| if the container is mutable (i.e. can be written to), or |const_iterator| if the container is read-only. \\
+      Semantics: & & returns an iterator pointing to the first element of the Container\\
+    \end{tabular}
+  
+
+\item {\bf End of range}
+    
+    |a.end()|
+    
+    \begin{tabular}[!h]{l p{1cm} p{10cm}}
+      Return type: & & |iterator|  if the container is mutable, otherwise |const_iterator|\\
+      Semantics: & & returns an iterator pointing to one past the last element of the Container\\
+    \end{tabular}
+  
+
+  \item {\bf Size}
+    
+    |a.size()|
+    
+    \begin{tabular}[!h]{l p{1cm} p{10cm}}
+      Return type: & & \size \\
+      Semantics: & & returns the number of elements in the Container\\
+    \end{tabular}
+  
+
+  \item {\bf Empty}
+    
+    |a.empty()|
+    
+    \begin{tabular}[!h]{l p{1cm} p{10cm}}
+      Return type: & & \bool \\
+      Semantics: & & returns ``true'' if the size of the Container is 0 \\
+    \end{tabular}
+  
+    \end{itemize}
+
+
+
+
+
+% ____________________________________________
+% Requirements of EuclideanVector
+% 
+\subsection{Euclidean Vector}
+\label{concept:euclideanvector}
+\begin{htmlonly}
+<div align=right><img SRC="icons/concept.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+An euclidean vector is represented by its Cartesian coordinates: \mbox{$(p_0,p_1,\ldots,p_{d-1})$} (in a d-dimensional vectorial space).  
+It can be defined by the difference between two points (Locations), A and B:
+if A has coordinates  \mbox{$(a_0,a_1,\ldots,a_{d-1})$} and B \mbox{$(b_0,b_1,\ldots,b_{d-1})$}, then vector ${\bf AB}=B-A$ has coordinates \mbox{$(b_0-a_0, b_1-a_1,\ldots,b_{d-1}-a_{d-1})$}.
+
+The requirements of Euclidean Vector are very similar to those of Location, and could actually have been represented by a Location. However, an euclidean vector is very different from a point, or location, (from a mathematical point of view) and it would have been confusing to represent these two entities by the same \emph{concept}.
+
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Refinement of}
+
+\hyperref{Default Constructible}{Default Constructible (see Section}{)}{concept:default_constructible}, \hyperref{Assignable}{Assignable (see Section}{)}{concept:assignable}, \hyperref{Equality Comparable}{Equality Comparable (see Section}{)}{concept:equality_comparable}
+%\vspace{0.5cm}
+
+
+
+%{\bf Associated Types}\vspace{0.2cm}
+\htmlrule[CLEAR=all]  \subsubsection*{Associated Types}
+
+\begin{itemize}
+\item {\bf Coordinate type}
+
+  |A::coordinate_type|
+
+  The type of the coordinates $p_i$, \mbox{$0 \le i \le d-1$}. Operations +, -, * must be defined on this type. The coordinate type should also be convertible to type |double|
+
+\end{itemize}
+
+
+
+
+%{\bf Notations}\vspace{0.2cm}
+\htmlrule[CLEAR=all]  \subsubsection*{Notations}
+
+\begin{tabular}[!h]{l l l}
+A & & A type that is a model of Euclidean Vector\\
+a, b & & Objects of type A\\
+C & &  coordinate type: |A::coordinate_type|\\
+i & & object of type |unsigned int|\\
+\end{tabular}
+
+
+%{\bf Valid Expressions}\vspace{0.2cm}
+\htmlrule[CLEAR=all]  \subsubsection*{Valid Expressions}
+
+\begin{itemize}
+
+\item {\bf Dimension}
+
+  |A::dimension|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & |int|\\
+    Semantics: & & returns the dimension of vectors of type |A|\\
+  \end{tabular}
+
+
+
+\item {\bf Copy Constructor}
+
+  |A(a)|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & A\\
+    Postcondition: & & |A(a)| is a copy of |a|\\
+  \end{tabular}
+
+\item {\bf Copy Constructor}
+
+  |A b(a)|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Postcondition: & & |b| is a copy of |a|\\
+  \end{tabular}
+
+\item {\bf Assignment}
+
+  |b = a|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & |A&|\\
+    Postcondition: & & |b| is a copy of |a|\\
+  \end{tabular}
+
+
+\item {\bf Coordinate Access Function}
+
+  |a[i]|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & C\\
+    Precondition: & & \mbox{$0 \le i \le d-1$}\\
+    Semantics: & & returns the $i^{th}$ coordinate of the vector\\
+  \end{tabular}
+
+
+\item {\bf Equality Comparison}
+
+  |a == b|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & |bool|\\
+    Semantics: & & checks if two vectors are identical\\
+  \end{tabular}
+
+
+\end{itemize}
+
+
+%{\bf Models}\vspace{0.2cm}
+\htmlrule[CLEAR=all]  \subsubsection*{Models}
+\begin{itemize}
+\item |euclidean_vector_2d|
+\item |euclidean_vector_3d|
+\end{itemize}
+
+
+
+
+
+\subsection{Location}
+\label{concept:location}
+\begin{htmlonly}
+<div align=right><img SRC="icons/concept.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+A location is an element of a d-dimensional Euclidean space $\mathbb{E}$. It is represented by its Cartesian coordinates: \mbox{$(p_0,p_1,\ldots,p_{d-1})$}.  
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Refinement of}
+
+\hyperref{Default Constructible}{Default Constructible (see Section}{)}{concept:default_constructible}, \hyperref{Assignable}{Assignable (see Section}{)}{concept:assignable}, \hyperref{Equality Comparable}{Equality Comparable (see Section}{)}{concept:equality_comparable}
+%\vspace{0.5cm}
+
+
+
+%{\bf Associated Types}\vspace{0.2cm}
+\htmlrule[CLEAR=all]  \subsubsection*{Associated Types}
+
+\begin{itemize}
+\item {\bf Coordinate type}
+
+  |A::coordinate_type|
+
+  The type of the coordinates $p_i$, \mbox{$0 \le i \le d-1$}. Operations +, -, * must be defined on this type. The coordinate type should also be convertible to type |double|.
+
+\item {\bf Difference type}
+
+  |A::difference_type|
+
+  The type of the euclidean vector obtained by computing the difference between two Locations. |difference_type| is a model of \hyperref{Euclidean Vector}{Euclidean Vector (see Section }{)}{concept:euclideanvector}.
+
+\end{itemize}
+
+
+
+
+%{\bf Notations}\vspace{0.2cm}
+\htmlrule[CLEAR=all]  \subsubsection*{Notations}
+
+\begin{tabular}[!h]{l l l}
+L & & A type that is a model of Location\\
+a, b & & Objects of type L\\
+C & &  coordinate type: |L::coordinate_type|\\
+i & & object of type |unsigned int|\\
+\end{tabular}
+
+
+%{\bf Valid Expressions}\vspace{0.2cm}
+\htmlrule[CLEAR=all]  \subsubsection*{Valid Expressions}
+
+\begin{itemize}
+
+\item {\bf Dimension}
+
+  |L::dimension|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & |int|\\
+    Semantics: & & returns the dimension of locations of type |L|\\
+  \end{tabular}
+
+
+\item {\bf Copy Constructor}
+
+  |L(a)|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & L\\
+    Postcondition: & & |L(a)| is a copy of |a|\\
+  \end{tabular}
+
+\item {\bf Copy Constructor}
+
+  |L b(a)|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Postcondition: & & |b| is a copy of |a|\\
+  \end{tabular}
+
+\item {\bf Assignment}
+
+  |b = a|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & |L&|\\
+    Postcondition: & & |b| is a copy of |a|\\
+  \end{tabular}
+
+
+
+\item {\bf Coordinate Access Function}
+
+  |a[i]|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & C\\
+    Precondition: & & \mbox{$0 \le i \le d-1$}\\
+    Semantics: & & returns the $i^{th}$ coordinate of the Location\\
+  \end{tabular}
+
+
+\item {\bf Equality Comparison}
+
+  |a == b|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & |bool|\\
+    Semantics: & & checks if two locations are identical\\
+  \end{tabular}
+
+\item {\bf Difference Operator}
+
+  |a - b|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & a model of EuclideanVector\\
+    Semantics: & & Computes the euclidean vector between two locations |a| and |b| \\
+  \end{tabular}
+
+
+\end{itemize}
+
+
+%{\bf Models}\vspace{0.2cm}
+\htmlrule[CLEAR=all]  \subsubsection*{Models}
+\begin{itemize}
+\item |location2d|
+\item |location3d|
+\end{itemize}
+
+
+
+
+
+
+%% ____________________________________________
+%% Requirements of Geo-Value
+%% 
+%\subsection{Property Map}
+%\label{concept:property_map}
+%\begin{htmlonly}
+%<div align=right><img SRC="icons/concept.PNG" height=34 width=178></div>
+%\end{htmlonly}
+% 
+%A Property Map is a map (in the geographical sense) of property values: a Location is attached to each value in the map.  The map is read-only, meaning that a property value of the map can not be modified.
+% 
+% 
+% 
+%\htmlrule[CLEAR=all]  \subsubsection*{Associated Types}
+%\begin{itemize}
+% 
+%\item {\bf Property type}
+% 
+%  |A::property_type|
+% 
+%  The type of the property values in the Map. It could be a floating point type (|double|, |float|) or a ``discrete type'' (|int|, |bool|, \ldots).
+% 
+%  
+%\item {\bf iterator}
+% 
+%  |A::iterator|
+%  
+%  A type that is a model of \hyperref{Forward Iterator}{Forward Iterator (see Section}{)}{concept:forwarditerator}.
+% 
+% 
+%\end{itemize}
+% 
+% 
+%\htmlrule[CLEAR=all]  \subsubsection*{Notations}
+% 
+%\begin{tabular}[!h]{l l l}
+%A & & A type that is a model of Property Map\\
+%a & & Object of type A\\
+%l & & Object of a type that is a model of concept \hyperref{Location}{Location (see Section}{)}{concept:location}. 
+%\end{tabular}
+% 
+% 
+%\htmlrule[CLEAR=all]  \subsubsection*{Valid Expressions}
+%\begin{itemize}
+%\item {\bf Read property value}
+% 
+%  |a.property_value(l)|
+% 
+%  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+%    Return type: & & |property_type|\\
+%    Semantics: & & return the property value at location |l|.
+%  \end{tabular}
+% 
+%\item {\bf Beginning of range}
+%    
+%    |a.begin()|
+%    
+%    \begin{tabular}[!h]{l p{1cm} p{10cm}}
+%      Return type: & & iterator \\
+%      Semantics: & & returns an iterator pointing to the first element of the Property Map\\
+%    \end{tabular}
+%  
+% 
+%\item {\bf End of range}
+%    
+%    |a.end()|
+%    
+%    \begin{tabular}[!h]{l p{1cm} p{10cm}}
+%      Return type: & & iterator \\
+%      Semantics: & & returns an iterator pointing to one past the last element of the Property Map\\
+%    \end{tabular}
+%  
+% 
+%\end{itemize}
+%%\vspace{0.5cm}
+% 
+
+
+
+
+
+
+% ____________________________________________
+% Requirements of Geo-Value
+% 
+\subsection{Geo-Value}
+\label{concept:geovalue}
+\begin{htmlonly}
+<div align=right><img SRC="icons/concept.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+ A Geo-Value is the base element a geostatistical algorithm operates on. It is defined by a Location \loc{u} and a property value, which can be either categorical ('sand', 'mud', \ldots) or continuous.
+The property value of a Geo-Value can be changed, however its location is fixed.
+
+\htmlrule[CLEAR=all]  \subsubsection*{Associated Types}
+\begin{itemize}
+
+\item {\bf Property type}
+
+  |A::property_type|
+
+  The type of the property value hold by the Geo-Value. It could be a floating point type (|double|, |float|) or a ``discrete type'' (|int|, |bool|, \ldots).
+
+  
+\item {\bf location type}
+
+  |A::location_type|
+  
+  A type that is a model of \hyperref{Location}{Location (see Section}{)}{concept:location}.
+
+
+\end{itemize}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Notations}
+
+\begin{tabular}[!h]{l l l}
+A & & A type that is a model of Geo-Value\\
+a & & Object of type A\\
+P & &  the type of the property associated to A\\
+p & & Object of type P\\
+L & & the type of the location associated to A\\
+l & & Object of type L
+\end{tabular}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Valid Expressions}
+\begin{itemize}
+\item {\bf Read property value}
+
+  |a.property_value()|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & P\\
+    Semantics: & & return the property value hold by the Geo-Value (read-only function).
+  \end{tabular}
+
+
+\item {\bf Write property value}
+
+  |a.set_property_value(p)|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & void\\
+    Semantics: & & Sets the property value hold by the Geo-Value to p.
+  \end{tabular}
+
+
+\item {\bf Get Location}
+
+  |a.location()|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & L\\
+    Semantics: & & returns the location of the Geo-Value
+  \end{tabular}
+
+
+\item {\bf Is informed}
+
+  |a.is_informed()|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & |bool|\\
+    Semantics: & & returns true if the Geo-Value contains an actual property value.
+  \end{tabular}
+
+\end{itemize}
+%\vspace{0.5cm}
+ 
+
+\htmlrule[CLEAR=all]  \subsubsection*{Models}
+\begin{itemize}
+\item |node_2d|
+\item |node_3d|
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+% ____________________________________________
+% Requirements of Neighborhood
+% 
+
+\subsection{Neighborhood}
+\label{concept:neighborhood}
+\begin{htmlonly}
+<div align=right><img SRC="icons/concept.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+Call $f$ a binary predicate taking two geo-values as arguments. If \loc{u} is a geo-value, a Neighborhood of \loc{u} in \SET{U} is the set of geo-values $V(\mloc{u})$ such that:
+\begin{displaymath}
+  V(\mloc{u})=\{\mloc{v} \in \MSET{U} \quad / \quad f(\mloc{u},\mloc{v})=true\}
+\end{displaymath}
+\loc{u} is called the center of the Neighborhood. A neighbor is, of course, an element of the Neighborhood. 
+The neighborhood can be made to contain no more than a fixed number of neighbors, even if more geo-values actually satisfy criterion $f$. The retained geo-values could be selected according to their variogram distance from the center, or according to their ``nature'' (i.e. the geo-value's property is a ``hard datum'' or is a previously simulated value), etc.
+
+In \gstat{} two types of neighborhoods are often used: elliptical neighborhoods and window (or template) neighborhoods. An elliptical neighborhood is a neighborhood for which \mbox{$f(\mloc{u},\mloc{v})=true$} if \loc{v} is inside a given ellipsoid centered on \loc{u}. A window neighborhood, is defined by a set of vectors \mbox{$\mloc{h}_1,\ldots,\mloc{h}_n$} and:
+\begin{displaymath}
+  f(\mloc{u},\mloc{v})=true \quad \rm{if } \quad \exists \ j \in [1,n] \quad \mloc{v} = \mloc{u}+\mloc{h}_j
+\end{displaymath}
+
+ 
+\vspace{0.5cm}
+
+\htmlrule[CLEAR=all]  \subsubsection*{Refinement of}
+
+\hyperref{Container}{Container (see Section}{)}{concept:container} 
+%\vspace{0.5cm}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Associated Types}
+\begin{itemize}
+
+\item {\bf Geovalue type}
+
+  |A::value_type|
+  
+  |value_type| is the type of geovalue stored into the neighborhood. 
+
+
+\item {\bf Neighborhood Iterator}
+
+  |A::iterator|
+  
+  A neighborhood iterator is a model of Forward Iterator (see previous description). It is an iterator that returns a geo-value when dereferenced, and supports operator |=| (assignment), operator |++| (increment), operator |*| (dereference) and operator |!=| (comparison).
+
+
+\end{itemize}
+%\vspace{0.5cm}
+ 
+
+\htmlrule[CLEAR=all]  \subsubsection*{Notations}
+
+\begin{tabular}[!h]{l l l}
+A & & A type that is a model of Neighborhood\\
+a & & Object of type A\\
+I & & A type the is a model of \hyperref{Forward Iterator}{Forward Iterator (see Section}{)}{concept:forwarditerator}\\
+u & & An object of a type that models \hyperref{Geovalue}{Geovalue (see Section}{)}{concept:geovalue}
+\end{tabular}
+%\vspace{0.5cm}
+ 
+
+\htmlrule[CLEAR=all]  \subsubsection*{Valid Expressions}
+
+\begin{itemize}
+
+\item {\bf find neighbors}
+
+  |a.find_neighbors(u)|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & |void|\\
+    Semantics: & & finds the neighbors of geovalue u and stores them\\
+  \end{tabular}
+
+\item {\bf center}
+
+  |a.center()|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & GeoValue\\
+    Semantics: & & Returns the center of the neighborhood\\
+  \end{tabular}
+
+\item {\bf begin}
+
+  |a.begin()|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & I\\
+    Semantics: & & returns an iterator to the first geo-value in the neighborhood\\
+  \end{tabular}
+
+
+
+ \item {\bf end}
+
+  |a.end()|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & I\\
+    Semantics: & & returns an iterator to one past the last geo-value in the neighborhood\\
+  \end{tabular}
+
+
+
+ \item {\bf size}
+
+  |a.size()|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & |unsigned int|\\
+    Semantics: & & returns the number of geo-values in the neighborhood\\
+  \end{tabular}
+
+\item {\bf Empty}
+    
+    |a.is_empty()|
+    
+    \begin{tabular}[!h]{l p{1cm} p{10cm}}
+      Return type: & & \bool \\
+      Semantics: & & returns ``true'' if the size of the neighborhood is 0 \\
+    \end{tabular}
+
+\end{itemize}
+%\vspace{0.5cm}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Models}
+\begin{itemize}
+\item |elliptical_neighborhood|
+
+\end{itemize}
+
+
+
+
+% ____________________________________________
+% Requirements of Window Neighborhood
+% 
+
+\subsection{Window Neighborhood}
+\label{concept:window_neighborhood}
+\begin{htmlonly}
+<div align=right><img SRC="icons/concept.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+Call $\mloc{h}_1,\ldots, \mloc{h}_k$ a set of vectors in space. A Window Neighborhood of \loc{u} is the set of $k$ geovalues $z(\mloc{u}+\mloc{h}_1),\ldots, z(\mloc{u}+\mloc{h}_k)$ ($z(\mloc{u}+\mloc{h}_i)$ is the geovalue whose location is $\mloc{u}+\mloc{h}_i$ and property value $z(\mloc{u}+\mloc{h}_i)$).
+
+The order of the elements of a Window Neighborhood is important: the $i^{th}$ element must be $z(\mloc{u}+\mloc{h}_i)$. If $z(\mloc{u}+\mloc{h}_i)$ is not defined (either because this location has not been estimated or simulated yet, or because it does not belong to the simulation grid), it must be included into the Window Neighborhood nevertheless. However, if a non-defined geovalue is the last element of a Window Neighborhood, it is not included.
+This is a major difference with \hyperref{Neighborhood}{Neighborhood (see Section }{)}{concept:neighborhood}: a \hyperref{Neighborhood}{Neighborhood (see Section }{)}{concept:neighborhood} only contains informed geovalues, i.e. geovalues with a defined property value. 
+
+For example, consider a Window Neighborhood \emph{W} defined by six vectors $\mloc{h}_1,\ldots, \mloc{h}_6$, and a location \loc{u} such that $z(\mloc{u}+\mloc{h}_2)$, $z(\mloc{u}+\mloc{h}_5)$ and $z(\mloc{u}+\mloc{h}_6)$ are not defined. Then \emph{W} must only contain: $z(\mloc{u}+\mloc{h}_1)$, $z(\mloc{u}+\mloc{h}_2)$, $z(\mloc{u}+\mloc{h}_3)$, $z(\mloc{u}+\mloc{h}_4)$.
+A \hyperref{Neighborhood}{Neighborhood (see Section }{)}{concept:neighborhood} would have contained only $z(\mloc{u}+\mloc{h}_1)$, $z(\mloc{u}+\mloc{h}_3)$ and $z(\mloc{u}+\mloc{h}_4)$
+
+\vspace{0.5cm}
+
+\htmlrule[CLEAR=all]  \subsubsection*{Refinement of}
+
+\hyperref{Neighborhood}{Neighborhood (see Section }{)}{concept:neighborhood} 
+%\vspace{0.5cm}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Associated Types}
+Same as \hyperref{Neighborhood}{Neighborhood (see Section }{)}{concept:neighborhood}
+ 
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Notations}
+
+\begin{tabular}[!h]{l l l}
+a & & Object of a type that is a model of Window Neighborhood\\
+begin, end & & Iterators on a container of models of \hyperref{Euclidean Vector}{Euclidean Vector (see Section }{)}{concept:euclideanvector}
+\end{tabular}
+%\vspace{0.5cm}
+
+
+ 
+\htmlrule[CLEAR=all]  \subsubsection*{Valid Expressions}
+\begin{itemize}
+
+\item {\bf set geometry}
+
+  |a.set_geometry(begin, end)|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & |void|\\
+    Semantics: & & defines the geometry $\mloc{h}_1,\ldots, \mloc{h}_k$ of the window. The range of Euclidean Vectors need not be copied, i.e. |a| does not be the owner of the geometry.\\
+  \end{tabular}
+
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+% ____________________________________________
+% Requirements of cdf
+% 
+\subsection{Cdf}
+\label{concept:cdf}
+\begin{htmlonly}
+<div align=right><img SRC="icons/concept.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+
+It is a cumulative distribution function (cdf):
+\begin{displaymath}
+  F_Z:\quad z \longmapsto Prob\{Z \le z\} 
+\end{displaymath}
+It can be either defined analytically (e.g. a Gaussian cdf, or an exponential cdf) or by a family of couples \mbox{$\Big(z_i, F_Z(z_n) \Big)$}, \mbox{$i=1,\ldots,n$} (non-parametric cdf).
+
+
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Associated Types}
+\begin{itemize}
+\item {\bf Value Type}
+
+  |A::value_type|
+
+  The type of z (see definition above).
+
+
+\end{itemize}
+
+ 
+
+\htmlrule[CLEAR=all]  \subsubsection*{Notations}
+
+\begin{tabular}[!h]{l l l}
+A & & A type that is a model of \hyperref{CDF}{CDF}{}{concept:cdf}\\
+a & & Object of type X\\
+z & & Object of type X::value\_type\\
+P & & A type that represents a real number (e.g. float, double)\\
+p & & an object of type P\\
+%I & & a type that is a model of a Forward Iterator\\
+%first & & an object of type I, iterating on a container of real numbers\\
+%last & & an object of type I, iterating on a container of real numbers
+\end{tabular}
+
+ 
+
+\htmlrule[CLEAR=all]  \subsubsection*{Valid Expressions}
+\begin{itemize}
+\item {\bf Cdf Evaluation}
+
+  |a.prob(z)|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & P\\
+    Semantics: & & returns $p=Prob\{Z \le z\}$\\
+    Postcondition: & & $0 \le p \le 1$ ($p$ is a probability)\\
+  \end{tabular}
+
+\item {\bf Cdf Inverse}
+
+  |a.inverse(p)|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Precondition: & & $0 \le p \le 1$ ($p$ is a probability)\\
+    Return type: & & |X::value_type|\\
+    Semantics: & & returns the value $z$ such that $p=Prob\{Z \le z\}$\\
+  \end{tabular}
+
+
+%\item {\bf Define}
+%               
+%  |a.define(first, last)|
+%               
+%  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+%    Precondition: & & [first,last) is a valid range on a container of real numbers\\
+%    Return type: & & void\\
+%    Semantics: & & defines the cdf from a set of parameters, either a mean and a variance if the cdf is Gaussian (or any other set of parameters, depending on the type of cdf), or multiple probabilities corresponding to different z-values if the cdf is non-parametric\\
+%  \end{tabular}
+\end{itemize}
+
+
+
+\subsubsection{Definition}
+
+A Cdf is valid if 
+\begin{itemize}
+\item $\quad \forall z \quad F_Z(z) \in [0,1]$.
+\item $F_Z$ is a monotonous, increasing function.
+\end{itemize}
+This means for example that order relation problems (resulting from some indicator-based algorithms)  must be corrected before the object is actually a valid cdf. 
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Models}
+\begin{itemize}
+\item |gaussian_cdf|
+\item |discrete_variable_non_parametric_cdf|
+\end{itemize}
+
+
+
+
+
+
+
+
+% ____________________________________________
+% Requirements of Non parametric cdf
+% 
+\subsection{Non-Parametric Cdf}
+\label{concept:nonparamcdf}
+\begin{htmlonly}
+<div align=right><img SRC="icons/concept.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+A non-parametric cdf of variable Z is a cdf F defined by a discrete set of points \mbox{$\Big( z_i, F(z_i) \Big)$}, $i=1,\ldots,n$. 
+If variable Z is categorical, the $z_i$ are all the possible values of Z, and the points \mbox{$\Big( z_i, F(z_i) \Big)$} fully describe the cdf of Z.
+
+If on the other hand Z is a continuous variable, the points  \mbox{$\Big( z_i, F(z_i) \Big)$} must be interpolated in order to associate a probability to any z-value. 
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Associated Types}
+\begin{itemize}
+\item {\bf Value Type}
+
+  |A::value_type|
+
+  The type of z (see definition above).
+
+\item {\bf Z-iterator}
+
+  |A::z_iterator|
+
+  The type of the iterator to the values $z_1,\ldots,z_n$ (see definition above). A z-iterator is a model of Random-Access Iterator (as defined by STL).
+
+\item {\bf Z-iterator}
+
+  |A::p_iterator|
+
+  The type of the iterator to the values $p_1,\ldots,z_n$ (see definition above). A p-iterator is a model of Random-Access Iterator (as defined by STL).
+
+
+\end{itemize}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Refinement of}
+\hyperref{CDF}{CDF}{}{concept:cdf}, \hyperref{Default Constructitble}{Default Constructitble}{}{concept:default_constructible}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Notations}
+
+\begin{tabular}[!h]{l l p{10cm}}
+A & & A type that is a model of Cdf\\
+a & & Object of type X\\
+m & & object of type |unsigned int|\\
+\end{tabular}
+
+ 
+
+\htmlrule[CLEAR=all]  \subsubsection*{Valid Expressions}
+\begin{itemize}
+
+\item {\bf Resize}
+  
+  |a.resize(m)|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & void\\
+    Semantics: & & Redefines the size of the discretizations $z_1,\ldots,z_n$ and $p_1,\ldots,z_n$. Space for m values is allocated.\\
+  \end{tabular}
+ 
+
+\item {\bf Size}
+  
+  |a.size()|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & int\\
+    Semantics: & & Returns the size of the discretization: $n$\\
+  \end{tabular}
+ 
+
+\item {\bf Access to the beginning of the z-set}
+  
+  |a.z_begin()|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & |z_iterator|\\
+    Semantics: & & provides an iterator to the $z_i$'s\\
+  \end{tabular}
+ 
+\item {\bf Access to the end of the z-set}
+  
+  |a.z_end()|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & |z_iterator|\\
+    Semantics: & & provides an iterator to the $z_i$'s\\
+  \end{tabular}
+ 
+
+\item {\bf Access to the beginning of the p-set}
+  
+  |a.p_begin()|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & |p_iterator|\\
+    Semantics: & & provides an iterator to the $p_i$'s\\
+  \end{tabular}
+ 
+\item {\bf Access to the end of the p-set}
+  
+  |a.p_end()|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & |p_iterator|\\
+    Semantics: & & provides an iterator to the $p_i$'s\\
+  \end{tabular}
+ 
+%\item {\bf Define}
+%               
+%  |a.define(first, last)|
+%               
+%  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+%    Precondition: & & [first,last) is a valid range on a container of real numbers\\
+%    Return type: & & void\\
+%    Semantics: & & defines the cdf from a set of parameters, either a mean and a variance if the cdf is Gaussian (or any other set of parameters, depending on the type of cdf), or multiple probabilities corresponding to different z-values if the cdf is non-parametric\\
+%  \end{tabular}
+\end{itemize}
+
+
+
+
+
+
+
+%______________________________________________________________
+% Function Objects
+%______________________________________________________________
+\section{Function Objects}
+
+A \emph{function object}, or \emph{functor}, is an object that can be called using an ordinary function call. It can be a pointer to a function or an object with a member function |operator()|. 
+For example, object |sine| is a function object:
+\begin{code}
+struct sine{
+  double operator(double x) {return sin(x);}
+};
+\end{code}
+\noindent because if |my_sine| is of type |sine|, |my_sine| can be called by: |my_sine(x)| and return $sin(x)$, just as if |my_sine| was a function.
+
+
+% ____________________________________________
+% Requirements of Sampler
+% 
+\subsection{Sampler}
+\label{concept:sampler}
+\begin{htmlonly}
+<div align=right><img SRC="icons/concept.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+A sampler determines a value $z$ according to a cdf $F$ and assigns it to a Geovalue. Different methods are possible. The most used is Monte-Carlo simulation: a new value is drawn randomly from cdf $F$ and assigned to the Geovalue. 
+Other sampler can be defined:
+\begin{itemize}
+\item Metropolis Sampling: a value is drawn randomly from $F$ but has a probability of being rejected. If it is rejected, the property value of the Geovalue remains unchanged.
+\item Quantile Sampling: always draw the same quantile from the cdf. 
+\end{itemize}
+The sampler could also modify the cdf before drawing from it.
+ 
+
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Associated Types}
+\begin{itemize}
+\item {\bf Return Type}
+
+  |A::return_type|
+
+  The type convertible to int.
+\end{itemize}
+
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Refinement of}
+Assignable
+
+ 
+
+\htmlrule[CLEAR=all]  \subsubsection*{Notations}
+
+\begin{tabular}[!h]{l l l}
+a & & an object of a type that models Sampler\\
+c & & An object of a type that is a model of \hyperref{CDF}{CDF}{}{concept:cdf}\\
+g & & An object of a type that is a model of \hyperref{Geovalue}{Geovalue}{}{concept:geovalue}\\
+\end{tabular}
+
+ 
+
+\htmlrule[CLEAR=all]  \subsubsection*{Valid Expressions}
+\begin{itemize}
+\item {\bf Draw Realization}
+
+  |a(g,c)|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & |int|\\
+    Semantics: & & Assigns a value to |g| given cdf |c|. Returns 0 if successful\\ 
+  \end{tabular}
+\end{itemize}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Models}
+\begin{itemize}
+\item |Monte_carlo_sampler|
+
+Draws a value from a cdf using Monte-Carlo simulation.
+
+\item |Quantile_sampler|
+
+Returns a given quantile of the cdf. 
+
+\end{itemize}
+
+
+
+
+% ____________________________________________
+% Requirements of covariance
+% 
+\subsection{Covariance}
+\label{concept:covariance}
+\begin{htmlonly}
+<div align=right><img SRC="icons/concept.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+
+A covariance is a positive-definite function that characterizes the correlation between two random variables. In \gstat, the covariance is computed between two stationary random variables $Z_1(\mloc{u})$ and $Z_2(\mloc{u}+\mloc{h})$ (if $Z_1 \ne Z_2$ the covariance is actually a called a cross-covariance). Because the variables are stationnary, the covariance actually only depends on vector \loc{h}. 
+\begin{displaymath}
+C: \ \mloc{h} \longmapsto C \Big(Z_1(\mloc{u}),Z_2(\mloc{u}+\mloc{h}) \Big) \quad \textrm{independent \ of \ \loc{u}}
+\end{displaymath}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Associated Types}
+\begin{itemize}
+\item {\bf Return Type}
+
+  |A::return_type|
+
+  The type of $C(\mloc{u}_1, \mloc{u}_2)$ (see definition above).
+
+\item {\bf Argument Type}
+
+  |A::argument_type|
+
+  The type of location \loc{u} (see definition above).
+
+\end{itemize}
+
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Refinement of}
+Assignable
+
+ 
+
+\htmlrule[CLEAR=all]  \subsubsection*{Notations}
+
+\begin{tabular}[!h]{l l l}
+A & & A type that is a model of Covariance\\
+a & & an object of type A\\
+U & & A type that is a model of \hyperref{Location}{Location (see Section}{)}{concept:location}\\
+u1,u2 & & two objects of type U\\
+T & & A type that represents a real number (e.g. float, double)\\
+\end{tabular}
+
+ 
+
+\htmlrule[CLEAR=all]  \subsubsection*{Valid Expressions}
+\begin{itemize}
+
+\item {\bf Compute covariance}
+
+  |a(u1,u2)|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & |T|\\
+    Semantics: & & returns the covariance $C($|u1,u2|$)$.\\
+    
+  \end{tabular}
+
+\end{itemize}
+
+\htmlrule[CLEAR=all]  \subsubsection*{Models}
+\begin{itemize}
+\item |Spherical_covariance|
+\item |Exponential_covariance|
+\end{itemize}
+
+
+
+
+
+
+
+% ____________________________________________
+% Requirements of Kriging Constraint
+%
+\subsection{Kriging Constraint}
+\label{concept:krigingconstraint}
+\begin{htmlonly}
+<div align=right><img SRC="icons/concept.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+
+A kriging system can be divided into two parts: one accounts for the correlation and the redundancy between the data modeled through the covariance, while the other expresses various constraints as: ``the kriging weights have to sum-up to 1''. A functor that models |Kriging Constraint| sets up this second part of the system. It takes in charge of defining the total size of the kriging system and filling in the kriging matrix entries belonging to non-covariance terms.
+
+
+ \htmlrule[CLEAR=all]  \subsubsection*{Refinement of}
+Assignable
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Notations}
+
+\begin{tabular}[!h]{l l p{10cm}}
+a & & an object of a type that models Kriging Constraint\\
+M & & an object of type Symmetric Matrix (see the description of kriging in~\ref{matrix_lib_req} for a detailed description of this type) \\
+V & & an object of type Vector (see the description of kriging in~\ref{matrix_lib_req} for a detailed description of this type)\\
+neighb & & an object of a type that models  \hyperref{Neighborhood}{Neighborhood (see Section}{)}{concept:neighborhood}\\
+u & &  an object of a type that models \hyperref{Location}{Location (see Section}{)}{concept:location}
+\end{tabular}
+
+ 
+
+\htmlrule[CLEAR=all]  \subsubsection*{Valid Expressions}
+\begin{itemize}
+\item {\bf Set-up the system}
+
+  |a(M,V,u,neighb)|
+  
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & a type convertible to |unsigned int|\\
+    Semantics: & & The total size N of the kriging system is computed from the total number of neighboring data. The kriging matrix M is then resized to $\rm{N}*\rm{N}$, and vector V (second member of the kriging system) is resized to N. Finally, the part of the  system that does not depend on the covariances is computed. |u| is the location at which th kriging system is computed, |neighb| is a neighborhood of |u|. The returned value is the final size of the kriging system.\\
+    
+  \end{tabular}
+
+\end{itemize}
+
+\htmlrule[CLEAR=all]  \subsubsection*{Models}
+\begin{itemize}
+\item |OK_constraints|
+
+Imposes the constraints of ordinary kriging 
+
+\item |KT_constraint|
+
+Imposes the constraints of kriging with trend 
+
+\end{itemize}
+
+
+
+% ____________________________________________
+% Requirements of CoKriging Constraint
+%
+\subsection{Cokriging Constraint}
+\label{concept:cokrigingconstraint}
+\begin{htmlonly}
+<div align=right><img SRC="icons/concept.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+
+A (co)kriging system can be divided into two parts: one accounts for the correlation and the redundancy between the data modeled through the covariance, while the other expresses various linear constraints as: ``the kriging weights have to sum-up to 1''. A functor that models |Cokriging Constraint| sets up this second part of the system. It takes in charge of defining the total size of the cokriging system and filling in the cokriging matrix entries belonging to non-covariance terms.
+
+
+ \htmlrule[CLEAR=all]  \subsubsection*{Refinement of}
+Assignable
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Notations}
+
+\begin{tabular}[!h]{l l p{10cm}}
+a & & an object of a type that models Cokriging Constraint\\
+M & & an object of type Symmetric Matrix (see the description of kriging in~\ref{matrix_lib_req} for a detailed description of this type) \\
+V & & an object of type Vector (see the description of kriging in~\ref{matrix_lib_req} for a detailed description of this type)\\
+first,last & & Two Input Iterators to a range of types that model  \hyperref{Neighborhood}{Neighborhood (see Section}{)}{concept:neighborhood}\\
+u & &  an object of type that models \hyperref{Location}{Location (see Section}{)}{concept:location}
+\end{tabular}
+
+ 
+
+\htmlrule[CLEAR=all]  \subsubsection*{Valid Expressions}
+\begin{itemize}
+\item {\bf Set-up the system}
+
+  |a(M,V,u,first,last)|
+  
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & a type convertible to |unsigned int|\\
+    Semantics: & & The total size N of the cokriging system is computed from the total number of neighboring data. The cokriging matrix M is then resized to $\rm{N}*\rm{N}$, and vector V (second member of the cokriging system) is resized to N. Finally, the part of the  system that does not depend on the covariances is computed. |u| is the location at which the cokriging system is computed, and |[first,last)| is a range of neighborhood of location |u| (one neighborhood for each variable involved in the cokriging system). The returned value is the final size of the cokriging system.\\
+    
+  \end{tabular}
+
+\end{itemize}
+
+\htmlrule[CLEAR=all]  \subsubsection*{Models}
+\begin{itemize}
+\item |OK_constraints|
+
+Imposes the constraints of ordinary kriging 
+
+\end{itemize}
+
+
+
+
+
+% ____________________________________________
+% Requirements of Covariance set
+%
+\subsection{Covariance set}
+\label{concept:covarianceset}
+\begin{htmlonly}
+<div align=right><img SRC="icons/concept.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+Cokriging of variable $Z_1$ accounting for variables $Z_2,\ldots, Z_M$ requires the covariances between all the variables: $C_{i,j}(\mloc{h})$, $i,j = 1, \ldots, M$. These covariances are specified through a Covariance Set. Different models can actually be used to determine these covariances. The full cokriging approach (LMC approach) is very demanding because it requires the complete knowledge of all covariance functions $C_{i,j}(\mloc{h})$. Modeling cross-covariances from data is a difficult task, because all the covariances can not be modeled independently from one another. The Markov models MM1 and MM2 alleviate the difficulties of full cokriging by using only the collocated secondary variables: the cokriging of location \loc{u} depends on the neighboring values of $Z_1(\mloc{u}+\mloc{h_j})$ and only the collocated variables $Z_i(\mloc{u})$, $i=2,\ldots,M$ (instead of many neighborhoods of variables: $Z_i(\mloc{u}+\mloc{h^i_j})$). Hence the covariances $C_{i,j}(\mloc{h})$, $i,j=2,\ldots,M$ need only be modeled for distance $\mloc{h}=0$. Moreover, the covariances $C_{1,j}$, $j=2,\ldots,M$ are (approximately) proportional to $C_{1,1}$ or $C_{j,j}$, depending on the Markov approximation used (MM1 or MM2). 
+
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Associated Types}
+\begin{itemize}
+\item {\bf Return Type}
+
+  |A::return_type|
+
+  The type of $C_{i,j}(\mloc{u}_1, \mloc{u}_2)$ (see definition above).
+
+\item {\bf Argument Type}
+
+  |A::argument_type|
+
+  The type of  location \loc{u} (see definition above).
+
+\end{itemize}
+
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Refinement of}
+Assignable
+
+
+ 
+
+\htmlrule[CLEAR=all]  \subsubsection*{Notations}
+
+\begin{tabular}[!h]{l l p{10cm}}
+a & & an object of a type that models Covariance set\\
+U & & a type that models \hyperref{Location}{Location (see Section}{)}{concept:location}\\
+u1,u2 & & objects of type U \\
+i, j & & objects of type convertible to |unsigned int|
+\end{tabular}
+
+ 
+
+\htmlrule[CLEAR=all]  \subsubsection*{Valid Expressions}
+\begin{itemize}
+\item {\bf Set-up the system}
+
+  |a(i,j, u1,u2)|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & a type convertible to |double|\\
+    Semantics: & & returns the covariance value $C_{i,j}(\mloc{u}_1, \mloc{u}_2)$ \\
+    
+  \end{tabular}
+
+\end{itemize}
+
+\htmlrule[CLEAR=all]  \subsubsection*{Models}
+\begin{itemize}
+\item |LMC_covariance|
+\item |MM1_covariance|
+\item |MM2_covariance|
+\end{itemize}
+
+
+
+
+
+
+% ____________________________________________
+% Requirements of combiner
+%
+%\subsection{Combiner}
+%A combiner $f$ forms combination between a sequence of ``weights'' $\{\lambda_i \}$ and the property values of a sequence of geo-values $\{x_i \}$, $i=1,\ldots,N$, the combination being of the same type as the $x_i$ ($x_i$ is the property value of geo-value $i$). 
+%
+%If for example $f$ is a linear combination, then:
+%\begin{displaymath}
+%  f\Big( \{ \lambda_i \}, \{x_i \} \Big) = \sum_{i=1}^N \lambda_i x_i
+%\end{displaymath}
+%\noindent and the resulting value $f\Big( \{ \lambda_i \}, \{x_i \} \Big)$ is of the same type as the $x_i$. 
+%
+%
+%
+%
+%\htmlrule[CLEAR=all]  \subsubsection*{Notations}
+%
+%\begin{tabular}[!h]{l l p{10cm}}
+%A & & a type that is a model of Combiner\\
+%a & & an object of type A\\
+%|I_l|, |I_x| & & a type that is a model of Forward iterator\\
+%|first_l|, |last_l| & & two objects of type |I_l|, iterating on objects of type L\\
+%|first_x|, |last_x| & & two objects of type |I_x|, iterating on objects of a type G that models |geo-value|\\
+%\end{tabular}
+%
+%
+% 
+%
+%\htmlrule[CLEAR=all]  \subsubsection*{Valid Expressions}
+%\begin{itemize}
+%\item {\bf Combine}
+%
+%  |a(first_l, last_l, first_x, last_x)|
+%
+%  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+%    Pre-condition: & & the two ranges are of same length (both sets have the same number of elements) \\
+%    Return type: & & |G::property_type| \\
+%    Semantics: & & returns the combination between the weights in range |[first_l,last_l)| and the property values of geo-values in range |[first_x,last_x)| \\
+%    
+%  \end{tabular}
+%
+%\end{itemize}
+%
+%\htmlrule[CLEAR=all]  \subsubsection*{Models}
+%\begin{itemize}
+%\item |linear_combination|
+%\end{itemize}
+%\vspace{1cm}
+%
+
+
+% ____________________________________________
+% Requirements of cdf_estimator
+%
+\subsection{Single Variable Cdf Estimator}
+\label{concept:svce}
+\begin{htmlonly}
+<div align=right><img SRC="icons/concept.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+A Single Variable Cdf Estimator (more precisely a conditional-cdf estimator) estimates a conditional distribution function of variable $Z$ at a location \loc{u} given some neighboring $Z$-values. It can estimate parametric cdf's (usually Gaussian) or non-parametric cdf's, using different approaches: kriging, search trees (SNESIM) or even neural networks.
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Refinement of}
+Assignable
+
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Notations}
+
+\begin{tabular}[!h]{l l p{10cm}}
+a & & an object of a type that models Cdf Estimator\\
+f & & an object of a type that models \hyperref{CDF}{CDF}{}{concept:cdf}\\
+u & & an object of a type that models a \hyperref{Location}{Location (see Section}{)}{concept:location}\\
+V & & an object of a type that models a \hyperref{Neighborhood}{Neighborhood (see Section}{)}{concept:neighborhood}
+\end{tabular}
+
+
+ 
+
+\htmlrule[CLEAR=all]  \subsubsection*{Valid Expressions}
+\begin{itemize}
+\item {\bf Estimate cdf}
+
+  |a(u,V,f)|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & int\\
+    Semantics: & & estimates the ``parameters'' of cdf |f| (mean and variance in the case of a Gaussian cdf, or the probabilities \mbox{$Prob(Z \le z_i)=F(z_i)$,} $i=1,\ldots,n$, if $F$ is non-parametric). The returned value is 0 if no problem was encountered during the execution of the function. If the returned value is different from 0 (i.e. the estimation of |f| failed), ccdf |f| has not been modified by the function call\\
+    
+  \end{tabular}
+
+\end{itemize}
+
+\htmlrule[CLEAR=all]  \subsubsection*{Models}
+\begin{itemize}
+\item |gaussian_cdf_Kestimator|: estimator of a gaussian cdf using kriging (K)
+\item |indicator_cdf_Kestimator|: estimator of a non-parametric cdf using indicator kriging
+\item |search_tree_estimator|: estimator of a non-parametric cdf using a search tree (SNESIM)
+\end{itemize}
+
+
+
+
+
+
+
+
+\subsection{Multiple Variables Cdf Estimator}
+\label{concept:mvce}
+\begin{htmlonly}
+<div align=right><img SRC="icons/concept.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+A Multiple Variables Cdf Estimator estimates a conditional distribution function of variable $Z_1$ at a location \loc{u} given some neighboring information. This information can consist of outcomes of several different variables $Z_2,\ldots,Z_{N_v}$. A Multiple Variables Cdf Estimator can estimate parametric cdf's (usually Gaussian) or non-parametric cdf's, using different approaches: kriging, search trees (SNESIM).
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Refinement of}
+Assignable
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Notations}
+
+\begin{tabular}[!h]{l l p{10cm}}
+A & & a type that is a model of cdf estimator\\
+a & & an object of type A\\
+f & & an object of a type that models \hyperref{CDF}{CDF}{}{concept:cdf}\\
+u & & an object of a type that models a \hyperref{Location}{Location (see Section}{)}{concept:location}\\
+first,last & &  two models of Input Iterator (see STL) iterating on a range of models of \hyperref{Neighborhood}{Neighborhood (see Section}{)}{concept:neighborhood}\\
+\end{tabular}
+
+
+ 
+
+\htmlrule[CLEAR=all]  \subsubsection*{Valid Expressions}
+\begin{itemize}
+\item {\bf Estimate cdf}
+
+  |a(u,first,last,f)|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & int\\
+    Semantics: & & estimates the ``parameters'' of cdf |f| (mean and variance in the case of a Gaussian cdf, or the probabilities \mbox{$Prob(Z \le z_i)=F(z_i)$,} $i=1,\ldots,n$, if $F$ is non-parametric). The returned value is 0 if no problem was encountered during the execution of the function. If the returned value is different from 0 (i.e. the estimation of |f| failed), ccdf |f| has not been modified by the function call\\
+    
+  \end{tabular}
+
+\end{itemize}
+
+\htmlrule[CLEAR=all]  \subsubsection*{Models}
+\begin{itemize}
+\item |gaussian_cdf_coKestimator|: estimator of a gaussian cdf using cokriging (coK)
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+%______________________________________________________________
+% Iterators
+%______________________________________________________________
+\section{Iterators}
+\label{iterators}
+
+% ____________________________________________
+% Requirements of geovalue-iterator
+% 
+\subsection{Geo-Value Iterator}
+\label{concept:gviterator}
+\begin{htmlonly}
+<div align=right><img SRC="icons/concept.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+A geo-value iterator is an iterator on a set of geo-values. This set could be for example a simulation grid, a region of a simulation grid or a Neighborhood. Geo-value iterators can be random paths through the set of geo-values or deterministic paths. These paths can be constrained to visit every geo-value only once, or they can allow  multiple visits to the same geo-value. Some iterative simulation methods start the simulation with a seed image which is iteratively modified. Each location to be modified is chosen randomly, and the same geo-value can be changed twice in a row, while other geo-values would never be visited. 
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Refinement of}
+\hyperref{Forward Iterator}{Forward Iterator (see Section}{)}{concept:forwarditerator}
+
+\htmlrule[CLEAR=all]  \subsubsection*{Associated Types}
+
+
+\begin{itemize}
+\item {\bf Value Type}
+
+  |I::value_type|
+
+  The type obtained by dereferencing (applying operator |*|) to a model of Geo-Value Iterator.
+
+\end{itemize}
+
+
+
+ 
+
+\htmlrule[CLEAR=all]  \subsubsection*{Notations}
+
+\begin{tabular}[!h]{l l l}
+I & & A type that is a model of geo-value iterator\\
+i,j & & objects of type I\\
+G & & A type that is a model of \hyperref{Geo-Value}{Geo-Value (see Section}{)}{concept:geovalue}\\
+\end{tabular}
+
+
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Valid Expressions}
+\begin{itemize}
+
+  \item {\bf Assignment}
+    
+    |i=j|
+    
+    \begin{tabular}[!h]{l p{1cm} p{10cm}}
+      Return type: & & \bool \\
+      Semantics: & & |j| is assigned to |i|\\
+    \end{tabular}
+
+  
+\item {\bf Preincrement}
+
+  |++i|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & I\\
+    Precondition: & & i is dereferenceable\\
+    Semantics: & & |i| is modified to point to the next value\\
+    Postcondition: & & |i| is dereferenceable or one past the end\\
+  \end{tabular}
+
+
+\item {\bf Postincrement}
+
+  |i++|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & I\\
+    Precondition: & & |i| is dereferenceable\\
+    Semantics: & & |i| is modified to point to the next value\\
+    Postcondition: & & |i| is dereferenceable or past the end\\
+  \end{tabular}
+
+
+
+\item {\bf dereference}
+
+  |*i|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & G\\
+    Precondition: & & |i| is incrementable (operator |++| can be applied to |i|)\\
+    Semantics: & & Returns the element |i| is pointing to.\\
+  \end{tabular}
+
+
+\item {\bf comparison}
+
+  |i!=j|
+
+  \begin{tabular}[!h]{l p{1cm} p{10cm}}
+    Return type: & & a type convertible to |bool|\\
+    Semantics: & & Returns true if |i| is different from |j|, i.e |i| and |j| are pointing to different elements.\\
+  \end{tabular}
+
+
+
+\end{itemize}
+
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Models}
+\begin{itemize}
+\item |random_path|
+\item |deterministic_path|
+\end{itemize}
+
+
+
+
+
+\chapter{Algorithms and Classes}
+\label{reference}
+%______________________________________________________________
+% Algorithms
+%______________________________________________________________
+
+
+\section{Algorithms}
+\label{algo}
+The descriptions of the algorithms follow the same layout used by Austern:
+
+\begin{itemize}
+\item The algorithm prototype is stated. Some algorithms can have multiple prototypes. The first version of the algorithm usually assumes some default behavior, which can be overriden by using the second version.
+\item  {\bf Preconditions} lists all the conditions to be met before the algorithm can be used.
+\item {\bf Requirement on types} details what the types of the algorithms' arguments must be.
+\item Finally, a very simple example is given.
+\end{itemize}
+ 
+
+All the examples illustrating each algorithm's description refer to the two following simple implementations of a model of \hyperref{Location}{Location (see Section}{)}{concept:location} and \hyperref{Geo-Value}{Geo-Value (see Section}{)}{concept:geovalue}:
+
+
+\begin{code}
+class location2d{
+  public:
+    typedef int coordinate_type;
+    location2d(int X, int Y) {coord[0]=X; coord[1]=Y;}
+    int& operator[](unsigned int i) {
+      assert(i<2); return coord[i];
+    }
+  
+  private:
+    int coord[2];
+};
+\end{code}
+
+\begin{code}
+class geo_value2d{
+  public:
+    typedef double property_type;
+    typedef location2d location_type;
+    geo_value2d();
+    geo_value2d(location2d u, double prop) : loc(u), pval(prop) {};
+    const location_type& location() const {return loc;}
+    property_type& property_value() {return pval;}
+    const property_type& property_value() const {return pval;}
+  
+  private:
+    double pval;
+    location2d loc;
+};
+\end{code}
+
+
+
+
+
+
+
+\subsection{Construct Non-Parametric Cdf}
+\begin{htmlonly}
+<div align=right><img SRC="icons/algorithm.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+
+\begin{enumerate}
+\item 
+\begin{code}
+template<class non_param_cdf, class random_iterator>
+void
+build_cdf(random_iterator first, random_iterator last,
+          non_param_cdf& new_cdf, unsigned int nb_of_thresholds) 
+\end{code}
+
+\item 
+\begin{code}
+template<class non_param_cdf, class random_iterator>
+void
+build_cdf(random_iterator first, random_iterator last,
+          non_param_cdf& new_cdf) 
+\end{code}
+
+\end{enumerate}
+
+
+
+This function builds the cdf $F$ of a random variable $Z$ from a set of outcomes of $Z$, contained in range |[first,last)|. Cdf $F$ is a function defined by a set of thresholds $z_i$ and the associated probabilities  $F(z_i)$, \mbox{$i=1,\ldots,n$}.
+
+In version 1, function argument |nb_of_thresholds| indicates the number $n$ of thresholds to be used to define the cdf. The $n$ values retained are $n$ equally-spaced quantiles of the distribution. For example, if $n=5$, $z_1$ is the smallest value in range |[first,last)|, $z_2$ is the first quartile, $z_3$ is the median, $z_4$ is the upper quartile, and $z_5$ is the highest value in range |[first,last)|. With this version of the algorithm, $F(z_1) = Prob(Z<z_1)=0$ and $F(z_n) = Prob(Z<z_n)=1$.
+
+Version 2 of the algorithm assumes that the cdf |new_cdf| is already initialized: it already contains the values $z_i$, \mbox{$i=1,\ldots,n$}, and function |build_cdf| computes the corresponding probabilities $F(z_i)$.
+This version gives a complete flexibility in the choice of the thresholds values $z_i$.
+
+Note that range |[first,last)| will be modified by |build_cdf| (it will be sorted). If the range must not be modified, a copy should be made first.
+ 
+
+\htmlrule[CLEAR=all]  \subsubsection*{Where defined}
+In header file |<univariate_stats.h>|
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Preconditions}
+\begin{itemize}
+\item The range |[first,last)| is a valid range.
+
+\item The values in range |[first,last)| are of type |cdf::value_type|, or are convertible to this type.
+
+\end{itemize}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Requirements on types}
+\begin{itemize}
+\item |random_iterator| is a model of Random Access Iterator. Random Access Iterator is a refinement of \hyperref{Forward Iterator}{Forward Iterator}{}{concept:forwarditerator}. If |i| is a model of Random Access Iterator pointing to the i-th element of a range, |i-n| is an iterator to the (i-n)-th element of the range, |i[n]| is equivalent to |*(i+n)|, and |i<j| compares to iterators. For a thorough description of Random Access Iterator.
+\item |non_param_cdf| is a model of \hyperref{Non-Parametric Cdf}{Non-Parametric Cdf}{}{concept:nonparamcdf}.
+\end{itemize}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Example}
+
+\begin{code}
+int main()
+{
+  gaussian_cdf normal_cdf(0,1);
+
+  vector<double> gaussian_values;
+
+  for(int i=1; i<=100; i++)
+    gaussian_values.push_back( normal_cdf.inverse(drand48()) );  
+
+  non_parametric_cdf new_cdf;
+
+  build_cdf(gaussian_values.begin(), gaussian_values.end(),
+            new_cdf);
+}
+\end{code}
+
+
+\noindent |new_cdf| now contains a discrete representation of a standard normal cdf, and the elements of |gaussian_values| are sorted. 
+
+
+
+
+
+
+
+
+\subsection{CDF Transform}
+\begin{htmlonly}
+<div align=right><img SRC="icons/algorithm.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+
+
+\begin{code}
+template<class target_cdf, class data_cdf, class forward_iterator>
+void
+cdf_transform(forward_iterator first, forward_iterator last,
+              data_cdf& from, target_cdf& to) 
+\end{code}
+
+
+
+|cdf_transform| transforms the range of values |[first,last)| so that their final cumulative distribution function is |to|. Cdf |from| is the cumulative distribution function before the data are transformed. It could be computed with |build_cdf|.
+
+\htmlrule[CLEAR=all]  \subsubsection*{Where defined}
+In header file |<univariate_stats.h>|
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Preconditions}
+\begin{itemize}
+\item The range |[first,last)| is a valid range.
+
+\item The values in range |[first,last)| are of type |taret_cdf::value_type|, or are convertible to this type.
+
+\end{itemize}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Requirements on types}
+\begin{itemize}
+\item |forward_iterator| is a model of \hyperref{Forward Iterator}{Forward Iterator}{}{concept:forwarditerator}.
+\item |target_cdf| is a model of \hyperref{Cdf}{CDF}{}{concept:cdf}.
+\item |data_cdf| is a model of \hyperref{Cdf}{CDF}{}{concept:cdf}.
+\end{itemize}
+
+\htmlrule[CLEAR=all]  \subsubsection*{Remark}
+The values in range |[first,last)| are overwritten by the transformed values.
+
+\htmlrule[CLEAR=all]  \subsubsection*{Example}
+Transform 100 uniformly distributed values so that the transformed values follow a standard normal distribution:
+
+
+\begin{code}
+int main()
+{
+  vector<double> uniform_values;
+
+  for(int i=1; i<=100; i++)
+    uniform_values.push_back( rand() );
+
+  non_param_cdf from;
+  vector<double> tmp(uniform_values);
+  build_cdf(tmp.begin(), tmp.end(), from);
+
+  gaussian_cdf normal_cdf(0,1);
+
+  cdf_transform(uniform_values.begin(), uniform_values.end(),
+                from, normal_cdf);
+}
+\end{code}
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Kriging Weights}
+\begin{htmlonly}
+<div align=right><img SRC="icons/algorithm.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+
+
+\begin{enumerate}
+\item 
+\begin{code}
+template<
+         class MatrixLibrary,
+         class Location,
+         class Neighborhood,
+         class Covariance,
+         class KrigingConstraints,
+         class Vector
+        >
+int
+kriging_weights(Vector& weights, double& kriging_variance,
+                const Location& center, const Neigborhood& neighbors,
+                Covariance& covar, KrigingConstraints& Kconstraint);
+
+\end{code}
+
+\item 
+\begin{code}
+template<
+         class MatrixLibrary,
+         class Location,
+         class Neighborhood,
+         class Covariance,
+         class KrigingConstraints,
+         class Vector
+        >
+int
+kriging_weights(Vector& weights, 
+                const Location& center, const Neigborhood& neighbors,
+                Covariance& covar, KrigingConstraints& Kconstraint);
+
+\end{code}
+\end{enumerate}
+
+
+
+The |kriging_weights| algorithm solves a kriging system :
+\begin{displaymath}
+  \left\{ \begin{array}{l}
+      Var \Big( \sum_{\alpha=1}^{n} \lambda_{\alpha} [Z(\mloc{u}_{\alpha})-m(\mloc{u}_{\alpha})] - [Z(\mloc{u})-m(\mloc{u})] \Big) \quad \textrm{is minimum} \\ \\
+      f_1 \Big( \{\lambda_{\alpha} \} \Big)=0 \\
+      \vdots \\
+      f_p \Big( \{ \lambda_{\alpha} \} \Big)=0
+    \end{array} \right.
+\end{displaymath}
+
+\noindent where $f_i \Big( \{ \lambda_{\alpha} \} \Big)=0$, $i=1,\ldots,p$ are linear constraints expressed by the \hyperref{Kriging Constraint}{Kriging Constraint}{}{concept:krigingconstraint} |Kconstraint|. The solution to this system is a set of weights: 
+\begin{displaymath}
+  ( \lambda_1,\ldots,\lambda_n,\mu_1,\ldots,\mu_p)
+\end{displaymath}
+where the weights $\mu_j$ are the Lagrange weights used to account for constraints $f_1,\ldots,f_p$.
+
+The |kriging_weights| function computes the kriging weights and stores them into |Vector| |weights| in the following order: $( \lambda_1,\ldots,\lambda_n,\mu_1,\ldots,\mu_p)$. 
+Only the weights $\lambda_1,\ldots,\lambda_n$ are useful to compute the kriging estimate. The weights $\mu_1,\ldots,\mu_p$ are used to compute the kriging variance.
+|Vector| |weights| does not need to be of the correct size $n+p$ when passed to the function: the function automatically resizes the vector if necessary. 
+Two versions of the algorithm exist. Version 1 computes the kriging variance and stores it into |kriging_variance|, while Version 2 does not compute the kriging variance (there are cases where the kriging variance is useless, e.g. in indicator kriging).
+Both version of the algorithm allow to change the linear algebra library (which defines matrices, matrix inversion routines, \ldots) used by |kriging_weights| (see~\ref{matrix_lib}). 
+The default linear algebra library is the \htmladdnormallink{\emph{TNT}}{http://math.nist.gov/tnt/}library (slightly modified), a public domain library by Roldan Pozo, Mathematical and Computational Sciences Division,\htmladdnormallink{National Institute of Standards and Technology}{http://math.nist.gov}.
+
+The value returned by |kriging_weights| indicates if any problem were encountered:
+\begin{itemize}
+\item returns 0 if the function executed successfully
+\item returns 1 if the kriging system could not be solved
+\item returns 2 if the neighborhood of conditioning data was empty
+\end{itemize}
+%The function returns a pair of iterators to |Vector| |weights|. The first iterator |end_lambda| points to one-past the last weight $\lambda_n$, the second, |end_mu|, points to one-past the last weight $\mu_p$. Hence, if |first| is an iterator to the begining of |weights|, the range |[first,end_lambda)| contains all the weights $\lambda_1,\ldots,\lambda_n$, while the range |[first,end_mu)| contains all the weights $\lambda_1,\ldots,\lambda_n,\mu_1,\ldots,\mu_p$. Only the first range of weights |[first,end_lambda)| (i.e. $\lambda_1,\ldots,\lambda_n$) is useful to compute the kriging estimate. The weights $\mu_1,\ldots,\mu_p$ are used to compute the kriging variance |kriging_variance|.
+
+\htmlrule[CLEAR=all]  \subsubsection*{Where defined}
+In header file |<kriging.h>|
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Requirements on types}
+\begin{itemize}
+\item |Vector| is a container on which an iterator is defined. It must have three member functions whose prototypes are:
+  \begin{enumerate}
+  \item |iterator Vector::begin()| which returns an iterator to the first element of the |Vector|
+  \item |int Vector::size()| which returns the size of the |Vector|.
+  \item |void Vector::resize(int n)| which changes the size of the |Vector| to n
+  \end{enumerate}
+\item |Location| is a model of \hyperref{Location}{Location (see Section}{)}{concept:location}.
+\item |Neighborhood| is a model of \hyperref{Neighborhood}{Neighborhood (see Section}{)}{concept:neighborhood}. The location type of the geo-values contained in the neighborhood must be |location|.
+\item |Covariance| is a model of \hyperref{Covariance}{Covariance}{}{concept:covariance} that takes two objects of type |location| as arguments.
+\item |KrigingConstraints| is a model of \hyperref{Kriging Constraints}{Kriging Constraints}{}{concept:krigingconstraint}.
+\item |MatrixLibrary| specifies the \hyperref{linear algebra library}{linear algebra library}{}{matrix_lib} to use. The requirements on |matrix_lib| are fully defined in~\ref{matrix_lib}. By default, it is the \htmladdnormallink{\emph{TNT}}{http://math.nist.gov/tnt/}library (slightly modified).
+\end{itemize}
+
+%\htmlrule[CLEAR=all]  \subsubsection*{Preconditions}
+
+\htmlrule[CLEAR=all]  \subsubsection*{Remarks}
+\begin{itemize} 
+\item |Vector| |weights| is resized after it is passed to |kriging_weights|, unless it is of the correct size. The cost of this resize can be decreased by smartly managing the |Vector|'s memory (in the same style as an STL |vector|): the vector allocates more memory than it needs, hence does not need to re-allocate memory each time its size increases.
+
+ However, each call to |kriging_weights| implies solving a linear system of equations, hence the cost of the resize would usually be negligible. 
+
+\item If the same data $z(\mloc{u}_1),\ldots,z(\mloc{u}_d)$ are used for estimating different locations, algorithm |global_neigh_kriging_weights| can be more suitable than |kriging_weights|. The kriging matrix does not depend on the location to be estimated, but only on the data locations $\mloc{u}_1,\ldots,\mloc{u}_d$. Hence if the exact same data are used to estimate multiple locations, the kriging matrix remains unchanged: it can be inverted once for all and solving further kriging systems reduces to a mere matrix-vector multiplication. |global_neigh_kriging_weights| implements such ``global kriging''.
+\end{itemize}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Example}
+Estimate $z(0,0)$ from $z(2,3)=0.21$ and $z(4,-7)=0.09$ by ordinary kriging. After the call to |kriging_weight|, vector |weights| has size 3; its two first elements are the weights corresponding to $z(2,3)$ and $z(4,-7)$ respectively, and its last element is the Lagrange parameter.
+
+
+
+\begin{code}
+typedef std::vector<geo_value2d> neighborhood;
+
+// gaussian covariance of range 4
+inline double gauss_covariance(Location2d u1, Location2d u2){
+  double square_dist = pow(u1[0]-u2[0], 2) +
+                       pow(u1[1]-u2.[1], 2);
+  return exp(-3*square_dist/16);                     
+}
+
+
+int main()
+{  
+  location2d u1(2,3);
+  location2d u2(4,-7);
+
+  geo_value2d Z1(u1,0.21);
+  geo_value2d Z2(u2,0.09); 
+  
+  Neighborhood neighbors;
+  neighbors.push_back(Z1);
+  neighbors.push_back(Z2);
+
+  location2d u(0,0);
+
+  std::vector<double> weights;
+
+  double kvariance;
+  kriging_weights(weights, kvariance,
+                  u, &neighbors,
+                  gauss_covariance, OK_constraint);
+}
+
+\end{code}
+
+
+
+
+
+
+
+
+ 
+\subsection{Cokriging Weights}
+\label{cokriging}
+\begin{htmlonly}
+<div align=right><img SRC="icons/algorithm.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+
+
+\begin{enumerate}
+\item 
+\begin{code}
+template <
+          class MatrixLibrary,
+          class Location,
+          class InputIterator,
+          class CovarianceSet,
+          class KrigingConstraints,
+          class Vector
+         >
+int
+cokriging_weights(
+                  Vector& weights, double kriging_variance, 
+                  const Location& center,
+                  InputIterator first_neigh, InputIterator last_neigh,
+                  CovarianceSet& covar,
+                  KrigingConstraints& Kconstraints
+                  ) 
+
+\end{code}
+
+\item 
+\begin{code}
+template <
+          class MatrixLibrary,
+          class Location,
+          class InputIterator,
+          class CovarianceSet,
+          class KrigingConstraints,
+          class Vector
+         >
+int
+cokriging_weights(
+                  Vector& weights, 
+                  const Location& center,
+                  InputIterator first_neigh, InputIterator last_neigh,
+                  CovarianceSet& covar,
+                  KrigingConstraints& Kconstraints
+                  ) 
+
+\end{code}
+\end{enumerate}
+
+
+
+The |cokriging_weights| algorithm solves a cokriging system :
+\begin{displaymath}
+  \left\{ \begin{array}{l}
+      Var \Big( \sum_{\alpha=1}^{n} \lambda_{\alpha} [Z(\mloc{u}_{\alpha})-m(\mloc{u}_{\alpha})] + \sum_{i=1}^{N_v} \sum_{\beta=1}^{n_i(\mloc{u})}\lambda_{\beta}^i [Z(\mloc{u}_{\beta}^i)-m(\mloc{u}_{\beta}^i)] \\ \qquad - [Z(\mloc{u})-m] \Big) \quad \textrm{is minimum} \\ \\
+      f_1 \Big( \{\lambda_{\alpha} \}, \{\lambda_{\alpha_1} \},\ldots,\{\lambda_{\alpha_{N_v}} \} \Big)=0 \\
+      \vdots \\
+      f_p \Big( \{ \lambda_{\alpha} \}, \{\lambda_{\alpha_1} \},\ldots,\{\lambda_{\alpha_{N_v}} \} \Big)=0
+    \end{array} \right.
+\end{displaymath}
+
+\noindent where $f_i \Big( \{ \lambda_{\alpha} \}, \{\lambda_{\alpha_1} \},\ldots,\{\lambda_{\alpha_{N_v}} \} \Big)$, $i=1,\ldots,p$ are p constraints expressed by the |Kconstraint|. The solution to this system is a set of weights: 
+
+\noindent $( \lambda_1,\ldots,\lambda_n,\lambda_1^1,\ldots, \lambda^{N_v}_{n_{\tiny N_v}},\mu_1,\ldots,\mu_p)$, where the weights $\mu_j$ are the Lagrange weights used to account for the constraints $f_1,\ldots,f_p$.
+
+The |cokriging_weights| function stores the kriging weights into |Vector| |weights| in the following order:
+
+\noindent $( \lambda_1,\ldots,\lambda_n,\lambda_1^1,\ldots, \lambda^{N_v}_{n_{\tiny N_v}},\mu_1,\ldots,\mu_p)$.
+
+Only the weights $\lambda_1,\ldots,\lambda^{N_v}_{n_{\tiny N_v}}$ are useful to compute the kriging estimate. The weights $\mu_1,\ldots,\mu_p$ are used to compute the kriging variance.
+|Vector| |weights| does not need to be of the correct size $n+p$ when passed to the function. 
+
+Two versions of the algorithm exist. Version 1 computes the kriging variance and stores it into |kriging_variance|, while Version 2 does not compute the kriging variance (there are cases where the kriging variance is useless, e.g. in indicator kriging). 
+Both version of the algorithm allow to change the linear algebra library (which defines matrices, matrix inversion routines, \ldots) used by |cokriging_weights| (see~\ref{matrix_lib}). 
+The default linear algebra library is the \htmladdnormallink{\emph{TNT}}{http://math.nist.gov/tnt/}library (slightly modified), a public domain library by Roldan Pozo, Mathematical and Computational Sciences Division,\htmladdnormallink{National Institute of Standards and Technology}{http://math.nist.gov}.
+
+The value returned by |kriging_weights| indicates if any problem were encountered:
+\begin{itemize}
+\item returns 0 if the function executed successfully
+\item returns 1 if the kriging system could not be solved
+\item returns 2 if the neighborhood of conditioning data was empty
+\end{itemize}
+
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Where defined}
+In header file |<kriging.h>|
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Requirements on types}
+\begin{itemize}
+\item |Vector| is a container on which an iterator is defined. It must have three member functions whose prototypes are:
+  \begin{enumerate}
+  \item |iterator Vector::begin()| which returns an iterator to the first element of the |Vector|
+  \item |size_type Vector::size()| which returns the size of the |Vector|.
+  \item |void Vector::resize(size_type n)| which changes the size of the |Vector| to n
+  \end{enumerate}
+\item |Location| is a model of \hyperref{Location}{Location (see Section}{)}{concept:location}.
+\item |InputIterator| is a model of Input Iterator (see \htmladdnormallink{STL}{http://www.sgi.com/tech/stl/} requirements). It iterates on a range of \hyperref{Neighborhood}{Neighborhood (see Section}{)}{concept:neighborhood}.
+\item |CovarianceSet| is a model of \hyperref{Covariance Set}{Covariance Set}{}{concept:covarianceset}. In expression |covar(i,j,u1,u2)|, required by \hyperref{Covariance Set}{Covariance Set}{}{concept:covarianceset}, |u1| and |u2| must be of type |Location|.
+\item |KrigingConstraints| is a model of \hyperref{Kriging Constraint}{Kriging Constraint}{}{concept:krigingconstraint}.
+\item |MatrixLibrary| specifies the \hyperref{linear algebra library}{linear algebra library}{}{matrix_lib} to use. The requirements on |matrix_lib| are fully defined in~\ref{matrix_lib}. By default, it is the \htmladdnormallink{\emph{TNT}}{http://math.nist.gov/tnt/}library (slightly modified), a public domain library by Roldan Pozo, Mathematical and Computational Sciences Division,\htmladdnormallink{National Institute of Standards and Technology}{http://math.nist.gov}.
+\end{itemize}
+
+%\htmlrule[CLEAR=all]  \subsubsection*{Preconditions}
+
+\htmlrule[CLEAR=all]  \subsubsection*{Remarks}
+ |Vector| |weights| is resized after it is passed to |cokriging_weights|, unless it is of the correct size. The cost of this resize can be decreased by smartly managing the |Vector|'s memory (in the style of an STL |vector|). However, each call to |cokriging_weights| implies solving a linear system of equations, hence the cost of the resize would usually be negligible. 
+ 
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Example}
+Estimate $z(0,0)$ from $z(2,3)=0.21$, $z(4,-7)=0.09$ and one secondary data $s(1,3)=42.1$  by ordinary \mbox{(full-)cokriging}. After the call to |kriging_weight|, vector |weights| has size 5; its three first elements are the weights corresponding to $z(2,3)$, $z(4,-7)$ and $s(1,3)$ respectively, and its two last elements are the Lagrange parameters.
+
+
+
+\begin{code}
+typedef std::vector<geo_value2d> neighborhood;
+
+int main()
+{  
+  location2d u1(2,3);
+  location2d u2(4,-7);
+
+  geo_value2d Z1(u1,0.21);
+  geo_value2d Z2(u2,0.09); 
+  
+  Neighborhood neighbors1, neighbors2;
+  neighbors1.push_back(Z1);
+  neighbors1.push_back(Z2);
+
+  location2d u3(1,2);
+  geo_value2d S1(u3,42.1);
+  neighbors2.push_back(S1);
+
+  neighborhood* neigh_array[2]={&neighbors1, &neighbors2};
+
+  location2d u(0,0);
+
+  std::vector<double> weights;
+
+  double kvariance;
+  kriging_weights(weights, kvariance,
+                  u, neigh_array, 2,
+                  LMC_covariance, OK_constraint);
+}
+
+\end{code}
+
+
+
+
+
+
+
+
+\subsection{Linear Combination}
+\begin{htmlonly}
+<div align=right><img SRC="icons/algorithm.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+
+
+\begin{code}
+template<class InputIterator, class Neighborhood>
+double
+linear_combination(InputIterator begin_weights, InputIterator end_weights,
+                   const Neigborhood& neighbors) 
+
+\end{code}
+
+
+
+Computes the linear combination of the weights in range |[begin_weights, end_weights)|, and the property values of the geo-values contained in the neighborhood that |neighbors| points to. Denote $\lambda_1,\ldots,\lambda_P$ the weights, and $z(\mloc{u}_1),\ldots,z(\mloc{u}_N)$ the geo-values property values. |linear_combination| returns: $\sum_{i=1}^N \lambda_i \ z(\mloc{u}_i)$
+
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Where defined}
+In header file |<kriging.h>|
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Preconditions}
+P, the number of weights, must be equal or greater than the number of geo-values in the neighborhood.
+The algorithm loops on the geo-values, hence if $P>N$ only the N first weights are used, the others are ignored.
+
+The type of the geo-values property must be convertible to |double|.
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Requirements on types}
+\begin{itemize}
+\item |InputIterator| is a model of Input Iterator (see STL).
+\item |Neighborhood| is a model of \hyperref{Neighborhood}{Neighborhood (see Section}{)}{concept:neighborhood}. 
+\end{itemize}
+
+
+%\htmlrule[CLEAR=all]  \subsubsection*{Remarks}
+ 
+
+\htmlrule[CLEAR=all]  \subsubsection*{Example}
+Compute the kriging estimate from the kriging weights. |gauss_covariance| is the Gaussian covariance defined in the example following the description of \\ |kriging_weights|.
+
+
+
+\begin{code}
+typedef std::vector<geo_value2d> neighborhood;
+
+int main()
+{  
+  location2d u1(2,3);
+  location2d u2(4,-7);
+
+  geo_value2d Z1(u1,0.21);
+  geo_value2d Z2(u2,0.09); 
+  
+  Neighborhood neighbors;
+  neighbors.push_back(Z1);
+  neighbors.push_back(Z2);
+
+  location2d u(0,0);
+
+  std::vector<double> weights;
+
+  double kvariance = kriging_weights(weights,
+                                     u, &neighbors,
+                                     gauss_covariance, OK_constraint);
+
+  double kmean = linear_combine(weights.begin(),weights.end(),
+                                neighbors);
+}
+
+\end{code}
+
+
+Replacing the last line by 
+
+
+\begin{code}
+  std::vector<double>::iterator end_weights = weights.begin()+2;
+
+  double kmean = linear_combine(weights.begin(), end_weights,
+                                neighbors);
+\end{code}
+
+
+\noindent would have led to the same value of |kmean|.
+
+
+
+
+
+
+
+
+
+
+\subsection{Multi Linear Combination}
+\label{mlcombi}
+\begin{htmlonly}
+<div align=right><img SRC="icons/algorithm.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+
+
+\begin{code}
+template<class InputIterator, class InputIterator2>
+double
+multi_linear_combination(InputIterator begin_weights, InputIterator end_weights,
+                         InputIterator2 first_neigh, InputIterator2 last_neigh)
+
+\end{code}
+
+
+
+Computes the linear combination of the weights in range \\ |[begin_weights, end_weights)| and the property values of the geo-values contained in the neighborhoods in range |[first_neigh, last_neigh)|. Denote $\lambda_1,\ldots,\lambda_P$ the weights, and $z_j(\mloc{u}_1^j),\ldots,z_j(\mloc{u}_{n_j}^j)$, $j=1,\ldots,N_v$ property values of the geo-values contained in the $N_v$ neighborhoods. |linear_combination| returns: 
+\begin{displaymath}
+\sum_{j=1}^{N_v} \sum_{i=1}^{n_j} \lambda_{\alpha(i,j)} \ z_j(\mloc{u}_i^j) 
+\end{displaymath}
+\noindent where $\alpha(i,j) = \sum_{k=1}^{j-1} n_k + i$
+
+\htmlrule[CLEAR=all]  \subsubsection*{Where defined}
+In header file |<kriging.h>|
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Preconditions}
+P, the number of weights, must be equal or greater than the total number of geo-values in all the neighborhoods combined.
+The algorithm loops on the geo-values, hence if $P>N$ only the N first weights are used, the others are ignored.
+
+The type of the geo-values properties must be convertible to |double|.
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Requirements on types}
+\begin{itemize}
+\item |InputIterator| is a model of Input Iterator (see STL). The dereference type of the iterator must be convertible to |double|.
+\item |InputIterator2| is a model of Input Iterator (see STL). It iterates on a range of \hyperref{Neighborhood}{Neighborhood (see Section}{)}{concept:neighborhood}
+\end{itemize}
+
+
+%\htmlrule[CLEAR=all]  \subsubsection*{Remarks}
+ 
+
+\htmlrule[CLEAR=all]  \subsubsection*{Example}
+Compute the kriging estimate from the kriging weights. |gauss_covariance| is the Gaussian covariance defined in the example following the description of |kriging_weights|.
+
+
+\begin{code}
+int main()
+{  
+  location2d u1(2,3);
+  location2d u2(4,-7);
+
+  geo_value2d Z1(u1,0.21);
+  geo_value2d Z2(u2,0.09); 
+  
+  Neighborhood neighbors1, neighbors2;
+  neighbors1.push_back(Z1);
+  neighbors1.push_back(Z2);
+
+  location2d u3(1,2);
+  geo_value2d S1(u3,42.1);
+  neighbors2.push_back(S1);
+
+  neighborhood* neigh_array[2]={&neighbors1, &neighbors2};
+
+  location2d u(0,0);
+
+  std::vector<double> weights;
+
+  double kvariance;
+  kriging_weights(weights, kvariance,
+                  u, neigh_array, 2,
+                  LMC_covariance, OK_constraint);
+
+  double kmean = multi_linear_combine(weights.begin(),
+                                      weights.end(),
+                                      neigh_array, neigh_array+2);
+}
+
+\end{code}
+
+
+
+
+
+
+
+
+
+\subsection{Sequential Simulation, Single-Variable Case}
+\begin{htmlonly}
+<div align=right><img SRC="icons/algorithm.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+
+\begin{enumerate}
+\item 
+\begin{code}
+template
+<
+  class GeovalueIterator,
+  class Neighborhood,
+  class Cdf,
+  class CdfEstimator,
+  class MarginalCdf
+>
+inline int
+sequential_simulation(
+  GeovalueIterator begin, GeovalueIterator end,
+  Neighborhood& neighbors,
+  Cdf& ccdf,
+  CdfEstimator& estim,
+  MarginalCdf& marginal
+)
+
+\end{code}
+
+\item 
+\begin{code}
+template
+<
+  class GeovalueIterator,
+  class Neighborhood,
+  class Cdf,
+  class CdfEstimator,
+  class MarginalCdf,
+  class Sampler
+>
+inline int 
+sequential_simulation(
+  GeovalueIterator begin, GeovalueIterator end,
+  Neighborhood& neighbors,
+  Cdf& ccdf,
+  CdfEstimator& estim,
+  MarginalCdf& marginal,
+  Sampler& samp
+)
+\end{code}
+
+\end{enumerate}
+
+
+This function performs a sequential simulation of the range of geo-values delimited by iterators |begin| and |end|. At each location \loc{u} being simulated, the neighborhood of \loc{u} is retrieved and stored into neighborhood  |neighbors|. If no neighbor is found, a new value is simulated from the marginal cumulative distribution |marginal|. Otherwise |estim| estimates a conditional cdf which is stored into |ccdf| and a new value is simulated by |sampler|. 
+
+In version 1, a new value is simulated using Monte-Carlo simulation: a probability is determined randomly and used to draw a realization from conditional cdf |ccdf|. The random number generator is initialized by a default (constant) value. If control over the random number generator is needed, version 2 of the algorithm should be used.
+
+Version 2 allows to specify a way to sampler from |ccdf|.
+
+The value returned is the number of problems that occured during the simulation.
+
+\htmlrule[CLEAR=all]  \subsubsection*{Where defined}
+In header file |<simulation.h>|
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Preconditions}
+\begin{itemize}
+\item The range |[begin,end)| is a valid range.
+
+\item |estim| and |ccdf| do not conflict: if |estim| is designed to estimate Gaussian cdf's, |ccdf| should be a Gaussian cdf.
+\end{itemize}
+
+\htmlrule[CLEAR=all]  \subsubsection*{Requirements on types}
+\begin{itemize}
+\item |GeovalueIterator| is a model of \hyperref{Geo-Value Iterator}{Geo-Value Iterator (see Section}{)}{concept:gviterator}.
+\item |Neighborhood| is a model of \hyperref{Neighborhood}{Neighborhood (see Section}{)}{concept:neighborhood}. 
+\item |Cdf| is a model of \hyperref{CDF}{CDF}{}{concept:cdf}.
+\item |MarginalCdf| is a model of \hyperref{CDF}{CDF}{}{concept:cdf}. It can be different from |cdf|.
+\item |CdfEstimator| is a model of \hyperref{Single Variable Cdf Estimator}{Single Variable Cdf Estimator (see Section}{)}{concept:svce}.
+\item |Sampler| (in version 2) is a model of \hyperref{Sampler}{Sampler (see Section}{)}{concept:sampler}.
+\end{itemize}
+
+
+%\htmlrule[CLEAR=all]  \subsubsection*{Remarks}
+ 
+
+\htmlrule[CLEAR=all]  \subsubsection*{Example}
+A call to 
+
+
+\begin{code}
+// ...
+
+location2d u(0,0);
+geo_value2d Z(u,-99);
+
+sequential_simulate(&Z, &Z+1,
+                    neighbors, gauss_cdf,
+                    gauss_cdf_estim);
+
+//...
+\end{code}
+
+
+\noindent would simulate the single geo-value |Z|.  
+%
+% 
+%\begin{code}
+%typedef std::vector<geo_value2d> gval_vector;
+% 
+%class neighborhood{
+%  public:
+%    typedef gval_vector::iterator iterator;
+%    neighborhood(gval_vector& data) : neighbors_(data) {}
+%    iterator begin() {return neighbors_.begin();}
+%    iterator end() {return neighbors_.end();}
+%    int size() {return neighbors_.size();}
+%    void find(location2d u){};
+% 
+%  private:
+%    gval_vector& neighbors_;
+%};
+% 
+% 
+%int main()
+%{  
+%  location2d u1(2,3);
+%  location2d u2(4,-7);
+% 
+%  geo_value2d Z1(u1,0.21);
+%  geo_value2d Z2(u2,0.09); 
+%  
+%  gval_vector data;
+%  data.push_back(Z1);
+%  data.push_back(Z2);
+% 
+%  neighborhood neigh(data);
+% 
+%  typedef gval_vector grid;
+%  location2d u(0,0);
+%  location2d v(0,3);
+% 
+%  std::vector<double> weights;
+% 
+%  double kvariance = kriging_weights(weights,
+%                                     u, &neighbors,
+%                                     gauss_covariance, OK_constraint);
+%}
+%\end{code}
+%
+
+
+
+
+
+
+
+\subsection{Sequential Simulation, Multiple-Variable Case}
+\begin{htmlonly}
+<div align=right><img SRC="icons/algorithm.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+
+\begin{enumerate}
+\item 
+\begin{code}
+template
+<
+  class GeovalueIterator,
+  class ForwardIterator,
+  class Cdf,
+  class CdfEstimator,
+  class MarginalCdf,
+>
+inline int
+sequential_cosimulation(
+  GeovalueIterator begin, GeovalueIterator end,
+  ForwardIterator first_neigh, ForwardIterator last_neigh, 
+  Cdf& ccdf,
+  CdfEstimator& estim,
+  MarginalCdf& marginal
+)
+ 
+\end{code}
+
+\item 
+\begin{code}
+template
+<
+  class GeovalueIterator,
+  class ForwardIterator,
+  class Cdf,
+  class CdfEstimator,
+  class MarginalCdf,
+  class Sampler
+>
+inline int
+sequential_cosimulation(
+  GeovalueIterator begin, GeovalueIterator end,
+  ForwardIterator first_neigh, ForwardIterator last_neigh, 
+  Cdf& ccdf,
+  CdfEstimator& estim,
+  MarginalCdf& marginal,
+  Sampler& samp
+) 
+
+\end{code}
+
+\end{enumerate}
+
+
+This function performs a sequential simulation of the range of geo-values delimited by iterators |begin| and |end|, accounting for multiple variables. At each location \loc{u} being simulated, the conditional cdf is estimated based on the primary information stored in the first neighborhood |*first_neigh[0]|, and the secondary information contained in the other |nb_of_neighborhoods-1| neighborhoods (|first_neigh| is an array of pointers to |neighborhoods|). If at a given location no neighboring data is found, a new value is drawn from the marginal cumulative distribution: |marginal|.
+
+In version 1, a new value is simulated using Monte-Carlo simulation: a probability is determined randomly and used to draw a realization from conditional cdf |ccdf|.
+
+Version 2 allows to modify the way a simulated value is drawn from the |ccdf|. 
+
+The value returned is the number of problems that occured during the simulation.
+
+\htmlrule[CLEAR=all]  \subsubsection*{Where defined}
+In header file |<simulation.h>|
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Preconditions}
+\begin{itemize}
+\item The range |[begin,end)| is a valid range.
+
+\item |first_neigh[n]| is a ``pointer'' to the (n+1)-th neighborhood to be accounted for. (n $<$ |nb_of_neighborhoods|).
+
+\item |estim| and |ccdf| do not conflict: if |estim| is designed to estimate Gaussian cdf's, |ccdf| should be a Gaussian cdf.
+\end{itemize}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Requirements on types}
+\begin{itemize}
+\item |GeovalueIterator| is a model of \hyperref{Geo-Value Iterator}{Geo-Value Iterator (see Section}{)}{concept:gviterator}.
+\item |Neighborhood| is a model of \hyperref{Neighborhood}{Neighborhood (see Section}{)}{concept:neighborhood}. 
+\item |Cdf| is a model of \hyperref{CDF}{CDF}{}{concept:cdf}.
+\item |MarginalCdf| is a model of \hyperref{CDF}{CDF}{}{concept:cdf}. It can be different from |cdf|.
+\item |CdfEstimator| is a model of \hyperref{Multiple Variables Cdf Estimator}{Multiple Variables Cdf Estimator (see Section}{)}{concept:mvce}.
+\item |Sampler| (in version 2) is a model of \hyperref{Sampler}{Sampler (see Section}{)}{concept:sampler}.
+\end{itemize}
+
+
+
+
+ 
+
+
+
+
+\subsection{P-Field Simulation}
+\begin{htmlonly}
+<div align=right><img SRC="icons/algorithm.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+
+\begin{enumerate}
+\item 
+\begin{code}
+template<class gval_iterator, class forward_iterator,
+         class neighborhood, class cdf, class cdf_estimator>
+void
+pfield_simulation(gval_iterator begin, gval_iterator end,
+                  neigborhood* neighbors,
+                  cdf& ccdf, cdf_estimator& estim,
+                  forward_iterator pf_begin, forward_iterator pf_end) 
+\end{code}
+
+\item 
+\begin{code}
+template<class gval_iterator, class forward_iterator,
+         class neighborhood, class cdf, class cdf_estimator>
+void
+pfield_simulation(gval_iterator begin, gval_iterator end,
+                  neigborhood** first_neighbors,
+                  unsigned int nb_of_neighborhoods,
+                  cdf& ccdf, cdf_estimator& estim,
+                  forward_iterator pf_begin, forward_iterator pf_end) 
+
+\end{code}
+
+\end{enumerate}
+
+
+This function performs a p-field simulation on geo-values in range |[begin,end)|. For each geo-value, a cdf conditional to only the original data (contrary to sequential simulation where the cdf at each geo-value is conditional to both the original data and the previously simulated values) is estimated by Cdf Estimator |estim|. All the cdf's are then sampled using the correlated probabilities stored in range |[pf_begin, pf_end)| (``pf'' stands for p-field). 
+The cdf corresponding to the geo-value that |begin+i| points to, is sampled using the probability that |pf_begin+i| points to. Hence the order in which the geo-values and the p-field values are stored is important. 
+
+Version 2 of the algorithm allows to use multiple properties to estimate each cdf. 
+
+\htmlrule[CLEAR=all]  \subsubsection*{Where defined}
+In header file |<simulation.h>|
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Preconditions}
+\begin{itemize}
+\item Ranges |[begin,end)| and |[pf_begin, pf_end)| are of the same size (i.e. there are as many geo-values as p-field values). 
+
+\item The values of the p-field (in range |[pf_begin, pf_end)|) are probabilities, i.e. real numbers between 0 and 1.
+
+\item |estim| and |ccdf| do not conflict: if |estim| is designed to estimate Gaussian cdf's, |ccdf| should be a Gaussian cdf.
+
+\item In version 2 of the function, |first_neigh[n]| is a pointer to the (n+1)-th neighborhood to be accounted for. (n $<$ |nb_of_neighborhoods|).
+
+\end{itemize}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Requirements on types}
+\begin{itemize}
+\item |gval_iterator| is a model of \hyperref{Forward Iterator}{Forward Iterator (see Section}{)}{concept:forwarditerator}, which iterates on \hyperref{Geo-Values}{Geo-Values (see Section}{)}{concept:geovalue}. It is not a model of GeoValue Iterator.
+\item |forward_iterator| is a model of \hyperref{Forward Iterator}{Forward Iterator (see Section}{)}{concept:forwarditerator}, iterating on floating points values.
+\item |neighborhood| is a model of \hyperref{Neighborhood}{Neighborhood (see Section}{)}{concept:neighborhood}. The |find| method of the neighborhood must consider only original data as potential neighbors, and ignore any other geo-value: in p-field simulation, each cdf is only conditional to the original data. 
+\item |cdf| is a model of \hyperref{Cdf}{Cdf}{}{concept:cdf}.
+\item |cdf_estimator| is a model of CDF Estimator.
+\end{itemize}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Remarks}
+The cdf corresponding to the geo-value that |begin+i| points to, is sampled using the probability that |pf_begin+i| points to. This means that the two sequences of geo-values and p-field values are tightly linked. Element i of the geo-value range and element i of the p-field form a pair. Swapping elements of either range would completely change the correlation of the simulated field. In particular, |gval_iterator| can not be a random path.
+
+
+
+%\htmlrule[CLEAR=all]  \subsubsection*{Remarks}
+
+
+
+
+
+
+
+
+
+%______________________________________________________________
+% Basic Classes
+%______________________________________________________________
+
+\section{Basic classes}
+
+The descriptions of the models follow the same layout used by Austern:
+
+\begin{itemize}
+\item The object prototype is stated.
+\item  {\bf Template Parameters} lists what are the template parameters and what kind of concept they model (these could be non-\gtl{} concepts).
+\item {\bf Model of} indicates what concept is modeled by the object.
+\item {\bf Requirement on types} describes possible additional requirements on the template argument types.
+\item {\bf Members} is a list of all the member function of the object.
+\end{itemize}
+ 
+
+
+\subsection{Gaussian Cdf}
+|Gaussian_cdf|
+\vspace{0.3cm}
+
+|Gaussian_cdf| defines a Gaussian cumulative distribution function of a continuous variable Z.  
+
+ 
+\htmlrule[CLEAR=all]  \subsubsection*{Where Defined}
+In header file |<cdf.h>|
+
+\htmlrule[CLEAR=all]  \subsubsection*{Model of}
+\hyperref{CDF}{CDF}{}{concept:cdf}
+
+\htmlrule[CLEAR=all]  \subsubsection*{Members}
+\begin{itemize}
+\item 
+\begin{code}
+Gaussian_cdf::value_type
+\end{code}
+
+The type of the variable Z. It is set to be |double|.
+
+\item 
+\begin{code}
+Gaussian_cdf::Gaussian_cdf()
+\end{code}
+
+Creates a standard Gaussian cdf (mean 0 and variance 1). 
+
+\item 
+\begin{code}
+Gaussian_cdf::Gaussian_cdf(double m, double var)
+\end{code}
+
+Creates a Gaussian cdf of mean |m| and variance |var|. 
+
+\item 
+\begin{code}
+double& Gaussian_cdf::mean()
+\end{code}
+
+Returns the mean of the cdf.
+
+\item 
+\begin{code}
+const double& Gaussian_cdf::mean() const
+\end{code}
+
+Returns the mean of the cdf.
+
+\item 
+\begin{code}
+double& Gaussian_cdf::variance()
+\end{code}
+
+Returns the variance of the cdf.
+
+\item 
+\begin{code}
+const double& Gaussian_cdf::variance() const
+\end{code}
+
+Returns the variance of the cdf.
+
+\item 
+\begin{code}
+double Gaussian_cdf::prob(value_type z)
+\end{code}
+
+Returns the probability $Prob(Z \le z)$.
+
+\item 
+\begin{code}
+value_type Gaussian_cdf::inverse(double p)
+\end{code}
+
+Returns the value $z$ such that $p=Prob(Z \le z)$.
+
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Non-Parametric Cdf, continuous variable}
+\begin{htmlonly}
+<div align=right><img SRC="icons/object.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+|Non_param_cdf<lower_tail_interpol,middle_interpol,upper_tail,T>|
+\vspace{0.3cm}
+
+A non-parametric cdf of variable $Z$ is a cdf $F$ defined by a discrete set of points $\Big( z_i, F(z_i) \Big)$, $i=1,\ldots,n$, $z_1 \le \ldots \le z_n$. 
+As $Z$ is a continuous variable, the points  $\Big( z_i, F(z_i) \Big)$ must be interpolated in order to associate a probability to any $z$-value different from the $z_i$'s. Call $z$ an outcome of $Z$ different from $z_i$ (for all $i$). 
+If $z<z_1$ or $z>z_n$, a function of type |lower_tail_interpol| or |upper_tail_interpol| is used to interpolate the cdf and compute $F(z)$. If $z_1 \le z \le z_n$ a function of type |middle_interpol| is used. Similarly, when computing the inverse of the cdf for a probability $p$, if $p<p_1$ or $p>p_n$, a function of type |lower_tail_interpol| or |upper_tail_interpol| is used to interpolate the cdf and compute $F^{-1}(p)$. If $p_1 \le p \le p_n$ a function of type |middle_interpol| is used.
+
+\htmlrule[CLEAR=all]  \subsubsection*{Where Defined}
+In header file |<cdf.h>|
+
+\htmlrule[CLEAR=all]  \subsubsection*{Template Parameters}
+\begin{tabular}[!h]{l l p{10cm}}
+|lower_tail_interpol| & & the type of the function used to interpolate the lower tail of the distribution\\
+|upper_tail_interpol| & & the type of the function used to interpolate the upper tail of the distribution\\
+|middle_interpol| & & the type of the function used to interpolate between two known values $z_j$ and $z_{j+1}$\\
+|T| & & the cdf's type value. It is |double| by default.\\
+\end{tabular}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Model of}
+\hyperref{Non-Parametric Cdf}{Non-Parametric Cdf (see Section}{)}{concept:nonparamcdf}
+
+\htmlrule[CLEAR=all]  \subsubsection*{Type Requirements}
+\begin{itemize}
+\item |lower_tail_interpol| and |upper_tail_interpol|: an object that models these concepts must have two member functions:
+  \begin{enumerate}
+  \item |double p(value_type z1, double p1, value_type z)|
+
+    returns the interpolated value of p given the point (z1,p1) and new value z.
+
+  \item |value_type z(value_type z1, double p1, double p)|
+    
+    returns the interpolated value of z given the point (z1,p1) and new value p.
+
+  \end{enumerate}
+ 
+
+\item |middle_interpol| : an object that models these concepts must have two member functions:
+  \begin{enumerate}
+  \item
+    \begin{code}
+      double p(value_type z1, double p1, 
+               value_type z2, double p2, value_type z)
+    \end{code}
+
+    returns the interpolated value of p given the point (z1,p1) and new value z.
+
+  \item
+    \begin{code}
+      double z(value_type z1, double p1, 
+               value_type z2, double p2, double p)
+    \end{code}
+
+    returns the interpolated value of z given the point (z1,p1) and new value p.
+
+  \end{enumerate}
+ 
+\end{itemize}
+
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Members}
+\begin{itemize}
+\item 
+\begin{code}
+Non_param_cdf::value_type
+\end{code}
+
+The type of variable Z. It is set to be |double| by default.
+
+\item 
+\begin{code}
+Non_param_cdf::z_iterator
+\end{code}
+
+An iterator to the sequence of values $z_1 \le \ldots \le z_n$. It is a model of \hyperref{Forward Iterator}{Forward Iterator (see Section}{)}{concept:forwarditerator}.
+
+\item 
+\begin{code}
+Non_param_cdf::p_iterator
+\end{code}
+
+An iterator to the sequence of values $p_1 \le \ldots \le p_n$. It is a model of \hyperref{Forward Iterator}{Forward Iterator (see Section}{)}{concept:forwarditerator}.
+
+
+\item 
+\begin{code}
+Non_param_cdf::Non_param_cdf()
+\end{code}
+
+Default constructor.
+
+
+\item 
+\begin{code}
+Non_param_cdf::Non_param_cdf(z_iterator z_begin, z_iterator z_end)
+\end{code}
+
+Creates a non-parametric cdf. The z-values $z_1,\ldots,z_n$ are read from range |[z_begin,z_end)|. The corresponding probabilities are not initialized. The range |[z_begin,z_end)| must be sorted, in increasing order.
+
+\item
+\begin{code}
+Non_param_cdf::Non_param_cdf(z_iterator z_begin, z_iterator z_end,
+                             p_iterator p_begin)
+\end{code}
+
+
+Creates a non-parametric cdf. 
+
+The z-values $z_1,\ldots,z_n$ are read from range |[z_begin,z_end)|, and the corresponding probabilities are read starting from |p_begin|. The range |[z_begin,z_end)| must be sorted, in increasing order. 
+
+
+\item 
+\begin{code}
+void Non_param_cdf::resize(unsigned int m)
+\end{code}
+
+
+Allocates space for a discretization of size m. 
+
+
+
+\item
+ \begin{code}
+void Non_param_cdf::z_set(z_iterator z_begin, z_iterator z_end)
+\end{code}
+
+Redefines the discretization $z_1,\ldots,z_n$ to the values in range |[z_begin,z_end)|. The range |[z_begin,z_end)| must be sorted, in increasing order.
+
+The new discretization can contain more values than the previous one. The probability values corresponding to the former discretization are invalidated.
+
+%\item \begin{code}
+%void Non_param_cdf::p_set(p_iterator p_begin, p_iterator p_end)
+%\end{code}
+%
+%Redefines the probabilities corresponding to the discretization $z_1,\ldots,z_n$.
+%
+%|p_iterator| is a model of \hyperref{Forward Iterator}{Forward Iterator (see Section}{)}{concept:forwarditerator}.
+% The range |[p_begin,p_end)| must be of size $n$. 
+
+\item
+ \begin{code}
+z_iterator Non_param_cdf::z_begin()
+\end{code}
+
+Returns a model of \hyperref{Forward Iterator}{Forward Iterator (see Section}{)}{concept:forwarditerator} to the first element of the discretization $z_1,\ldots,z_n$.
+
+\item
+ \begin{code}
+z_iterator Non_param_cdf::z_end()
+\end{code}
+
+Returns a model of \hyperref{Forward Iterator}{Forward Iterator (see Section}{)}{concept:forwarditerator} to the end of the discretization $z_1,\ldots,z_n$.
+
+\item
+ \begin{code}
+p_iterator Non_param_cdf::p_begin()
+\end{code}
+
+Returns a model of \hyperref{Forward Iterator}{Forward Iterator (see Section}{)}{concept:forwarditerator} to the first element of the set of probabilities $p_1,\ldots,p_n$.
+
+\item
+ \begin{code}
+p_iterator Non_param_cdf::p_end()
+\end{code}
+
+Returns a model of \hyperref{Forward Iterator}{Forward Iterator (see Section}{)}{concept:forwarditerator} to the end of the set of probabilities $p_1,\ldots,p_n$.
+
+
+\item 
+\begin{code}
+double Non_param_cdf::prob(value_type z)
+\end{code}
+
+Returns the probability $Prob(Z \le z)$.
+
+\item 
+\begin{code}
+value_type Non_param_cdf::inverse(double p)
+\end{code}
+
+Returns the value z such that $p=Prob(Z \le z)$.
+
+\end{itemize}
+
+
+
+
+
+
+
+
+\subsection{Non-Parametric Cdf, categorical variable}
+\begin{htmlonly}
+<div align=right><img SRC="icons/object.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+|Categ_non_param_cdf<T>|
+\vspace{0.3cm}
+
+|Categ_non_param_cdf<T>| is a non-parametric cdf of a categorical (discrete) variable Z. It is defined by n category labels $z_1,\ldots, z_n$ and the corresponding probabilities. 
+We define the cumulative probability of being in class $z_j$ by: 
+\begin{displaymath}
+  Prob(Z\le z_j)=\sum_{i=1}^{j-1} Prob(Z=z_i)
+\end{displaymath}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Where Defined}
+In header file |<cdf.h>|
+
+\htmlrule[CLEAR=all]  \subsubsection*{Template Parameters}
+\begin{tabular}[!h]{l l p{10cm}}
+|T| & & the cdf's type value. It can be any ``discrete'' type (e.g. |int| or |bool|). It is |unsigned int| by default.\\
+\end{tabular}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Model of}
+\hyperref{Non-Parametric Cdf}{Non-Parametric Cdf (see Section}{)}{concept:nonparamcdf}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Members}
+The leading |Categ_non_param_cdf::| is omited in the following list of member fonctions.
+
+\begin{itemize}
+\item 
+\begin{code}
+Categ_non_param_cdf::value_type
+\end{code}
+
+The type of variable Z. It is set to be |unsigned int| by default.
+
+\item 
+\begin{code}
+non_param_cdf::z_iterator
+\end{code}
+
+An iterator to the sequence of values $z_1 \le \ldots \le z_n$. It is a model of \hyperref{Forward Iterator}{Forward Iterator (see Section}{)}{concept:forwarditerator}.
+
+\item 
+\begin{code}
+non_param_cdf::p_iterator
+\end{code}
+
+An iterator to the sequence of values $p_1 \le \ldots \le p_n$. It is a model of \hyperref{Forward Iterator}{Forward Iterator (see Section}{)}{concept:forwarditerator}.
+
+
+\item
+ \begin{code}
+Categ_non_param_cdf()
+\end{code}
+
+Default constructor.
+
+\item
+ \begin{code}
+Categ_non_param_cdf(z_iterator z_begin, z_iterator z_end)
+\end{code}
+
+Creates a non-parametric cdf. 
+
+|z_iterator| is a model of \hyperref{Forward Iterator}{Forward Iterator (see Section}{)}{concept:forwarditerator}. The z-values $z_1,\ldots,z_n$ are read from range |[z_begin,z_end)|. The corresponding probabilities are not initialized.
+
+\item
+ \begin{code}
+Categ_non_param_cdf(z_iterator z_begin, z_iterator z_end,
+                    p_iterator p_begin)
+\end{code}
+
+Creates a non-parametric cdf. 
+
+|z_iterator| and |p_iterator| are models of \hyperref{Forward Iterator}{Forward Iterator (see Section}{)}{concept:forwarditerator}.
+The z-values $z_1,\ldots,z_n$ are read from range |[z_begin,z_end)|, and the corresponding probabilities are read starting from |p_begin|. Since the probabilities are cumulative probabilities, the (cumulative) probability associated to the last class is necessarily equal to 1.
+
+
+\item
+ \begin{code}
+void non_param_cdf::resize(unsigned int m)
+\end{code}
+
+
+Allocates space for a discretization of size m. 
+
+
+
+\item
+ \begin{code}
+void z_set(z_iterator z_begin, z_iterator z_end)
+\end{code}
+
+Redefines the labels $z_1,\ldots,z_n$ to the labels in range |[z_begin,z_end)|. 
+
+|z_iterator| is a model of \hyperref{Forward Iterator}{Forward Iterator (see Section}{)}{concept:forwarditerator}.
+The new set of labels can contain more values than the previous one. The probability values corresponding to the former labels are invalidated.
+
+%\item \begin{code}
+%p_set(p_iterator p_begin, p_iterator p_end)
+%\end{code}
+%
+%Redefines the probabilities corresponding to set $z_1,\ldots,z_n$. 
+%
+%|p_iterator| is a model of \hyperref{Forward Iterator}{Forward Iterator (see Section}{)}{concept:forwarditerator}.
+%The range |[p_begin,p_end)| must be of size $n$. 
+
+\item
+ \begin{code}
+z_iterator Categ_non_param_cdf::z_begin()
+\end{code}
+
+Returns a model of \hyperref{Forward Iterator}{Forward Iterator (see Section}{)}{concept:forwarditerator} to the first element of set $z_1,\ldots,z_n$.
+
+\item
+ \begin{code}
+z_iterator Categ_non_param_cdf::z_end()
+\end{code}
+
+Returns a model of \hyperref{Forward Iterator}{Forward Iterator (see Section}{)}{concept:forwarditerator} to the end of set $z_1,\ldots,z_n$.
+
+\item
+ \begin{code}
+p_iterator non_param_cdf::p_begin()
+\end{code}
+
+Returns a model of \hyperref{Forward Iterator}{Forward Iterator (see Section}{)}{concept:forwarditerator} to the first element of the set of probabilities $p_1,\ldots,p_n$.
+
+\item
+ \begin{code}
+p_iterator non_param_cdf::p_end()
+\end{code}
+
+Returns a model of \hyperref{Forward Iterator}{Forward Iterator (see Section}{)}{concept:forwarditerator} to the end of the set of probabilities $p_1,\ldots,p_n$.
+
+
+
+\item 
+\begin{code}
+double Categ_non_param_cdf::prob(value_type z)
+\end{code}
+
+Returns the probability $Prob(Z \le z)$.
+
+\item 
+\begin{code}
+value_type Categ_non_param_cdf::inverse(double p)
+\end{code}
+
+Returns the value z such that $p=Prob(Z \le z)$.
+
+\end{itemize}
+
+
+
+
+%______________________________________________________________
+% Function Object Classes
+%______________________________________________________________
+
+\section{Function Object Classes}
+
+
+\subsection{Monte Carlo Sampler}
+\begin{htmlonly}
+<div align=right><img SRC="icons/functor.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+|Monte_carlo_sampler<random_number_generator>|
+\vspace{0.3cm}
+
+|Monte_carlo_sampler| randomly draws a value $z$ from a cdf $F$: a random probabilty $p$ is generated, and $z=F^{-1}(p)$. By default, probability $p$ is generated by |drand48|, a random number generator of \emph{stdlib.h} that uses the linear congruential algorithm and 48-bit integer arithmetic.
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Where Defined}
+In header file |<sampler.h>|
+
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Model of}
+\hyperref{Sampler}{Sampler (see Section}{)}{concept:sampler}
+
+\htmlrule[CLEAR=all]  \subsubsection*{Type Requirements}
+|random_number_generator| is a function object that takes no argument and returns a |double| between 0 and 1. Its constructor must take a |long int| as argument to seed the pseudo-random number sequence.
+
+ 
+\htmlrule[CLEAR=all]  \subsubsection*{Members}
+\begin{itemize}
+
+\item
+ \begin{code} 
+Monte_carlo_sampler::Monte_carlo_sampler()
+\end{code}
+
+Default constructor.
+
+\item
+ \begin{code} 
+Monte_carlo_sampler::Monte_carlo_sampler(long int seed)
+\end{code}
+
+Constructor. Initializes the random number generator with |seed|.
+
+
+
+\item
+ \begin{code} 
+template<class Geovalue, class Cdf>
+typename cdf::value_type 
+operator()(Geovalue& g, const Cdf& f)
+\end{code}
+
+Function call operator. Type |cdf| is a model of \hyperref{CDF}{CDF}{}{concept:cdf}. Draws a value from |f|.
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+\subsection{Simple Kriging Constraints}
+\begin{htmlonly}
+<div align=right><img SRC="icons/functor.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+|SK_constraints|
+\vspace{0.3cm}
+
+In simple kriging, the error variance is minimized without any additional constraint. The kriging system is then:
+\begin{displaymath}
+  \left\{ \begin{array}{l}
+      Var \Big( \sum_{\alpha=1}^{n} \lambda_{\alpha} [Z(\mloc{u}_{\alpha})-m(\mloc{u}_{\alpha})] - [Z(\mloc{u})-m(\mloc{u})] \Big) \quad \textrm{is minimum} \\ 
+    \end{array} \right.
+\end{displaymath}
+
+\noindent or, if secondary variables are accounted for:
+
+\begin{displaymath}
+  \left\{ \begin{array}{l}
+      Var \Big( \sum_{\alpha=1}^{n} \lambda_{\alpha} [Z(\mloc{u}_{\alpha})-m(\mloc{u}_{\alpha})] + \sum_{i=1}^{N_v} \sum_{\beta=1}^{n_i(\mloc{u})}\lambda_{\beta}^i [Z(\mloc{u}_{\beta}^i)-m(\mloc{u}_{\beta}^i)] \\ \qquad - [Z(\mloc{u})-m] \Big) \quad \textrm{is minimum} \\ 
+    \end{array} \right.
+\end{displaymath}
+
+|SK_constraints| computes the kriging system size, resizes the kriging matrix and the second member, and returns the system size.
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Where Defined}
+In header file |<kriging.h>|
+
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Model of}
+\hyperref{Kriging Constraint}{Kriging Constraint}{}{concept:krigingconstraint}
+
+\htmlrule[CLEAR=all]  \subsubsection*{Type Requirements}
+See~\ref{matrix_lib} for a thorough description of the requirements on the matrix library.
+
+ 
+\htmlrule[CLEAR=all]  \subsubsection*{Members}
+\begin{itemize}
+
+\item
+ \begin{code} 
+SK_constraints::SK_constraints()
+\end{code}
+
+Default constructor.
+
+\item
+ \begin{code} 
+template<class InputIterator, class Location, class Matrix, class Vector>
+unsigned int
+SK_constraints::operator()(Matrix& A, Vector& b,
+                           const Location& u
+                           InputIterator first_neigh, InputIterator last_neigh)
+
+\end{code}
+
+Function call operator. |first_neigh,last_neigh)| is a range of \hyperref{Neighborhood}{Neighborhood (see Section}{)}{concept:neighborhood}, and |Location| is a model of \hyperref{Location}{Location (see Section}{)}{concept:location}. |A| is the kriging matrix and |b| the right hand side of the kriging system. |u| is the location being estimated. The function returns the total number of neighbors, i.e. the sum of the number of neighbors in each neighborhoods. The requirements on concepts Matrix and Vector are fully described in~\ref{matrix_lib}.
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+\subsection{Ordinary Kriging Constraints}
+\begin{htmlonly}
+<div align=right><img SRC="icons/functor.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+|OK_constraints|
+\vspace{0.3cm}
+
+In ordinary kriging, the error variance is minimized with the constraint that the kriging weights sum-up to 1. The kriging system is then:
+\begin{displaymath}
+  \left\{ \begin{array}{l}
+      Var \Big( \sum_{\alpha=1}^{n} \lambda_{\alpha} [Z(\mloc{u}_{\alpha})-m(\mloc{u}_{\alpha})] - [Z(\mloc{u})-m(\mloc{u})] \Big) \quad \textrm{is minimum} \\ \\
+      \sum_{\alpha=1}^{n} \lambda_{\alpha} =1
+    \end{array} \right.
+\end{displaymath}
+
+\noindent or, if secondary variables are accounted for:
+
+\begin{displaymath}
+  \left\{ \begin{array}{l}
+      Var \Big( \sum_{\alpha=1}^{n} \lambda_{\alpha} [Z(\mloc{u}_{\alpha})-m(\mloc{u}_{\alpha})] + \sum_{i=1}^{N_v} \sum_{\beta=1}^{n_i(\mloc{u})}\lambda_{\beta}^i [Z(\mloc{u}_{\beta}^i)-m(\mloc{u}_{\beta}^i)] \\ \qquad - [Z(\mloc{u})-m] \Big) \quad \textrm{is minimum} \\ \\
+      
+      \sum_{\alpha=1}^{n} \lambda_{\alpha} =1 \\
+ \sum_{\beta=1}^{n_i(\mloc{u})}\lambda_{\beta}^i =0 \quad i=1,\ldots,N_v
+    \end{array} \right.
+\end{displaymath}
+
+|OK_constraints| computes the kriging system size, resizes the kriging matrix and the second member, computes the terms of the system that are associated with the constraint on the kriging weights and finally returns the system size.
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Where Defined}
+In header file |<kriging.h>|
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Model of}
+\hyperref{Kriging Constraint}{Kriging Constraint}{}{concept:krigingconstraint}
+
+\htmlrule[CLEAR=all]  \subsubsection*{Type Requirements}
+See~\ref{matrix_lib} for a thorough description of the requirements on the matrix library.
+
+ 
+\htmlrule[CLEAR=all]  \subsubsection*{Members}
+\begin{itemize}
+
+\item
+ \begin{code} 
+OK_constraints::OK_constraints()
+\end{code}
+
+Default constructor.
+
+\item
+ \begin{code} 
+template<class InputIterator, class Location, class Matrix, class Vector>
+unsigned int
+OK_constraints::operator()(Matrix& A, Vector& b,
+                           const Location& u,
+                           InputIterator first_neigh, InputIterator last_neigh)
+                            
+\end{code}
+
+Function call operator. |first_neigh,last_neigh)| is a range of \hyperref{Neighborhood}{Neighborhood (see Section}{)}{concept:neighborhood}, and |Location| is a model of \hyperref{Location}{Location (see Section}{)}{concept:location}. |A| is the kriging matrix and |b| the right hand side of the kriging system. |u| is the location being estimated. The function returns the total number of neighbors, i.e. the sum of the number of neighbors in each neighborhoods. The requirements on concepts Matrix and Vector are fully described in~\ref{matrix_lib}.
+\end{itemize}
+
+
+
+
+
+
+
+
+
+\subsection{Kriging with Trend Constraints}
+\begin{htmlonly}
+<div align=right><img SRC="icons/functor.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+|KT_constraints<forward_iterator>|
+\vspace{0.3cm}
+
+|KT_constraints| adds constraints to account for the variations of the mean of the krigged variable Z. The mean is assumed to be of the form:
+\begin{displaymath}
+    m(\mloc{u}) = \sum_{k=0}^K a_k(\mloc{u}) f_k(\mloc{u})
+  \end{displaymath}
+\noindent where $a_k$ are unknown but locally constant and $f_k$ are known functions of \loc{u}.
+
+The kriging system at location \loc{u} is then given by:
+\begin{displaymath}
+  \left\{ \begin{array}{l}
+      Var \Big( \sum_{\alpha=1}^{n} \lambda_{\alpha} [Z(\mloc{u}_{\alpha})-m(\mloc{u}_{\alpha})] - [Z(\mloc{u})-m(\mloc{u})] \Big) \quad \textrm{is minimum} \\ \\
+      \sum_{\alpha=1}^{n} \lambda_{\alpha} =1 \\ \\
+      \sum_{\alpha=1}^{n} \lambda_{\alpha}(\mloc{u}) f_k(\mloc{u}_{\alpha}) = f_k(\mloc{u}) \quad \forall k \in [1,K] \\
+    \end{array} \right.
+\end{displaymath}
+
+Kriging with trend is rarely used with secondary variables. Hence |KT_constraints| assumes no secondary variable is to be accounted for.
+|KT_constraints| computes the kriging system size, resizes the kriging matrix and the second member, computes the terms of the system that are associated with the constraints on the kriging weights and finally returns the system size.
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Where Defined}
+In header file |<kriging.h>|
+
+\htmlrule[CLEAR=all]  \subsubsection*{Template Parameters}
+\begin{tabular}[!h]{l l p{10cm}}
+|forward_iterator| & & is a model of \hyperref{Forward Iterator}{Forward Iterator (see Section}{)}{concept:forwarditerator}.\\
+
+\end{tabular}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Model of}
+\hyperref{Kriging Constraint}{Kriging Constraint}{}{concept:krigingconstraint}
+
+\htmlrule[CLEAR=all]  \subsubsection*{Type Requirements}
+See~\ref{matrix_lib} for a thorough description of the requirements on the matrix library.
+
+ 
+\htmlrule[CLEAR=all]  \subsubsection*{Members}
+\begin{itemize}
+
+\item
+ \begin{code} 
+KT_constraints::KT_constraints(forward_iterator begin, forward_iterator end)
+\end{code}
+
+Constructs a |KT_constraint|. The range |[begin,end)| contains the functions $f_i$, $i=1,\ldots,K$ that define the mean of Z. These functions must be unary functions and associate to a location a value of type convertible to |double|. The prototype of each function $f_i$ must be:
+
+|double f(location u)| 
+
+where |location| is a model of \hyperref{Location}{Location (see Section}{)}{concept:location}.
+
+
+\item
+ \begin{code} 
+template<class InputIterator, class Location, class Matrix, class Vector>
+unsigned int
+KT_constraints::operator()(Matrix& A, Vector& b,
+                           const Location& u,
+                           InputIterator first_neigh, InputIterator last_neigh)
+\end{code}
+
+Function call operator. |first_neigh,last_neigh)| is a range of \hyperref{Neighborhood}{Neighborhood (see Section}{)}{concept:neighborhood}, and |Location| is a model of \hyperref{Location}{Location (see Section}{)}{concept:location}. |A| is the kriging matrix and |b| the right hand side of the kriging system. |u| is the location being estimated. The function returns the total number of neighbors, i.e. the sum of the number of neighbors in each neighborhoods. The requirements on concepts Matrix and Vector are fully described in~\ref{matrix_lib}.
+\end{itemize}
+
+
+
+
+
+
+
+
+
+\subsection{LMC Covariance}
+\begin{htmlonly}
+<div align=right><img SRC="icons/functor.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+|LMC_covariance<covariance_matrix>|
+\vspace{0.3cm}
+
+Cokriging of variable $Z_1$, accounting for secondary variables $Z_2,\ldots,Z_{N_v}$, requires the covariances $(\mloc{u}_1,\mloc{u}_2) \longmapsto C_{i,j}(\mloc{u}_1,\mloc{u}_2)$.
+
+LMC cokriging requires the knowledge of the covariances between any two locations $\mloc{u}_1$, $\mloc{u}_2$. 
+
+\htmlrule[CLEAR=all]  \subsubsection*{Where Defined}
+In header file |<kriging.h>|
+
+\htmlrule[CLEAR=all]  \subsubsection*{Template Parameters}
+\begin{tabular}[!h]{l l p{10cm}}
+|covariance_matrix| & & is an object that represents a matrix. Expression |mat(i,j)| must be valid and return element (i,j) of the matrix (i and j are greater than or equal to 1), and the matrix must have a copy constructor. The elements of the covariance matrix must be models of \hyperref{Covariance}{Covariance}{}{concept:covariance}\\
+\end{tabular}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Model of}
+\hyperref{Covariance Set}{Covariance Set}{}{concept:covarianceset}
+
+\htmlrule[CLEAR=all]  \subsubsection*{Type Requirements}
+The elements of the matrix must be models of \hyperref{Covariance}{Covariance}{}{concept:covariance}
+
+ 
+\htmlrule[CLEAR=all]  \subsubsection*{Members}
+\begin{itemize}
+
+\item
+ \begin{code} 
+LMC_covariance::LMC_covariance(const covariance_matrix& A,
+                               unsigned int size)
+\end{code}
+
+Constructs a |LMC_covariance|. Matrix |A| contains pointers to the covariance functions $(\mloc{u}_1,\mloc{u}_2) \longmapsto C_{i,j}(\mloc{u}_1,\mloc{u}_2)$. |size| is the size of the covariance matrix. It is equal to the number of variables $N_v$.
+
+\item
+ \begin{code} 
+double LMC_covariance::operator()(unsigned int i, unsigned int j,
+                                  const location& u1, const location& u2)
+  \end{code}
+
+Function call operator. Returns the covariance $C_{i,j}(\mloc{u}_1,\mloc{u}_2)$.
+\end{itemize}
+
+
+
+
+
+
+%==================================
+
+\subsection{MM1 Covariance}
+\begin{htmlonly}
+<div align=right><img SRC="icons/functor.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+|MM1_covariance<covariance, matrix>|
+\vspace{0.3cm}
+
+Full cokriging of $Z_1$ accounting for secondary variables $Z_2,\ldots,Z_{N_v}$ requires the inference of all covariance functions $(\mloc{u}_1,\mloc{u}_2) \longmapsto C_{i,j}(\mloc{u}_1,\mloc{u}_2)$ between variables i and j.
+This very difficult task can be eased by considering only the colocated secondary variables. The underlying hypotheses is that the colocated value screens out the influence of further away data. In this situation, only the covariances $C_{1,j}$ need be inferred. 
+The MM1 approximation alleviate the modeling effort further with the following approximation:
+\begin{displaymath}
+  C_{1,j}(\mloc{u}_1,\mloc{u}_2) = \frac{C_{1,j}(0)}{C_{1,1}(0)}C_{1,1}(\mloc{u}_1,\mloc{u}_2)
+\end{displaymath}
+
+\noindent where $C_{i,j}(0) = C_{i,j}(\mloc{u}_1,\mloc{u}_1) = C_{i,j}(\mloc{u}_2,\mloc{u}_2)$ 
+
+This approximation is acceptable if the support of the secondary variables is not larger than the support of the primary variable $Z_1$. For example, if $Z_1$ is rock  porosity and $Z_2$ rock permeability, MM1 approximation is acceptable. It would not be if $Z_2$ were seismic amplitude, because seismic amplitude is generally defined on a much larger scale than porosity.
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Where Defined}
+In header file |<kriging.h>|
+
+\htmlrule[CLEAR=all]  \subsubsection*{Template Parameters}
+\begin{tabular}[!h]{l l p{10cm}}
+|covariance| & & is a model of \hyperref{Covariance}{Covariance}{}{concept:covariance}\\
+|matrix| & & is an object that represents a matrix. Expression |mat(i,j)| must be valid and return element (i,j) of the matrix (i and j are greater than or equal to 1), and the matrix must have a copy constructor. The elements of |matrix| are of type convertible to |double|.\\
+\end{tabular}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Model of}
+\hyperref{Covariance Set}{Covariance Set}{}{concept:covarianceset}
+
+\htmlrule[CLEAR=all]  \subsubsection*{Type Requirements}
+The elements of the matrix are of type convertible to |double|.
+
+ 
+\htmlrule[CLEAR=all]  \subsubsection*{Members}
+\begin{itemize}
+
+\item
+ \begin{code} 
+MM1_covariance::MM1_covariance(const covariance& cov,
+                               const matrix& A, unsigned int size)
+\end{code}
+
+Constructs a |MM1_covariance|. Covariance function |cov| is $C_{1,1}$, and matrix |A| contains the covariance values $C_{i,j}(0)$. Notice that matrix |A| contains numbers, not pointers to functions as in LMC.
+|size| is the size of the covariance matrix. It is equal to the number of variables $N_v$.
+
+\item
+ \begin{code} 
+double MM1_covariance::operator()(unsigned int i, unsigned int j,
+                                  const location& u1, const location& u2)
+  \end{code}
+
+Function call operator. Returns the covariance $C_{i,j}(\mloc{u}_1,\mloc{u}_2)$ using the MM1 approximation.
+\end{itemize}
+
+
+
+
+
+
+
+
+
+%==================================
+
+\subsection{MM2 Covariance}
+\begin{htmlonly}
+<div align=right><img SRC="icons/functor.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+|MM2_covariance<covariance_vector, matrix>|
+\vspace{0.3cm}
+
+The MM1 approximation is not valid if the support of the secondary variables is larger than the support of the primary variable. In this case, the covariances $C_{1,j}$  can be approximated as follows (MM2 hypothesis):
+\begin{displaymath}
+  C_{1,j}(\mloc{u}_1,\mloc{u}_2) = \frac{C_{1,j}(0)}{C_{1,1}(0)}C_{j,j}(\mloc{u}_1,\mloc{u}_2)
+\end{displaymath}
+This approximation is less convenient than the MM1 approximation, because it requires the inference of all covariances $C_{j,j}$. 
+
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Where Defined}
+In header file |<kriging.h>|
+
+\htmlrule[CLEAR=all]  \subsubsection*{Template Parameters}
+\begin{tabular}[!h]{l l p{10cm}}
+|covariance_vector| & & is an object that has member function |covariance_vector[int i]|, that returns element |i| of the vector (|i| is greater than or equal to 0). The elements of the vector must be models of \hyperref{Covariance}{Covariance}{}{concept:covariance}. |covariance_vector| must also have a copy constructor.\\
+|matrix| & & is an object that represents a matrix. Expression |mat(i,j)| must be valid and return element (i,j) of the matrix (i and j are greater than or equal to 1), and the matrix must have a copy constructor. The elements of |matrix| are of type convertible to |double|.\\
+\end{tabular}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Model of}
+\hyperref{Covariance Set}{Covariance Set}{}{concept:covarianceset}
+
+\htmlrule[CLEAR=all]  \subsubsection*{Type Requirements}
+\begin{itemize}
+\item The elements of the matrix are of type convertible to |double|.
+
+\item |covariance_vector| contains pointers to models of \hyperref{Covariance}{Covariance}{}{concept:covariance}.
+\end{itemize}
+
+\htmlrule[CLEAR=all]  \subsubsection*{Members}
+\begin{itemize}
+
+\item
+ \begin{code} 
+MM2_covariance::MM2_covariance(covariance_vector& cov_vect,
+                               const matrix& A, unsigned int size)
+\end{code}
+
+Constructs a |MM2_covariance|. |cov_vect| contains pointers to the covariance functions $C_{i,i}$, $i=1,\ldots,N_v$.
+
+ Matrix |A| contains the covariance values $C_{i,j}(0)$. Notice that matrix |A| contains numbers, not pointers to functions as in LMC.
+
+|size| is the size of the covariance matrix. It is equal to the number of variables $N_v$.
+
+
+\item
+ \begin{code} 
+double MM2_covariance::operator()(unsigned int i, unsigned int j,
+                                  const location& u1, const location& u2)
+  \end{code}
+
+Function call operator. Returns the covariance $C_{i,j}(\mloc{u}_1,\mloc{u}_2)$ using the MM1 approximation.
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+\subsection{Kriging-Based, Gaussian Cdf Estimator}
+\begin{htmlonly}
+<div align=right><img SRC="icons/functor.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+|Gaussian_cdf_Kestimator<covariance,kriging_constraints,matrix_lib>|
+\vspace{0.3cm}
+
+
+This cdf estimator assumes the cdf of variable Z is Gaussian, and does not account for any secondary variable. The mean and variance of the Gaussian cdf are estimated by kriging.
+
+\htmlrule[CLEAR=all]  \subsubsection*{Where Defined}
+In header file |<cdf_estimators.h>|
+
+\htmlrule[CLEAR=all]  \subsubsection*{Template Parameters}
+\begin{tabular}[!h]{l l p{10cm}}
+|covariance| & & is a model of \hyperref{Covariance}{Covariance}{}{concept:covariance}\\
+|kriging_constraints| & & is model of \hyperref{Kriging Constraint}{Kriging Constraint}{}{concept:krigingconstraint}. It is set by default to |OK_constraints<tnt_lib>|\\
+|matrix_lib| & & defines the library of linear algebra to be used. The default value is |tnt_lib|, the \emph{TNT} library.\\
+\end{tabular}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Model of}
+\hyperref{Single Variable Cdf Estimator}{Single Variable Cdf Estimator (see Section}{)}{concept:svce}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Members}
+The leading |Gaussian_cdf_Kestimator::| is omitted in the list of member functions.
+
+\begin{itemize}
+
+\item
+ \begin{code} 
+Gaussian_cdf_Kestimator(const covariance& cov,
+                        const kriging_constraints& Kconstraints)
+\end{code}
+
+Constructs a |Gaussian_cdf_Kestimator|. It requires the covariance function: $Cov \Big( Z(\mloc{u}),Z(\mloc{u}+\mloc{h}) \Big)$, and a set of kriging constraints (e.g. simple kriging constraints). 
+
+
+\item
+ \begin{code}
+template<class Location, class Neighborhood, class GaussianCdf> 
+int operator()(const Location& u, const Neighborhood& neighbors,
+               GaussianCdf& ccdf)
+  \end{code}
+
+Function call operator. It estimates the gaussian cdf parameters and modifies |ccdf| accordingly. 
+|location| is a model of \hyperref{Location}{Location (see Section}{)}{concept:location}, and |neighborhood| is a model of \hyperref{Neighborhood}{Neighborhood (see Section}{)}{concept:neighborhood}. 
+
+|u| is the location at which the Gaussian conditional cdf is estimated. 
+
+|neighbors| is the neighborhood of location |u|.
+The function returns 0 if no problem occurred. 
+\end{itemize}
+
+
+
+
+
+
+
+
+
+\subsection{Cokriging-Based, Gaussian Cdf Estimator}
+\begin{htmlonly}
+<div align=right><img SRC="icons/functor.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+|Gaussian_cdf_coKestimator<covariance_set,kriging_constraints,matrix_lib>|
+\vspace{0.3cm}
+
+
+This cdf estimator assumes the cdf of variable Z is Gaussian, and does account for secondary variables. The mean and variance of the Gaussian cdf are estimated by cokriging.
+
+\htmlrule[CLEAR=all]  \subsubsection*{Where Defined}
+In header file |<cdf_estimators.h>|
+
+\htmlrule[CLEAR=all]  \subsubsection*{Template Parameters}
+\begin{tabular}[!h]{l l p{10cm}}
+|covariance_set| & & is a model of \hyperref{Covariance Set}{Covariance Set}{}{concept:covarianceset}\\
+|kriging_constraints| & & is model of \hyperref{Kriging Constraint}{Kriging Constraint}{}{concept:krigingconstraint}. It is set by default to |OK_constraints<tnt_lib>|\\
+|matrix_lib| & & defines the library of linear algebra to be used. The default value is |tnt_lib|, the \emph{TNT} library.\\
+\end{tabular}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Model of}
+\hyperref{Multiple Variable Cdf Estimator}{Multiple Variable Cdf Estimator (see Section}{)}{concept:mvce}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Members}
+The leading |Gaussian_cdf_coKestimator::| is omitted in the list of member functions.
+
+\begin{itemize}
+
+\item
+ \begin{code} 
+Gaussian_cdf_coKestimator(const covariance_set& cov_set,
+                          const kriging_constraints& Kconstraints)
+\end{code}
+
+Constructs a |Gaussian_cdf_coKestimator|. Covariance set |cov_set| gives the covariances $C_{i,j}(\mloc{u}_i,\mloc{u}_j)$ between variables $Z(\mloc{u}_i)$ and $Z(\mloc{u}_j)$.
+
+
+\item
+ \begin{code}
+template<class Location, class InputIterator, class GaussianCdf> 
+int operator()(const Location& u,
+             InputIterator first_neigh, InputIterator last_neigh,
+             GaussianCdf& ccdf)
+             
+\end{code}
+
+Function call operator. It estimates the gaussian cdf parameters and modifies |ccdf| accordingly. 
+|location| is a model of \hyperref{Location}{Location (see Section}{)}{concept:location}, and |[first_neigh,last_neigh)| is a range of models of \hyperref{Neighborhood}{Neighborhood (see Section}{)}{concept:neighborhood}. 
+
+|u| is the location at which the Gaussian conditional cdf is estimated. 
+The function returns 0 if no problem occurred.
+\end{itemize}
+
+
+
+
+
+
+
+
+
+\subsection{Indicator Cdf Estimator}
+\begin{htmlonly}
+<div align=right><img SRC="icons/functor.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+|indicator_cdf_estimator<covar_iterator,constraints_iterator,matrix_lib>|
+\vspace{0.3cm}
+
+
+Indicator kriging estimates a non-parametric cdf $\Big( z_i, F(z_i) \Big)$, $i=1,\ldots,n$ of variable Z by kriging n indicator variables $I(\mloc{u},z_i)$:
+ \begin{displaymath}
+  i(\mloc{u},z_i)= \left\{ \begin{array}{ll}
+    1 & \textrm{if } z(\mloc{u}) \le z_i \\
+    0 & \textrm{otherwise}
+\end{array} \right.
+\end{displaymath}
+
+The kriging estimate of $I(\mloc{u},z_i)$ is indeed the least-squares estimate of \\ \mbox{$Prob(Z(\mloc{u}) \le z_i)$}.
+
+Each indicator variable can be estimated using a different kriging method, e.g. with different kriging constraints. This cdf estimator only allows to change the kriging constraints, and none of the kriging systems can account for multiple variables (no cokriging).
+
+\vspace{0.2cm}
+It must be stressed that an Indicator Cdf Estimator expects n indicator variables $I(\mloc{u},z_i)$, not the single variable $Z(\mloc{u})$ itself.
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Where Defined}
+In header file |<cdf_estimators.h>|
+
+\htmlrule[CLEAR=all]  \subsubsection*{Template Parameters}
+\begin{tabular}[!h]{l l p{10cm}}
+|covar_iterator| & & is a model of \hyperref{Forward Iterator}{Forward Iterator (see Section}{)}{concept:forwarditerator}\\
+|constraints_iterator| & & is model of \hyperref{Forward Iterator}{Forward Iterator (see Section}{)}{concept:forwarditerator}\\
+|matrix_lib| & & defines the library of linear algebra to be used. The default value is |tnt_lib|, the \emph{TNT} library.\\
+\end{tabular}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Model of}
+\hyperref{Multiple Variable Cdf Estimator}{Multiple Variable Cdf Estimator (see Section}{)}{concept:mvce}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Type Requirements}
+\begin{itemize}
+\item |covar_iterator| iterates on a set of pointers to covariance functions, i.e. pointers to objects that are models \hyperref{Covariance}{Covariance}{}{concept:covariance}.
+\item |constraints_iterator| iterates on a set of pointers to kriging constraints, i.e. pointers to objects that are models of \hyperref{Kriging Constraint}{Kriging Constraint}{}{concept:krigingconstraint}.
+\end{itemize}
+
+\htmlrule[CLEAR=all]  \subsubsection*{Members}
+The leading |indicator_cdf_estimator::| is omitted in the list of member functions.
+
+\begin{itemize}
+
+\item
+ \begin{code} 
+indicator_cdf_estimator(covar_iterator cov_begin, 
+                        covar_iterator cov_end,
+                        constraints_iterator begin, 
+                        constraints_iterator end)
+\end{code}
+
+Constructs an |indicator_cdf_estimator|. Ranges of iterators \\ \texttt{[cov\_begin,cov\_end)} and |[begin,end)| need not be of the same size, nor do they need to be of size n, the number of discretizations of the non-parametric cdf. If they are of size lesser than n, the last element of the range is used for kriging the remaining indicators. For example, if $n=5$ and both \texttt{[cov\_begin,cov\_end)} and |[begin,end)| contain only two elements, the first indicator variable $I(\mloc{u},z_1)$ will be kriged using covariance |*cov_begin| and kriging constraints |*begin|, while all four remaining indicator variables $I(\mloc{u},z_i)$, $i=1,\ldots,4$ will be kriged using the same covariance and the kriging constraints |*(cov_begin+1)| and |*(begin+1)|.
+
+
+\item
+ \begin{code}
+template<class location, class neighborhood, class non_parametric_cdf> 
+void operator()(const location& u, neighborhood** neighbors,
+                unsigned int nb_of_neighborhoods,
+                non_parametric_cdf& ccdf)
+  \end{code}
+
+Function call operator. It estimates the non-parametric cdf parameters $F(z_i)$ and modifies |ccdf| accordingly. 
+|location| is a model of \hyperref{Location}{Location (see Section}{)}{concept:location}, and \\|neighborhood| is a model of \hyperref{Neighborhood}{Neighborhood (see Section}{)}{concept:neighborhood}. 
+
+|u| is the location at which the non-parametric conditional cdf is estimated. 
+
+|neighbors| is an array of pointers to neighborhoods of location |u| (|*(neighbors+i)| points to the $i^{th}$ neighborhood of |u|). There are |nb_of_neighborhoods| neighborhoods in the array. Neighborhood i informs variable $I(\mloc{u},z_i)$.
+
+|ccdf| must contain the values $z_i$, $i=1,\ldots,n$. 
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+\subsection{Search Tree}
+\begin{htmlonly}
+<div align=right><img SRC="icons/functor.PNG" height=34 width=178></div>
+\end{htmlonly}
+
+|search_tree<T, allocator>|
+\vspace{0.3cm}
+
+
+\UndefineShortVerb{\|}
+Consider a random variable $Z(\mloc{u})$ which can take K different values $Z_1,\ldots,Z_K$. The aim of a Search Tree is to infer the ccdf of $Z(\mloc{u})$ from a known realization of $Z(\mloc{u})$: $z(\mloc{u}_{\alpha_1}),\ldots,z(\mloc{u}_{\alpha_N})$, called ``training image''. 
+
+Call $T= \{ \mloc{h_1}, \ldots, \mloc{h_t} \}$ the family of vectors defining a geometric template (or ``window'') of $t$ locations. These vectors are also called \emph{nodes} of the template. A data event implied by T, at location \loc{u}, is the sequence of values: 
+\begin{displaymath}
+  D_T(\mloc{u}) = \ \{ Z(\mloc{u}+\mloc{h_1}),\ldots, Z(\mloc{u}+\mloc{h_t}) \}
+\end{displaymath}
+\loc{u} is called the central node of the template. Provided the training image is stationary, the same data event (i.e. the same sequence of values) can be observed at different locations. 
+
+
+Guardiano, and later, Strebelle proposed to model the probability 
+\begin{displaymath}
+  P \Big( Z(\mloc{u}) = z_k \ | \ \{ z(\mloc{u}+\mloc{h_1}), \ldots, z(\mloc{u}+\mloc{h_t}) \} \Big)
+\end{displaymath}
+by the frequency of occurrence in the training image of event 
+\begin{displaymath}
+  z(\mloc{u}_{\alpha}) = z_k \ | \ \{ z(\mloc{u}_{\alpha}+\mloc{h_1}), \ldots, z(\mloc{u}_{\alpha}+\mloc{h_t}) \}
+\end{displaymath}
+ ($\mloc{u_{\alpha}}$ is a location of the training image):
+if for a given data event $\rm{d_T}$, there are $n$ locations $\mloc{u_i}$ in the training image such that: 
+\begin{displaymath}
+  D_T(\mloc{u_i}) = d_T \quad i=1,\ldots,n
+\end{displaymath}
+and among these n locations, $n_k$ are such that the central pixel value \mbox{$z(\mloc{u_j})=z_k$} ($j=1,\ldots,n_k$), then
+ the probability $P \Big(Z(\mloc{u}) = z_k \ | \ d_T \Big)$ is modeled by
+\begin{displaymath}
+   P \Big(Z(\mloc{u}) = z_k \ | \ d_T \Big)  =  \frac{n_k}{n}
+\end{displaymath}
+\vspace{0.3cm}
+
+In some cases, data event $d_T$ can not be found in the training image. Call $T_{-1}$ the subset of T obtained by dropping one of the vectors (nodes) of T, and similarly, $T_{-j}$ the subset of T after dropping $j$ vectors of T, for any \mbox{$j \in \{ 0,\ldots,t-1 \}$}, with $T_{-0}=T$. If data event $d_T$ can not be found in the training image, template T is recursively simplified into $T_{-1}$,\ldots,$T_{-j}$, until $d_{T_{-j}}$ can be found. Typically, the nodes are dropped according to the amount of information they bring in estimating the probability distribution of $Z(\mloc{u}) = z_k$.
+The probability \mbox{$P \Big(Z(\mloc{u}) = z_k \ | \ d_T \Big)$} is then approximated by
+\begin{displaymath}
+  P \Big(Z(\mloc{u}) = z_k \ | \ d_T \Big) \simeq P \Big(Z(\mloc{u}) = z_k \ | \ d_{T_{-j}} \Big)
+\end{displaymath}
+\vspace{0.3cm}
+
+A search tree is a data structure that enables to store all the data events $d_{T_{-j}}$ \mbox{$(j=0,\ldots,t-1)$} present in the training image, along with the corresponding frequencies of occurrence of $z_k \ (k=1,\ldots,K)$ at the central node.
+\DefineShortVerb{\|}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Where Defined}
+In header file |<cdf_estimators.h>|
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Template Parameters}
+\begin{tabular}[!h]{l l p{10cm}}
+|T| & & is the type used to represent a category. It is a ``discrete type'', e.g. |int|, |bool|, \ldots \\
+|allocator| & & is an object that manages the memory allocation for the search tree. Two models of allocator are available: a {\bf pool allocator} and a {\bf standard allocator}. The {\bf standard allocator} allocates memory only when it is needed. This allows to use as little memory as possible, but may not be efficient in term of speed. Memory allocation is a slow task, and significant speed improvement can be achieved by decreasing the number of times memory is allocated. This is what the {\bf pool allocator} does: memory is allocated by large chunks or pools, and when new space is needed, it is taken from the pool without requiring the system to allocate some new memory. The {\bf standard allocator} should be used when memory is an issue, while the {\bf pool allocator} is useful to improve performance. {\bf pool alocator} is the default allocator.\\
+\end{tabular}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Model of}
+\hyperref{Single Variable Cdf Estimator}{Single Variable Cdf Estimator (see Section}{)}{concept:svce}
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Members}
+\begin{itemize}
+
+\item
+ \begin{code} 
+template<class window_neighborhood, class forward_iterator>
+search_tree::search_tree(forward_iterator begin, forward_iterator end
+                         window_neighborhood& neighbors,
+                         int window_size, int nb_of_categories)
+\end{code}
+
+Constructs a |search_tree|. 
+
+|forward_iterator| is a model of \hyperref{Forward Iterator}{Forward Iterator (see Section}{)}{concept:forwarditerator}. It iterates on a set of geo-values, the training image.
+
+|neighborhood| is a model of \hyperref{Window Neighborhood}{Window Neighborhood (see Section}{)}{concept:window_neighborhood}. It is used to define the data event associated to each geo-value in range |[begin,end)|.
+
+|window_size| is the maximum number of geovalues |neighbors| can contain. |nb_of_categories| is the number of categories (e.g. "sand", "mud") that we want to work with.
+
+
+
+\item
+ \begin{code}
+template<class location, class non_param_cdf> 
+int search_tree::operator()(const location& u, 
+                            const window_neighborhood& neighbors,
+                            non_param_cdf& ccdf)
+  \end{code}
+
+Function call operator. It estimates the non-parametric cdf parameters and modifies |ccdf| accordingly. 
+|location| is a model of \hyperref{Location}{Location (see Section}{)}{concept:location}, and |window_neighborhood| is a model of \hyperref{Window Neighborhood}{Window Neighborhood (see Section}{)}{concept:window_neighborhood}. 
+
+|u| is the location at which the Gaussian conditional cdf is estimated. 
+
+|neighbors| is neighborhood of location |u|. It must be the same object (or different object with the same characteristics) as the one used in the search tree constructor. The order in which the neighbors are stored inside the neighborhood is important. Denote $\mloc{u}+\mloc{h_i}$, $i=1,\ldots,N$ the locations of the $N$ neighbors of \loc{u}. The algorithm assumes that the $i^{th}$ geo-value in the neighborhood is $Z(\mloc{u}+\mloc{h_i})$.
+The function returns 0 if no problem occurred.
+\end{itemize}
+
+
+
+
+
+
+
+
+\section{Changing the Linear Algebra Library}
+\label{matrix_lib}
+
+Kriging, which is at the root of many geostatistical algorithms requires basic linear algebra facilities, essentially matrix inversion. Most of the computing time in kriging is actually spent building and solving the kriging system, hence the importance of using an efficient linear algebra library. 
+
+The default library used by \gtl{} is a slightly modified version of \htmladdnormallink{\emph{TNT}}{http://math.nist.gov/tnt/}, the \emph{Template Numerical Toolkit}. It is a public domain library written by Roldan Pozo, Mathematical and Computational Sciences Division, \htmladdnormallink{National Institute of Standards and Technology}{http://math.nist.gov}. This library was chosen because it is relatively efficient, it is easy to use and modify, and it is public domain.
+
+However, it is easy to change the linear algebra library used by the \gtl{} algorithms without having to modify existing code.
+The procedure is twofold. The first step is to wrap all the needed functionalities of the library into a single structure, call it |new_matrix_lib|. This structure will contain nested types (a matrix type, a vector type, \ldots) and static functions (for example |static void inverse(matrix& A)|), which must honor the requirements detailed in section~\ref{matrix_lib_req}.
+
+The following is an extract from the \emph{TNT} wrapper:
+
+\begin{code}
+template<class T>
+struct TNT_lib{
+
+  typedef TNT::Matrix<T> tnt_Matrix;
+  typedef TNT::Vector<T> tnt_Vector;
+
+  // Cholesky factorization.
+  static inline int cholesky(TNT::Matrix<T>& A, TNT::Matrix<T>& B){
+    return Cholesky_upper_factorization(A,B);
+  }
+
+  // LU factorization.
+  static inline int LU_factor(TNT::Matrix<T>& A, TNT::Vector<int>& index){
+    return TNT::LU_factor(A,index);
+  }
+
+\end{code}
+
+It has two nested types: |Matrix|, and |Vector| which are defined by \emph{TNT}, and two functions: a Cholesky factorization, a LU factorization, which simply call existing \emph{TNT} functions.
+
+
+The second step is to specialize the matrix library trait class for the new library wrapper |new_matrix_lib|. The trait class is defined in |<matrix_lib_traits.h>|. What has been done in the case of \tnt{} can serve as a model.
+
+
+\subsection{Linear Algebra Library Requirements}
+\label{matrix_lib_req}
+
+\htmlrule[CLEAR=all]  \subsubsection*{Matrix}
+The matrix type represents a matrix of |double| and  must have the following interface:
+
+\begin{itemize}
+
+\item |Matrix::Matrix()|
+
+Default constructor.
+
+\item |Matrix::Matrix(int m, int n)|
+
+Creates a $m*n$ matrix.
+
+
+\item |double Matrix::operator()(subscript i, subscript j)|
+
+returns element (i,j) of the matrix. The indices have offset 1: the first element is (1,1), not (0,0).
+|subscript| is a type convertible to |int|.
+
+\item |int Matrix::num_rows()|
+
+returns the number of rows of the matrix
+
+\item |int Matrix::num_cols()|
+
+returns the number of columns of the matrix
+
+\item |void Matrix::resize(int n, int m)|
+
+Resizes the matrix to size $n*m$.
+
+\end{itemize}
+
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Vector}
+Vector type is a vector of |double| which has the following interface:
+\begin{itemize}
+\item |Vector::Vector()|
+
+Default constructor.
+
+\item |Vector::Vector(int m)|
+
+Creates a vector of size $m$.
+
+
+\item |double Vector::operator()(subscript i)|
+
+returns element i of the vector. The index has offset 1: the first element is number 1, not 0.
+|subscript| is a type convertible to |int|.
+
+\item |void Vector::resize(int n)|
+
+Resizes the vector to size $n$.
+
+\end{itemize}
+
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{LU solve}
+The prototype of the function must be:
+\begin{code}
+template< class random_iterator>
+int LU_solve(Matrix& A, Vector& b, iterator solution_begin)
+\end{code}
+
+This function solves linear system $Ax=b$ using a LU decomposition of A, and stores the resulting vector $x$ in the container |solution_begin| points to. This container must be of size equal to the size of vector $b$. The iterator must be a Random Access Iterator. A Random Access Iterator is a refinement of \hyperref{Forward Iterator}{Forward Iterator (see Section}{)}{concept:forwarditerator}. If |it| is a Random Access Iterator, |it[j]| is a valid expression which makes iterator |it| point to the j-th element of the container. 
+
+
+
+\htmlrule[CLEAR=all]  \subsubsection*{Cholesky solve}
+The prototype of the function must be:
+\begin{code}
+template< class random_iterator>
+int Cholesky_solve(Matrix& A, Vector& b, iterator solution_begin)
+\end{code}
+
+This function solves linear system $Ax=b$ using a Cholesky decomposition of A (A must be positive-definite), and stores the resulting vector $x$ in the container |solution_begin| points to. This container must be of size equal to the size of vector $b$. 
+
+
+
+
+\end{document}

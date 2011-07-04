@@ -1,0 +1,5 @@
+round(0.2)= 0
+round(-0.2)= 0
+round(-1.6)= -2
+round(0.7)= 1
+round(-2.5)= -3

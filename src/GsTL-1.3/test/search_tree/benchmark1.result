@@ -1,0 +1,46 @@
+(level 0) 14 11 
+(0)  (level 1) 5 7 
+(0)  (level 2) 3 1 
+(0)  (level 3) 1 0 
+(0)  end
+(1)  end
+(1)  (level 3) 1 1 
+(0)  end
+(1)  (level 4) 1 1 
+(0)  end
+(1)  end
+(1)  (level 2) 2 5 
+(0)  (level 3) 0 3 
+(0)  end
+(1)  (level 4) 0 2 
+(0)  end
+(1)  end
+(1)  (level 3) 1 0 
+(0)  (level 4) 1 0 
+(0)  end
+(1)  end
+(1)  end
+(1)  (level 1) 5 3 
+(0)  (level 2) 3 0 
+(0)  (level 3) 1 0 
+(0)  (level 4) 1 0 
+(0)  end
+(1)  end
+(1)  end
+(1)  (level 3) 2 0 
+(0)  (level 4) 2 0 
+(0)  end
+(1)  end
+(1)  end
+(1)  (level 2) 1 1 
+(0)  (level 3) 1 1 
+(0)  (level 4) 0 1 
+(0)  end
+(1)  end
+(1)  end
+(1)  end
+size of search tree: 20
+ ccdf at location centre:  0.75 0.25 
+
+repeating the procedure 10000 times
+Done

@@ -1,0 +1,77 @@
+Requirements for:
+ - Property Server
+ - Geometry Server
+ - Grid
+
+
+
+Property Server
+---------------------
+
++ Nested Types:
+
+ - property_type
+
+
++ Valid Functions
+
+ - bool new_property(name)
+ - bool property_exists(name)
+ - bool property_exists(name_id)
+ - int property_name_id(name)
+ - string property_name(name_id)
+ - property_type&  property_value(index, name)
+ - property_type&  property_value(index, name_id)
+
+
+
+Geometry Server
+---------------------
+
++ Nested Types:
+
+ - grid_location_type
+ - real_location_type
+
+
++ Valid Functions
+
+ - int size()
+ - bool contains(index)
+ - bool contains(grid_location_type)
+ - bool contains(real_location_type)
+ - int get_index(grid_location_type)
+ - int get_index(real_location_type)
+ - grid_location_type get_grid_location(index)
+ - real_location_type get_real_location(index)
+
+
+
+
+Grid
+---------------------
+
++ Nested Types:
+
+ - property_type
+ - grid_location_type
+ - geovalue_type
+ - iterator
+ - random_path_iterator
+
+
++ Valid Functions
+
+ - string property_name(name_id)
+ - int property_name_id(name)
+ - bool property_exists(name)
+ - bool is_informed()
+ - property_type get_property_value(index, name_id)
+ - void set_property_value(value, index, name_id)
+ - grid_location_type grid_location(index)
+ - int index(grid_location)
+ - int random_path_node_index(index)
+ - void initialize_random_path(seed)
+ - void unset_property_value(index, name_id)
+
+

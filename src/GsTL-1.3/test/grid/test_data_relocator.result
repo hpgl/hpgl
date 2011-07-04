@@ -1,0 +1,29 @@
+_______________________________________________
+This program performs various tests on 
+data_relocator
+
+Data to relocate:
+(1 , 0 , 0)  property value: 0.43
+(1 , 4 , 0)  property value: 0.86
+(3 , 4 , 0)  property value: 1.29
+(0 , 1 , 0)  property value: 1.72
+
+
+Coarse grid before data relocation
+(0 , 0 , 0)    is informed ?  1   value= 0
+(1 , 0 , 0)    is informed ?  0
+(0 , 1 , 0)    is informed ?  0
+(1 , 1 , 0)    is informed ?  0
+
+Coarse grid after data relocation
+(0 , 0 , 0)    is informed ?  1   value= 0
+(1 , 0 , 0)    is informed ?  0
+(0 , 1 , 0)    is informed ?  1   value= 0.86
+(1 , 1 , 0)    is informed ?  1   value= 1.29
+2 data were relocated
+
+Delocating the data
+(0 , 0 , 0)    is informed ?  1   value= 0
+(1 , 0 , 0)    is informed ?  0
+(0 , 1 , 0)    is informed ?  0
+(1 , 1 , 0)    is informed ?  0

@@ -1,0 +1,150 @@
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE>HPGL - High Perfomance Geostatistics Library</TITLE>
+</HEAD>
+
+<BODY>
+<H1>HPGL - High Perfomance Geostatistics Library </H1>
+
+<P>[<b>ENG</b>] [<A HREF="index_ru.html">RUS</a>]</P>
+
+<h2>Summary</h2>
+
+<ol>
+<li><a href="#Intro">Description</a>
+<li><a href="#Features">Features</a>
+<li><a href="#Algorithms">List of Algorithms</a>
+<li><a href="#Components">Used components</a>
+<li><a href="#License">License</a>
+<li><a href="#Downloads">Downloads</a>
+<li><a href="#UserGuide">User Guide</a>
+<li><a href="#SolvedProblems">Solved Problems in Geostatistics</a>
+<li><a href="#Authors">The Authors</a>
+<li><a href="#Regards">Acknowledgements</a>
+</ol>
+
+<a name="Intro"><H2>1. Description</H2></a>
+
+<P ALIGN=JUSTIFY STYLE="text-indent: 1.2cm">
+HPGL stands for High Perfomance Geostatistics Library.
+</P>
+
+<P ALIGN=JUSTIFY STYLE="text-indent: 1.2cm">
+HPGL was written in C++ / Python to realize some geostatistical algorithms (see full list below). The algorithms are called in Python, by executing the corresponding commands.
+</P>
+
+<a name="Features"><H2>2. Features</H2></a>
+
+<P>HPGL boasts the following features:</P>
+
+<OL>
+	<LI><P>High perfomance (<i>even in comparison to commercial software</i>)
+	</P>
+	<LI><P>Low memory consumption
+	</P>
+	<LI><P>Parallel Kriging (shared memory, OpenMP) 
+	</P>
+	<LI><P>Cross-platform functionality (Windows / Linux) 
+	</P>
+	<LI><P>Easy development of geo-modeling scenarios using Python
+	</P>
+</OL>
+
+<P>The algorithms are performed on a Cartesian Grid (IJK-grid).</P>
+
+<a name="Algorithms"><H2>3. List of Algorithms</H2></a>
+
+<P>The current version of HPGL (0.9.3) implements the following algorithms:</P>
+
+<OL>
+	<LI><P>Simple Kriging (SK)</P>
+	
+	<LI><P>Ordinary Kriging (OK) </P>
+	
+	<LI><P>Indicator Kriging (IK) </P>
+	
+	<LI><P>Local Varying Mean Kriging (LVM Kriging) </P>
+	
+	<LI><P>Simple CoKriging (Markov Models 1 &amp; 2) </P>
+	
+	<LI><P>Sequential Indicator Simulation (SIS) </P>
+	
+	<LI><P>Corellogram Local Varying Mean SIS (CLVM SIS) </P>
+	
+	<LI><P>Local Varying Mean SIS (LVM SIS) </P>
+	
+	<LI><P>Sequential Gaussian Simulation (SGS) </P>
+	
+	<LI><P>Truncated Gaussian Simulation (GTSIM) [in Python scripts collection<A HREF="index.html">] </P>
+</OL>
+
+<a name="Components"><H2>4. Used components </H2></a>
+
+<P>HPGL utilizes some open-source components including:</P>
+
+<OL>
+	<LI><P>modified version of <A HREF="https://sourceforge.net/projects/gstl">GsTL</A>
+	(which can be downloaded from HPGL repository)
+	</P>
+	
+	<LI><P><A HREF="http://math.nist.gov/tnt/overview.html">TNT</A>
+	(Template Numerical Toolkit)
+	</P>
+
+	<LI><P >boost libraries
+	<A HREF="http://www.boost.org/">boost</A> (i.e.
+	boost::python)
+	</P>
+</OL>
+
+<a name="License"><H2>5. License </H2></a>
+
+<P  STYLE="text-indent: 1.2cm">For <i>non-commercial use</i> (research, education, etc) HPGL is distributed under
+<A HREF="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html">GPL version 2</A> license.</p>
+
+<P  STYLE="text-indent: 1.2cm">For any questions on the possibilities of <i>commercial distribution</i>, please contact the Authors.</P>
+
+<a name="Downloads"><H2 >6. Downloads </H2></a>
+
+<P  STYLE="text-indent: 1.2cm">To work with HPGL, you will need to install Python 2.5.</p>
+
+<P  STYLE="text-indent: 1.2cm">Additionally, on Windows hosts, you will need to download and install Visual C++ 2005 Redistritable package, available from <a href="http://www.microsoft.com/downloads/details.aspx?FamilyId=32BC1BEE-A3F9-4C13-9C99-220B62A191EE&displaylang=en#RelatedDownloads">here</a>.</p>
+
+<P  STYLE="text-indent: 1.2cm">The most recent stable builds (together with the source code from the GIT repository) can be downloaded from the <A HREF="https://sourceforge.net/projects/hpgl/">project site</A>.</P>
+
+<a name="UserGuide"><H2>7. User Guide </H2></a>
+
+<P  STYLE="text-indent: 1.16cm">The User Guides available both in Russian and in English can be obtained from the <A HREF="https://sourceforge.net/projects/hpgl/">project site</A>.</P>
+
+<a name="SolvedProblems"><H2>8. Solved Problems in Geostatistics </H2></a>
+
+<P  STYLE="text-indent: 1.16cm">At the <A HREF="https://sourceforge.net/projects/hpgl/">project site</A>, , in the Solved Problems section, you can find Python scripts solving the geostatistical problems described in the book <a href="http://www.amazon.com/Solved-Problems-Geostatistics-Oy-Leuangthong/dp/0470177926/ref=sr_1_1?ie=UTF8&s=books&qid=1240201050&sr=8-1">"Solved Problems in Geostatistics"</a> by O. Leuangthong, K.Daniel Khan, and Clayton V. Deutsch.  </P>
+
+<a name="Authors"><H2>9. The Authors </H2></a>
+
+<H2><FONT SIZE=3>Managment & Math:</FONT></H2>
+
+<OL>
+	<P>Savichev Vladimir</P>
+	<P>Bezrukov Andrey</P>
+</OL>
+
+<H3><FONT SIZE=3>Programming (C++, Python),
+testing, support:</FONT></H3>
+
+<OL>
+	<P>Muharlyamov Arthur
+	</P>
+	<P>Barskiy Konstantin
+	</P>
+	<P>Nasibullina Dina
+	</P>
+</OL>
+
+<a name="Regards"><H2>10. Acknowledgements</H2></a>
+
+<P STYLE="text-indent: 1.2cm">The Authors wish to thank <i>Andre Journel</i> for his valuable support and indefatigable enthusiasm.</P>
+<P STYLE="text-indent: 1.2cm">The Authors also thank <i>Iskander Shafikov</i> for his assistance with the English translations and the User Guide cover</P>
+</BODY>
+</HTML>

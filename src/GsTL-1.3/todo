@@ -1,0 +1,71 @@
+
+- Write a global neighborhood kriging, and document it.
+
+- Double Check that in the kriging functions  it is not assumed that Cij(h) = Cji(h)
+  (or if it is state it clearly)
+
+- Indicator_cdf_estimator: works on containers of covariances and of kriging_constraints.
+  Change to containers of POINTERS ?
+
+
+Un reve fou
+--------------
+
+Faire une factory qui permette de generer des algo a la volee. Comme pour un diner a la carte, on
+choisit son type de neighborhood, de grille, de cdf-estimator, de cdf..., on clique sur GO! et le
+tour est joue...
+----------------
+
+
+- Make sure that all the iterators defined comply with the STL requirements.
+  Derive any iterator from STL iterator base class. Use the different iterator
+  concepts better: don't use Forward Iterator in place of Input Iterator or 
+  Output Iterator. Don't forget the 2 STL algo "advance" and "distance" to operate
+  on iterators. However these two algo require the "iterator_category_tag" to be
+  defined. 
+
+ - Use smart pointers in the implementation of Covariance_table, in order to 
+   avoid the deep copy of the table of values.
+
+ - Write a P-field algorithm
+
+ - Rewrite indicator cdf estimator
+
+- About the use of helper functions to instanciate an object which requires multiple
+  template parameters. ex: we want to use function foo with an anonymous instance of Bar_t
+    template<class T>
+    void foo( T& t ) {...}
+
+    template <class U, class V>
+    class Bar_t
+    
+  A helper function is provided to help create instances of type Bar_t:
+    template<class U, class V>
+    Bar_t<U,V> Bar( U u, V v );
+
+  With the current prototype of foo, we can't write:
+    foo( Bar(2,3) );
+
+  foo has to either take a CONST reference, or a copy:
+    void foo( const T& t )
+          or
+    void foo( T t )
+
+  (tried with gcc2.95 and gcc2.96)
+
+
+- search_tree does not comply with the Functor requirements: it is not assignable.
+  The search tree should keep a smart pointer to the root of the tree.
+  Also, modify the template parameter of search_tree.
+
+- When all the cdf_estimators comply with the Functor requirements, change 
+  "sequential_simulation" to make copies of the cdf_estimators that are passed
+  to it (so that we can use helper functions).
+
+- Change the functions that take ranges of objects (e.g. ranges of neighborhoods, or
+  ranges of functors) so that they take ranges of POINTERS to the objects. Although
+  it makes the code more complicated, it allows to use objects of an inheritance hierarchy
+  without requiring that a "handle" is defined for those objects
+
+- change the default for the matrix library from GSTL_TNT_lib to a typedef
+  DEFAULT_lib, so that the default library can easily be modified.

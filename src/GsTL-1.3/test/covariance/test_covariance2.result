@@ -1,0 +1,10 @@
+
+
+________________________________________
+   Test general-purpose Covariance class 
+Available types: 
+Exponential Gaussian Spherical 
+
+cov(P1,P2)=0
+covariance id: 0
+1 0.447127 0.225433 0.0660964 0.000297396 0 0 0 0 

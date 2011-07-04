@@ -1,0 +1,184 @@
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE>HPGL - High Perfomance Geostatistics Library</TITLE>
+</HEAD>
+
+<BODY>
+<H1>HPGL - High Perfomance Geostatistics Library </H1>
+
+<P>[<A HREF="index.html">ENG</A>] [<B>RUS</B>]</P>
+
+<h2>Оглавление</h2>
+
+<ol>
+<li><a href="#Intro">Описание</a>
+<li><a href="#Features">Особенности</a>
+<li><a href="#Algorithms">Реализованные алгоритмы</a>
+<li><a href="#Components">Используемые компоненты</a>
+<li><a href="#License">Лицензирование</a>
+<li><a href="#Downloads">Как получить</a>
+<li><a href="#UserGuide">Документация пользователя</a>
+<li><a href="#SolvedProblems">Solved Problems in Geostatistics</a>
+<li><a href="#Authors">Авторы</a>
+<li><a href="#Regards">Благодарности</a>
+</ol>
+
+<A NAME="Intro"><H2>1. Описание</H2></A>
+
+<P ALIGN=JUSTIFY STYLE="text-indent: 1.2cm">
+HPGL расшифровывается как High Perfomance Geostatistics Library, или Высокопроизводительная Библиотека Геостатистических Алгоритмов.
+</P>
+
+<P ALIGN=JUSTIFY STYLE="text-indent: 1.2cm">
+HPGL написан на С++/Python и в нем реализованы различные геостатистические алгоритмы (полный список ниже). Использование алгоритмов осуществляется при помощи команд на языке Python.
+</P>
+
+<A NAME="Features"><H2>2. Особенности</H2></A>
+
+<P>Отличительными чертами HPGL являются:</P>
+
+<OL>
+	<LI><P>высокая производительность
+	(даже по сравнению с коммерческими
+	альтернативами); 
+	</P>
+	<LI><P>малое потребление
+	памяти; 
+	</P>
+	<LI><P>параллельная
+	реализация алгоритмов Кригинга (в
+	рамках общей памяти, на основе OpenMP); 
+	</P>
+	<LI><P>кроссплатформенность
+	(Windows, Linux); 
+	</P>
+	<LI><P>возможность создания автоматических
+	сценариев моделирования на языке
+	Python. 
+	</P>
+</OL>
+
+<P>Распространение свойств осуществляется
+на трехмерной декартовой (IJK) сетке.</P>
+
+<a name="Algorithms"><H2>3. Реализованные алгоритмы</H2></a>
+
+<P>В текущей версии HPGL 0.9.3 реализованы
+следующие алгоритмы:</P>
+
+<OL>
+	<LI><P>Simple Kriging (SK)</P>
+	
+	<LI><P>Ordinary Kriging (OK) </P>
+	
+	<LI><P>Indicator Kriging (IK) </P>
+	
+	<LI><P>Local Varying Mean Kriging (LVM Kriging) </P>
+	
+	<LI><P>Simple CoKriging (Markov Models 1 &amp; 2) </P>
+	
+	<LI><P>Sequential Indicator Simulation (SIS) </P>
+	
+	<LI><P>Corellogram Local Varying Mean SIS (CLVM SIS) </P>
+	
+	<LI><P>Local Varying Mean SIS (LVM SIS) </P>
+	
+	<LI><P>Sequential Gaussian Simulation (SGS) </P>
+	
+	<LI><P>Truncated Gaussian Simulation (GTSIM) [в наборе скриптов на Python] </P>
+</OL>
+
+<a name="Components"><H2>4. Используемые компоненты </H2></a>
+
+<P>В библиотеке используются следующие
+свободно распространяемые компоненты:</P>
+
+<OL>
+	<LI><P>модифицированная
+	версия библиотеки <A HREF="https://sourceforge.net/projects/gstl">GsTL</A>
+	(доступна в репозитории HPGL);
+	</P>
+	
+	<LI><P><A HREF="http://math.nist.gov/tnt/overview.html">TNT</A>
+	(Template Numerical Toolkit) – библиотека для решения
+	систем линейных уравнений; </SPAN>
+	</P>
+
+	<LI><P >набор библиотек
+	<A HREF="http://www.boost.org/">boost</A> (в частности,
+	boost::python).
+	</P>
+</OL>
+
+<a name="License"><H2>5. Лицензирование </H2></a>
+
+<P  STYLE="text-indent: 1.2cm">Для
+некоммерческого использования (в
+образовательных, обучающих, или любых
+других целях, не подразумевающих
+получение коммерческой выгоды), библиотека
+распространяется на условиях лицензии
+<A HREF="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html">GPL
+редакции 2</A></P>
+
+<P  STYLE="text-indent: 1.2cm">По любым вопросам, связанным с закрытым или коммерческим использованием, необходимо связаться с авторами.</P>
+
+<a name="Downloads"><H2 >6. Как получить </H2></a>
+
+<P  STYLE="text-indent: 1.2cm">Для работы с HPGL вам понадобится Python 2.5.</p>
+
+<P  STYLE="text-indent: 1.2cm">Под операционной системой Windows также понадобится установить Visual C++ 2005 Redistritable package, который можно скачать <a href="http://www.microsoft.com/downloads/details.aspx?FamilyId=32BC1BEE-A3F9-4C13-9C99-220B62A191EE&displaylang=en#RelatedDownloads">здесь</a>.</p>
+
+<P  STYLE="text-indent: 1.2cm">Скачать
+последнюю стабильную версию библиотеки
+для различных платформ (а также исходный
+код из репозитория GIT) можно на <A HREF="https://sourceforge.net/projects/hpgl/">сайте
+проекта</A> в разделе Downloads.</P>  
+
+<a name="UserGuide"><H2>7. Документация пользователя </H2></a>
+
+<P  STYLE="text-indent: 1.16cm">Документация
+пользователя на русском и английском
+языках (а также набор примеров использования на языке Python) доступна в виде PDF-файлов на <A HREF="https://sourceforge.net/projects/hpgl/">сайте
+проекта</A> в разделе Downloads.</P> 
+
+<a name="SolvedProblems"><H2>8. Solved Problems in Geostatistics </H2></a>
+
+<P  STYLE="text-indent: 1.16cm">На <A HREF="https://sourceforge.net/projects/hpgl/">сайте
+проекта</A>, в разделе "solved problems" также доступны скрипты на Python, реализующие задания из книги <a href="http://www.amazon.com/Solved-Problems-Geostatistics-Oy-Leuangthong/dp/0470177926/ref=sr_1_1?ie=UTF8&s=books&qid=1240201050&sr=8-1">Oy Leuangthong, K.Daniel Khan, Clayton V. Deutsch "Solved Problems in Geostatistics"</a>. </P>
+
+<a name="Authors"><H2>9. Авторы </H2></a>
+
+<H2><FONT SIZE=3>Руководство и математическая
+поддержка:</FONT></H2>
+
+<OL>
+	<P>Савичев Владимир</P>
+	<P>Безруков Андрей</P>
+</OL>
+
+<H3><FONT SIZE=3>Программирование (С++, Python),
+сопровождение, тестирование:</FONT></H3>
+
+<OL>
+	<P>Мухарлямов Артур 
+	</P>
+	<P>Барский Константин 
+	</P>
+	<P>Насибуллина Дина 
+	</P>
+</OL>
+
+<a name="Regards"><H2>10. Благодарности</H2></a>
+
+<P STYLE="text-indent: 1.2cm">Выражаем благодарность
+Андре Журнелю за поддержку и заразительный
+энтузиазм, который отчасти и сподвигнул
+нас на эту работу.</P>
+<P STYLE="text-indent: 1.2cm">Также благодарим
+Шафикова Искандера за помощь в переводе
+документации на английский язык (и за
+обложку руководства пользователя).</P>
+</BODY>
+</HTML>

@@ -1,0 +1,19 @@
+GSLIB results (KT3D program)
+-----------------------------------
+
+The kriging algorithms were tested on the parta.dat data set using KT3D.
+For kriging with trend, the kriging type to be chosen is OK (flag=1).
+If you want to do plain OK, don't forget to set all the drift flags to 0 !
+SK_kt3d.par, OK_kt3d.par, KT_kt3d.par are the parameter files for simple kriging,
+ordinary kriging and kriging with trend. 
+The corresponding kriging matrices, weights and estimates are in files SK_kt3d.dbg,
+OK_kt3d.dbg, KT_kt3d.dbg.
+
+
+Note about kt3d.dbg:
+--------------------
+In kriging with a trend, the matrix coefficient Fk(u) are scaled.
+Hence the corresponding lines of the kriging matrix differ from 
+the results output by test4.cc. 
+
+

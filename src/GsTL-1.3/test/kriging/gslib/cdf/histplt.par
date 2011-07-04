@@ -1,0 +1,18 @@
+                  Parameters for HISTPLT
+                  **********************
+
+START OF PARAMETERS:
+transf.out                  -file with data
+2   0                        -   columns for variable and weight
+-1.0e21     1.0e21              -   trimming limits
+gaussian.ps                   -file for PostScript output
+ -3      3               -attribute minimum and maximum
+-1.0                         -frequency maximum (<0 for automatic)
+20                           -number of classes
+0                            -0=arithmetic, 1=log scaling
+0                            -0=frequency,  1=cumulative histogram
+0                            -   number of cum. quantiles (<0 for all)
+2                            -number of decimal places (<0 for auto.)
+Gaussian Data               -title
+1.5                          -positioning of stats (L to R: -1 to 1)
+-1.1e21                      -reference value for box plot

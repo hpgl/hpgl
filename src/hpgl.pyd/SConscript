@@ -1,0 +1,44 @@
+import glob
+import os
+
+BuildDir('debug', '.', duplicate=0)
+BuildDir('release', '.', duplicate=0)
+
+Import('libbsgstl_d libbsgstl')
+
+src_files = glob.glob('*.cpp')
+
+debug_files = [os.path.join('debug', x) for x in src_files]
+release_files = [os.path.join('release', x) for x in src_files]
+
+includes = ['/usr/include/python2.5',
+		'../bs_gstl/include',
+		'../bs_gstl/src',
+		'../GsTL-1.3',
+		];
+
+hpgl_d_so = SharedLibrary('hpgl_d', debug_files,
+	CPPPATH=includes,
+	CPPDEFINES=['DEBUG', 'GSTL_NOWARNING', 'BS_GSTL_EXPORTS', 'BS_EXPORINTG_PLUGIN', 'BS_PROPERTY_ARRAY_EXPORTS', 'BS_PROPERTY_SERVER_EXPORTS'],
+	CCFLAGS='-ggdb -fPIC',
+	LIBS=['libboost_python-mt-d-py25',
+                'libboost_thread-mt-d',
+                'libgomp',
+		libbsgstl_d],
+	LIBPATH=['../bs_gstl' ]
+	)
+
+
+hpgl_so = SharedLibrary('hpgl', release_files,
+	CPPPATH=includes,
+	CPPDEFINES=['NDEBUG', 'GSTL_NOWARNING', 'BS_GSTL_EXPORTS', 'BS_EXPORINTG_PLUGIN', 'BS_PROPERTY_ARRAY_EXPORTS', 'BS_PROPERTY_SERVER_EXPORTS'],
+	CCFLAGS='-g -O3 -finline-functions -fmove-loop-invariants -fopenmp',
+        LIBS=['libboost_python-mt',
+                'libboost_thread-mt',
+                'libgomp',
+		libbsgstl
+                ],
+	LIBPATH=['../bs_gstl', ]
+	)
+
+Return ('hpgl_d_so', 'hpgl_so' )

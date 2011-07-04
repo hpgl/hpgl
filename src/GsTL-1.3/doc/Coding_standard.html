@@ -1,0 +1,233 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.75 [en] (X11; U; Linux 2.2.17-18.J i686) [Netscape]">
+   <title>GsTL Coding Standards: </title>
+<!-- Begin of cc_manual_header -->
+<!-- ------------------------- -->
+<!-- $Revision: 3.0 $ -->
+<!-- $Date: 2007/06/25 01:19:42 $ -->
+<!-- CC manual page automatically extracted from a TeX specification -->
+<!-- in file Chapter_code_format.html -->
+<!-- by cc_extract_html, $Revision: 3.0 $. -->
+<!--  Title -->
+<!-- Background layout-->
+</head>
+<body text="#000000" bgcolor="#FFFFFF">
+
+The following coding standards are mainly taken from the <a href="http://www.cgal.org/Manual/doc_html/frameset/fsDManual.html"> CGAL Developers' Manual </a>.  
+
+<h1>
+Coding Conventions</h1>
+<a NAME="chap:code_format"></a>
+<br>&nbsp;
+<p>We do not want to impose very strict coding rules on the developers.
+What is most important is to follow the <i>GsTL</i> naming scheme described
+in the next section. However, there are some programming conventions that
+should be adhered to, rules for the code format, and a mandatory heading
+for each source file.
+<p><a NAME="Section_3"></a>
+<h2>
+Naming scheme</h2>
+<a NAME="sec:naming_scheme"></a>
+<p>The <i>GsTL</i> naming scheme is intended to help the
+user use the library and the developer develop the library. The rules are
+simple and easy to remember. Where appropriate, they aim for similarity
+with the names used in the STL. Deviations from the given rules should
+be avoided.
+<h3>
+General rules</h3>
+
+<ul>
+<li>
+Words in the names of everything except concepts should be separated by
+underscores. For example, one would use <i>function_name</i> and <i>Class_name</i>
+instead of <i>functionName</i> or <i>ClassName</i>.</li>
+
+<li>
+Class names start with a capital letter and are lowercase, separated with underscores, e.g. <i>Geo_value</i>, <i>Window_neighborhood</i>, <i>Location</i></li>
+
+<li>
+Words in the names of concepts (e.g., template parameters) should
+be separated using capital letters, e.g. <i> GeoValue</i>, <i>Covariance</i> (while class names would have been <i>Geo_value</i>, <i>Covariance</i>). This different
+naming scheme for concepts and classes was adopted mainly for two reasons
+(a) it avoids
+name clashes between concepts and classes that would require one or the
+other to have a rather contrived name (if a concept name is one word, and would thus conflict with the corresponding class name, an underscore can be appended to the concept name), and (b) it emphasizes the difference between a class and a concept: a concept is a set of classes.</li>
+
+<li>
+Function names are in lowercase (<i>e.g.</i>, <i>is_zero</i>).</li>
+
+<li>
+Names of constants are uppercase (<i>e.g.</i>, <i>ORIGIN</i>).</li>
+
+<li>
+Abbreviations of words are to be avoided (<i>e.g.</i>, use <i>Cokriging</i>
+instead of <i>Cok</i>). The only exceptions might be standard abbreviations
+(such as ``OK'' for ``ordinary kriging'') and standard data structure abbreviations
+(such as ``DS'' for ``data structure''). Unfortunately, the long names
+that result from the absence of abbreviations are known to cause problems
+with some compilers.</li>
+
+<li>
+Boolean function names should begin with a verb. For example, use <i>is_empty</i>
+instead of simply <i>empty</i> and <i>has_on_bounded_side</i> instead of
+<i>on_bounded_side</i>.</li>
+
+<li>
+Names of macros should begin with the prefix <i>GsTL_</i>.</li>
+</ul>
+
+<h3>
+</h3>
+
+<h3>
+File names</h3>
+
+<ul>
+<li>
+File names should be chosen in the ``spirit'' of the naming rules given
+above.</li>
+
+<li>
+If a single geometric object, data structure, or algorithm is provided
+in a single file, its name (and its capitalization) should be used for
+the file name. For example, the file Gaussian_cdf<i>.h</i> contains the
+data structure <i>Gaussian_cdf</i>.</li>
+
+<li>
+If a file does not contain a single class, its name should not begin with
+a capital letter.</li>
+
+<li>
+No two files should have the same names even when capitalization is ignored.
+This is to prevent overwriting of files on operating systems where file
+names are not case sensitive. 
+</li>
+
+<li>
+The names of files should not contain the characters `:', `*', or ` '.</li>
+</ul>
+
+
+
+<a NAME="Section_4"></a>
+<h2>
+Programming conventions</h2>
+<a NAME="sec:programming_conventions"></a>
+<p>The first list of items are meant as rules, <i>i.e.</i>, you should
+follow them.
+<ul>
+<li>
+Give typedefs for all template arguments of a class that may be accessed
+later from outside the class. These types are called <i>Associated Types</i>.
+
+<p><br>The template parameter is a concept and should follow the concept
+naming scheme outlines in the previous section. Associated types do not follow the naming style of classes: they are all lower case, each word separated by an underscore. This is to be consistent with STL requirements. For example
+<pre>&nbsp;&nbsp;&nbsp;&nbsp; template &lt; class WindowNeighborhood >
+&nbsp;&nbsp;&nbsp;&nbsp; class My_object {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; typedef WindowNeighborhood window_neighborhood;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; typedef typename WindowNeighborhood::geovalue geovalue;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; typedef typename geovalue::property_type property_type;
+&nbsp;&nbsp;&nbsp;&nbsp; };
+</pre>
+</li>
+
+<li>
+Use <i>const</i> when a call by reference argument is not modified, e.g.
+<tt>int f( const A&amp; a)</tt>.</li>
+
+<li>
+Use <i>const</i> to indicate that a member function does not modify the
+object to which it is applied, <i>e.g.</i>, <tt>class A { int f( void) const;
+};</tt>.</li>
+
+<li>
+Prefer C++-style to C-style casts, <i>e.g.</i>, use <i>static_cast&lt;double>(
+i)</i> instead of <i>(double)i</i>.</li>
+
+<li>
+Protect header files against multiple inclusion, <i>e.g.</i> the file <tt>This_is_an_example.h</tt>
+should begin/end with</li>
+
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #ifndef __GSTL_THIS_IS_AN_EXAMPLE_H__
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #define __GSTL_THIS_IS_AN_EXAMPLE_H__
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #endif // __GSTL_THIS_IS_AN_EXAMPLE_H__
+</pre>
+</ul>
+The following items can be seen as recommendations in contrast to the rules
+of previous paragraph.
+<ul>
+<li>
+The macro <tt>#define</tt> should be used sparingly.</li>
+
+<li>
+Try to avoid renaming the base types of C++ using <i>typedef</i>.</li>
+
+<li>
+When using an overloaded call, always give the exact match. Use explicit
+casting if necessary.</li>
+</ul>
+<a NAME="Section_5"></a>
+<h2>
+Code format</h2>
+<a NAME="sec:code_format"></a>
+<ul>
+<li>
+Lines should not exceed 80 characters.</li>
+
+<li>
+Use indentation with at least two spaces extra per level.</li>
+
+<li>
+Write only one statement per line.</li>
+
+<li>
+Use C++-style comments, <i>e.g. // some comment,</i> for one-line comments.
+Prefer C style comments for multi-line comments.</li>
+</ul>
+<a NAME="Section_6"></a>
+<h2>
+File header</h2>
+<a NAME="sec:file_header"></a>
+<p>Each <i>GsTL</i> source file must start with a heading that allows for
+an easy identification of the file. The file header contains a copyright
+notice, the current release number and date, and a description of the file.
+<p>The heading of a source file should have the following format:
+<pre>/* GsTL: the Geostatistics Template Library
+&nbsp;*&nbsp;
+&nbsp;* Author(s): Jules and Jim
+&nbsp;* Copyright (c) 2000 The Board of Trustees of the Leland Stanford Junior University
+&nbsp;*&nbsp;
+&nbsp;* All rights reserved.
+&nbsp;*&nbsp;
+&nbsp;* Redistribution and use in source and binary forms, with or without modification,&nbsp;
+&nbsp;* are permitted provided that the following conditions are met:
+&nbsp;*&nbsp;
+&nbsp;*&nbsp;&nbsp; 1.Redistributions of source code must retain the above copyright notice, this&nbsp;
+&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp; list of conditions and the following disclaimer.&nbsp;
+&nbsp;*&nbsp;&nbsp; 2.Redistributions in binary form must reproduce the above copyright notice, this&nbsp;
+&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp; list of conditions and the following disclaimer in the documentation and/or other
+&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp; materials provided with the distribution.&nbsp;
+&nbsp;*&nbsp;&nbsp; 3.The name of the author may not be used to endorse or promote products derived&nbsp;
+&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp; from this software without specific prior written permission.&nbsp;
+&nbsp;*&nbsp;
+&nbsp;* THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED&nbsp;
+&nbsp;* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY&nbsp;
+&nbsp;* AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE&nbsp;
+&nbsp;* LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+&nbsp;* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+&nbsp;* LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+&nbsp;* THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING&nbsp;
+&nbsp;* NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+&nbsp;* ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+&nbsp;*
+&nbsp;* release&nbsp; : GsTL-1.1
+&nbsp;*/</pre>
+
+</body>
+<!-- End of cc_manual_footer -->
+</html>

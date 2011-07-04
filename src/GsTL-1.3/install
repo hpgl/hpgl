@@ -1,0 +1,8 @@
+GsTL does not need to be compiled. Each needed template must be included
+in the client code, either individually, or by groups: including "cdf.h" would actually
+include "gaussian_cdf.h", "non_param_cdf.h", "categ_non_param_cdf.h" and 
+"interpolators.h". 
+
+GsTL was tested with the gcc compiler, versions 2.95.2 and 3.2. It should work with
+any compiler compliant with the C++ ANSI standards. Problems could occur with 
+compilers that do not fully support templates, the STL or namespaces.

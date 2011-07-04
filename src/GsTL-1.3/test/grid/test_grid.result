@@ -1,0 +1,175 @@
+_______________________________________________
+This program performs various tests on 
+property_server and cartesian_geometry
+
+_______________________________________________
+   Testing property server: 
+
+properties: 
+poro
+perm
+ntg
+tmp
+
+deleting tmp
+
+new properties: 
+poro
+perm
+ntg
+
+poro at 2: 0.2
+perm at 2: 10
+ntg at 2: 0.5
+tmp exists? 0
+
+changing poro at 2: 
+new poro at 2: 55
+
+changing again: 
+new poro at 2: 99
+
+seismic at 2: 21
+
+
+___________________________________________________________
+  Testing cartesian geometry
+
+Converting (1,2,0) in real space coordinates: (4.7 , 13.5 , 0)
+
+index corresponding to (1,2,0) : 13
+
+index corresponding to (4.7 , 13.5 , 0) : 12
+
+
+___________________________________________________________
+  Testing grid
+
+value at (1 , 2 , 0) : 0.54
+value at geovalue gval: 0.54
+
+Changing value at (1 , 2 , 0) through gval
+value at geovalue gval: 0.98
+value at (1 , 2 , 0) is now : 0.98
+
+
+Adding new property seismic: 
+Seismic property at (1 , 2 , 0) : 1.33
+
+
+___________________________________________________________
+  Testing sequential grid iterator
+
+grid size: 24
+value at (0 , 0 , 0) : 0.54
+value at (1 , 0 , 0) : 0.54
+value at (2 , 0 , 0) : 0.54
+value at (3 , 0 , 0) : 0.54
+value at (4 , 0 , 0) : 0.54
+value at (5 , 0 , 0) : 0.54
+value at (0 , 1 , 0) : 0.54
+value at (1 , 1 , 0) : 0.54
+value at (2 , 1 , 0) : 0.54
+value at (3 , 1 , 0) : 0.54
+value at (4 , 1 , 0) : 0.54
+value at (5 , 1 , 0) : 0.54
+value at (0 , 2 , 0) : 0.54
+value at (1 , 2 , 0) : 0.98
+value at (2 , 2 , 0) : 0.54
+value at (3 , 2 , 0) : 0.54
+value at (4 , 2 , 0) : 0.54
+value at (5 , 2 , 0) : 0.54
+value at (0 , 3 , 0) : 0.54
+value at (1 , 3 , 0) : 0.54
+value at (2 , 3 , 0) : 0.54
+value at (3 , 3 , 0) : 0.54
+value at (4 , 3 , 0) : 0.54
+value at (5 , 3 , 0) : 0.54
+
+
+___________________________________________________________
+  Testing random grid iterator
+
+value at (5 , 1 , 0) : 0.54
+value at (1 , 1 , 0) : 0.54
+value at (1 , 2 , 0) : 0.98
+value at (0 , 1 , 0) : 0.54
+value at (0 , 0 , 0) : 0.54
+value at (3 , 2 , 0) : 0.54
+value at (5 , 3 , 0) : 0.54
+value at (3 , 0 , 0) : 0.54
+value at (0 , 3 , 0) : 0.54
+value at (2 , 1 , 0) : 0.54
+value at (2 , 3 , 0) : 0.54
+value at (0 , 2 , 0) : 0.54
+value at (2 , 0 , 0) : 0.54
+value at (2 , 2 , 0) : 0.54
+value at (3 , 3 , 0) : 0.54
+value at (3 , 1 , 0) : 0.54
+value at (4 , 0 , 0) : 0.54
+value at (4 , 3 , 0) : 0.54
+value at (1 , 0 , 0) : 0.54
+value at (5 , 2 , 0) : 0.54
+value at (5 , 0 , 0) : 0.54
+value at (4 , 2 , 0) : 0.54
+value at (1 , 3 , 0) : 0.54
+value at (4 , 1 , 0) : 0.54
+
+Another random path:
+
+value at (1 , 3 , 0) : 0.54
+value at (5 , 1 , 0) : 0.54
+value at (2 , 2 , 0) : 0.54
+value at (0 , 2 , 0) : 0.54
+value at (0 , 0 , 0) : 0.54
+value at (2 , 1 , 0) : 0.54
+value at (0 , 3 , 0) : 0.54
+value at (5 , 3 , 0) : 0.54
+value at (2 , 0 , 0) : 0.54
+value at (3 , 2 , 0) : 0.54
+value at (4 , 3 , 0) : 0.54
+value at (1 , 2 , 0) : 0.98
+value at (3 , 3 , 0) : 0.54
+value at (4 , 0 , 0) : 0.54
+value at (1 , 1 , 0) : 0.54
+value at (1 , 0 , 0) : 0.54
+value at (3 , 0 , 0) : 0.54
+value at (0 , 1 , 0) : 0.54
+value at (2 , 3 , 0) : 0.54
+value at (3 , 1 , 0) : 0.54
+value at (4 , 2 , 0) : 0.54
+value at (5 , 0 , 0) : 0.54
+value at (5 , 2 , 0) : 0.54
+value at (4 , 1 , 0) : 0.54
+
+
+___________________________________________________________
+  Testing cartesian grid
+
+grid size: 25
+nx= 5  ny= 5  nz= 1
+value at (1 , 2 , 0) : 0.54
+
+
+___________________________________________________________
+  Testing multiple grid
+
+coarse grid size: 9
+99.9  0.54  99.9  0.54  99.9  
+0.54  0.54  0.54  0.54  0.54  
+99.9  0.54  99.9  0.54  99.9  
+0.54  0.54  0.54  0.54  0.54  
+99.9  0.54  99.9  0.54  99.9  
+
+
+___________________________________________________________
+  Testing window neighborhood
+
+current neighborhood size= 0
+current neighborhood is empty? 1
+Retrieving neighbors of (1,2,0)
+current neighborhood size= 4
+0.54
+99.9
+0.54
+99.9
