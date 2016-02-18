@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+
+    <title>HPGL: Projects</title>
+
+    <!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="./bootstrap.min.css">
+
+    <!-- Custom styles for this template -->
+    <link href="navbar-fixed-top.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">HPGL</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="./index.html">About HPGL</a></li>
+            <li><a href="./projects.html">Projects &amp; Downloads</a></li>
+            <li><a href="./screenshots.html">Screenshots</a></li>
+            <li><a href="./articles.html">Articles</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="./hpgl_0.9.9_manual_english.pdf">PDF</a></li>
+            <li><a href="./contacts.html">Contacts</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container">
+
+      <!-- Main component for a primary marketing message or call to action -->
+      <h2>Projects &amp; Downloads</h2>
+      <hr/>
+      <div class="jumbotron">
+        <h3>HPGL Python Library</h3>
+        <hr/>
+
+        <p>HPGL Python Library is distributed under <a href="https://raw.githubusercontent.com/hpgl/hpgl/master/src/license.txt">BSD license</a>.</p>
+        <p>To work with HPGL, you will need to install Python 2.5 with <a href="http://numpy.scipy.org/">NumPy</a>/<a href="http://scipy.org/">SciPy</a> packages. Additionally, on Windows hosts, you will need to download and install Visual C++ 2005 Redistritable package, available from <a href="http://www.microsoft.com/downloads/details.aspx?FamilyId=32BC1BEE-A3F9-4C13-9C99-220B62A191EE&displaylang=en#RelatedDownloads">here</a>.</p>
+        <p>HPGL BINARIES can be downloaded from <a href="https://github.com/hpgl/hpgl/releases">Github releases page</a>.</p>
+        <p>HPGL source code can be obtained from the <a href="https://github.com/hpgl/hpgl">GitHub repository</a>.</p>
+      </div>
+
+      <div class="jumbotron">
+        <h3>HPGL-GUI</h3>
+        <hr/>
+        <p>Features:</p>
+        <ul>
+          <li>Loading and saving data in ECLIPSE Property format text files (GSLIB and numpy formats will be supported later)</li>
+          <li>Continuous and indicator datasets and algorithms</li>
+          <li>Running any HPGL algorithms from the GUI (+ parallel Kriging)</li>
+          <li>Statistics window for the datasets (Histogram, Mean, Min, Max, etc)</li>
+          <li>3D visualisation of the data (beta)</li>
+          <li>NumPy Array file format support</li>
+          <li>GSLIB Point Set file format support</li>
+        </ul>
+
+        <p>Note, that you don't need HPGL installed to run algorithms in the HPGL-GUI, it is already included (version 0.9.9) there.</p>
+        <p><a href="https://github.com/Snegovikufa/HPGL-GUI/releases/">Download page is here</a> (Only Windows builds so far).</p>
+        <p><a href="https://github.com/Snegovikufa/HPGL-GUI/">HPGL-GUI Page on GitHub</a></p>
+      </div>
+
+      <div class="jumbotron">
+        <h3>PyLASDev python library</h3>
+        <hr/>
+        <p>pyLASDev is a small Python package which provides reading and writing of <a href="http://www.cwls.org/las_info.php">LAS (Log ASCII Standart) 1.2 and 2.0</a> files. Also it can be used for reading Dev (deviation) files, which are common in geoscience to store deviations and paths (for example, for wells in oil industry).</p>
+        <p>pyLASDev is written according to LAS 1.2 and 2.0 specifications.</p>
+        <p>pyLASDev is distributed under <a href="https://raw.githubusercontent.com/hpgl/hpgl/master/src/license.txt">BSD license</a>.</p>
+        <p><a href="https://github.com/itohnobue/pylasdev">PyLASDev Page on GitHib</a></p>
+      </div>
+
+      <div class="jumbotron">
+        <h3>Solved Problems in Geostatistics</h3>
+        <hr/>
+        <p>At the <a href="https://github.com/hpgl/hpgl">project site</a>, in the Solved Problems section, you can find Python scripts solving the geostatistical problems described in the book <a href="http://www.amazon.com/Solved-Problems-Geostatistics-Oy-Leuangthong/dp/0470177926/ref=sr_1_1?ie=UTF8&s=books&qid=1240201050&sr=8-1">Solved Problems in Geostatistics"</a> by O. Leuangthong, K.Daniel Khan, and Clayton V. Deutsch.</p>
+        <p>You can view examples, plots, histograms etc of solved problems at <a href="solved_problems.html">Solved Problems examples page</a>.</p>
+      </div>
+
+      <!--
+      <footer>
+        <div class="container">
+          <p class="text-muted text-center">&copy; 2014 Моделирование и Технологии - Уфа</p>
+        </div>
+      </footer>
+      -->
+    </div> <!-- /container -->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  </body>
+</html>

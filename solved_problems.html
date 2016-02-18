@@ -1,0 +1,414 @@
+
+<!-- saved from url=(0048)http://hpgl.sourceforge.net/solved_problems.html -->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>HPGL: Solved Problems scripts examples</title>
+    <style type="text/css"></style>
+    <link rel="stylesheet" href="./bootstrap.min.css">
+    <!-- Custom styles for this template -->
+    <link href="navbar-fixed-top.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">HPGL</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="./index.html">About HPGL</a></li>
+            <li><a href="./projects.html">Projects &amp; Downloads</a></li>
+            <li><a href="./screenshots.html">Screenshots</a></li>
+            <li><a href="./articles.html">Articles</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="./hpgl_0.9.9_manual_english.pdf">PDF</a></li>
+            <li><a href="./contacts.html">Contacts</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+<div class="container">
+	<h1>HPGL: Solved Problems Scripts</h1>
+
+    <p>
+	This document provide set of examples for HPGL scripts on "Solved Problems in Geostatistics" by O. Leuangthong, K.Daniel Khan, and Clayton V. Deutsch book.
+    </p>
+
+    <br /><br />
+    <a href="#23">2.3. Standartization and Probability Intervals</a><br />
+    <a href="#31">3.1. Basic Declustering</a><br />
+    <a href="#41">4.1. Central limit theorem</a><br />
+    <a href="#42">4.2. Bootstrap and Spatial Bootstrap</a><br />
+    <a href="#43">4.3. Transfer of Uncertainty</a><br />
+    <a href="#52">5.2. Variogram Calculation</a><br />
+    <a href="#53">5.3. Variogram Modeling and Volume Variance</a><br />
+    <a href="#72">7.2. Conditioning by Kriging</a><br />
+    <a href="#73">7.3. Gaussian Simulation</a><br />
+    <a href="#83">8.3. Indicator Simulation for Categorical Data</a><br />
+
+    <a name="23"></a><h2>2.3. Standartization and Probability Intervals</h2>
+
+        <b>Program output:</b><br /><br />
+
+        ----------------------------------------------------<br />
+        Probability interval is: [ 4.16014400549 , 19.8398559945 ]<br />
+        ----------------------------------------------------<br />
+        Probability interval for standartized normal data is: [ -1.95996399863 , 1.95996399863 ]<br />
+        ----------------------------------------------------<br />
+        Variance of standartized data in presense of corellation is:  0.154686035265<br />
+        Probability interval for standartized data in presense of corellation is: [ -7.68516995924 , 7.99454202977 ]<br />
+        ----------------------------------------------------<br />
+        Variance of data in presense of corellation is:  2.47497656424<br />
+        Probability interval for data in presense of corellation is: [ -5.36487943027 , 10.3148325587 ]<br /><br />
+
+    <a name="31"></a><h2>3.1. Basic Declustering</h2>
+
+    <b>Program output:</b><br /><br />
+
+    <pre>
+    ---------------------------------------------------<br />
+    Original data mean is:  2.28333333333<br />
+    Original data variance is:  1.39088301289<br />
+    ---------------------------------------------------<br />
+    Weights: <br />
+
+    [  993.01065958   373.60679775  1290.24604696   905.17560067   697.2135955<br />
+    903.11288741   802.10095283   453.22475511  1002.18336591   432.84271247<br />
+    1409.99414493   834.1619253   1358.58995672   453.22475511   823.39636687]<br />
+    ---------------------------------------------------<br />
+    Weighted data mean is:  1.7969204512<br />
+    Weighted data variance is:  1.25755053183<br />
+    ---------------------------------------------------<br />
+    </pre>
+
+    <a name="41"></a><h2>4.1. Central limit theorem</h2>
+
+    <b>a) Program output:</b><br /><br />
+
+    <pre>
+    ---------------------------------------------------<br />
+    One random realization mean is:  0.5501317718<br />
+    One random realization var is:  0.121800789196<br />
+    ---------------------------------------------------<br />
+    Summary mean is:  5.03416472703<br />
+    Summary variance is: 0.0790254982388<br />
+    ---------------------------------------------------<br /><br />
+    </pre>
+
+    <b>b) Histogram of random variables:</b><br />
+
+    <div align="left">
+     <img height="400" src="./images/Histogram of random variables.jpg"><br />
+ </div>
+
+ <b>c) Histogram of summary random variables statistics:</b><br />
+
+ <div align="left">
+     <img height="400" src="./images/Histogram of summary random variables statistics.jpg"><br />
+ </div>
+
+ <a name="42"></a><h2>4.2. Bootstrap and Spatial Bootstrap</h2>
+
+ <b>a) Program output:</b><br /><br />
+
+<pre>
+ ----------------------------------------------------<br />
+ Porosity mean = 8.40197517019<br />
+ Porosity mean with cell declustering = 8.20568171395<br />
+ Porosity variance with cell declustering = 1.85087882609<br />
+ Difference between means =  0.196293456243<br />
+ ----------------------------------------------------<br />
+ <br />
+ ----------------------------------------------------<br />
+ Correlation between porosity and seismic:  0.627627936802<br />
+ Weighted correlation between porosity and seismic:  0.570620708566<br />
+ ----------------------------------------------------<br />
+ Doing boostrap for poro mean and correlation with seismic data... <br />
+ Number of random realizations:  1000<br />
+ Bootstrap calculation completed.<br />
+ ----------------------------------------------------<br /><br />
+ </pre>
+
+ <b>b) Bootstrapped correlation between porosity and collocated seismic:</b>
+
+ <div align="left">
+     <img height="400" src="./images/Bootstrapped correlation between porosity and collocated seismic.jpg"><br />
+ </div>
+
+ <b> c) Bootstrapped correlation between weighted porosity and collocated seismic:</b>
+
+ <div align="left">
+     <img height="400" src="./images/Bootstrapped correlation between weighted porosity and collocated seismic.jpg"><br />
+ </div>
+
+ <b> d) Cross plot porosity vs seismic: </b>
+
+ <div align="left">
+     <img height="400" src="./images/Cross plot porosity vs seismic.jpg"><br />
+ </div>
+
+ <b> e) Distribution of bootstrapped mean for porosity: </b>
+
+ <div align="left">
+     <img height="400" src="./images/Distribution of bootstrapped mean for porosity.jpg"><br />
+ </div>
+
+ <b> f) Distribution of mean porosity considering spatial correlation between the data:</b>
+
+ <div align="left">
+     <img height="400" src="./images/Distribution of mean porosity considering spatial correlation between the data.jpg"><br />
+ </div>
+
+ <a name="43"></a><h2>4.3. Transfer of Uncertainty</h2>
+
+ <b> a) Program output: </b><br /><br />
+
+<pre>
+ NPVs result:<br />
+ -----------------------------<br />
+ P10 =  3.77887084616<br />
+ P50 =  8.51502639745<br />
+ P90 =  13.1389507745<br />
+ Probability of negative NPV =  0.012<br /><br />
+ <br />
+ Correlated NPVs result:<br />
+ -----------------------------<br />
+ P10 =  6.17564708413<br />
+ P50 =  8.29905237775<br />
+ P90 =  10.4664660712<br />
+ Probability of negative NPV =  0.0<br /><br />
+ </pre>
+
+ <b> b) Cumulative histogram of simulated NPVs:</b>
+
+ <div align="left">
+     <img height="400" src="./images/Cumulative histogram of simulated NPV.jpg"><br />
+ </div>
+
+ <b> c) Histogram of simulated NPVs: </b>
+
+ <div align="left">
+     <img height="400" src="./images/Histogram of simulated NPV.jpg"><br />
+ </div>
+
+ <b> e) Cumulative histogram of NPVs (Correlated): </b>
+
+ <div align="left">
+     <img height="400" src="./images/Cumulative histogram of NPV.jpg"><br />
+ </div>
+
+ <b> f) Histogram of NPVs (Correlated): </b>
+
+ <div align="left">
+     <img height="400" src="./images/Histogram of NPV.jpg"><br />
+ </div>
+
+ <a name="52"></a><h2>5.2. Variogram Calculation</h2>
+
+ <b>a) Program output: </b>
+ <br /><br />
+
+<pre>
+ 2D-Vertical semivariogram: [  0.           7.22204065  12.21773338  11.72054482  13.21637726
+ 15.12846851  19.08102226  23.91016388]<br />
+ Horizontal semovariogram: [  0.           7.3053236   13.54503155]<br /><br />
+
+ 3D-Vertical Variogram: [  0.46787289   3.67752957   6.19086933   6.27916288   6.78850794
+ 8.19655132   9.4901104   10.41752148  10.44062805  10.32573032
+ 12.14958477]<br /><br />
+</pre>
+
+ <b> b) Experimental horizontal semivariogram: </b>
+
+ <div align="left">
+     <img height="400" src="./images/Experimental horizontal semivariogram.jpg"><br />
+ </div>
+
+ <b> c) Experimental vertical semivariogram: </b>
+
+ <div align="left">
+     <img height="400" src="./images/Experimental vertical semivariogram.jpg"><br />
+ </div>
+
+ <b> e) Vertical semivariogram (3D): </b>
+
+ <div align="left">
+     <img height="400" src="./images/vertical semivariogram.jpg"><br />
+ </div>
+
+ <a name="53"></a><h2>5.3. Variogram Modeling and Volume Variance</h2>
+
+ <b>a) Program output: </b><br /><br />
+
+<pre>
+ Vertical Variogram:<br />
+ [  0.46787289   3.67752957   6.19086933   6.27916288   6.78850794<br />
+ 8.19655132   9.4901104   10.41752148  10.44062805  10.32573032<br />
+ 12.14958477]<br /><br />
+ XLagDistance:  [ 0  4  8 12 16 20 24 28 32 36 40]<br /><br />
+ Gamma for vartical semivariogram:  [  0.           0.90357918   1.73293519   2.49416494   3.19286442<br />
+ 3.83417034   4.4227972    4.96307182   5.45896673   5.91412687<br />
+ 6.33189869   6.71535301   7.06730938   7.39035463   7.6868639<br />
+ 7.95901632   8.20881367   8.43809128   8.64853573   8.84169388<br />
+ 9.01898479   9.18171215   9.33107281   9.46816444   9.59399509<br />
+ 9.70948887   9.81549644   9.91279602  10.00210285  10.08407307<br />
+ 10.15931129  10.22836781  10.29175282  10.34993076  10.40332985<br />
+ 10.45234203  10.49732876  10.53862     10.57651901  10.61130524]<br /><br />
+ </pre>
+
+ <b> b) Variogram modeling results in vertical direction: </b>
+
+ <div align="left">
+     <img height="400" src="./images/Variogram modeling results for the vertical direction.jpg"><br />
+ </div>
+
+ <a name="72"></a><h2>7.2. Conditioning by Kriging</h2>
+
+ <b> a) Program output:</b><br /><br />
+
+<pre>
+ SK result: [-1.22333932 -1.45956635 -1.88999999 -1.20342791 -0.61605299  0.09<br />
+ -0.42059055 -0.74000001 -1.08000004 -1.01502895 -0.97937196 -0.99411529<br />
+ -1.01281166 -1.05999994 -1.00405264 -0.97334808 -0.95649707 -0.947249<br />
+ -0.9421736  -0.93599999]<br /><br />
+ SGS result: [-1.88999999 -1.0674969  -1.06365824 -1.07050645 -0.74000001 -1.88999999<br />
+ -0.97683221 -0.92199361 -0.79168916 -0.74000001 -0.75715584 -0.74000001<br />
+ -0.93187928 -1.17170084 -1.84693933 -1.88999999 -1.88999999 -1.06650364<br />
+ -0.74000001 -0.74000001]<br /><br />
+ Simple Kriging result: [-1.13643897 -1.11064959 -1.06365824 -1.27064908 -1.51578677 -1.88999999<br />
+ -1.36873245 -0.92199361 -0.79168916 -0.96138978 -1.05452347 -1.11227918<br />
+ -1.14602923 -1.17170084 -1.16994464 -1.16898084 -1.16845179 -1.16816151<br />
+ -1.16800225 -1.16780841]<br /><br />
+ Error Field: [ 0.75356102 -0.04315269  0.         -0.20014262 -0.77578676  0.<br />
+ -0.39190024  0.          0.         -0.22138977 -0.29736763 -0.37227917<br />
+ -0.21414995  0.          0.67699468  0.72101915  0.7215482  -0.10165787<br />
+ -0.42800224 -0.4278084 ]<br /><br />
+ Cond.Sim: [-0.4697783  -1.50271904 -1.88999999 -1.40357053 -1.39183974  0.09<br />
+ -0.81249082 -0.74000001 -1.08000004 -1.23641872 -1.2767396  -1.36639452<br />
+ -1.22696161 -1.05999994 -0.32705796 -0.25232893 -0.23494887 -1.0489068<br />
+ -1.37017584 -1.36380839]<br /><br />
+ </pre>
+
+ <b> b) Plots: </b>
+
+ <div align="left">
+     <img height="400" src="./images/1.jpg"><br />
+ </div>
+
+ <div align="left">
+     <img height="400" src="./images/2.jpg"><br />
+ </div>
+
+ <div align="left">
+     <img height="400" src="./images/3.jpg"><br />
+ </div>
+
+ <a name="73"></a><h2>7.3. Gaussian Simulation</h2>
+
+ <h3> Problem 1:</h3>
+
+ <div align="left">
+     <img height="400" src="./images/Gridded kriged estimates in normal-score transformed space.jpg"><br />
+ </div>
+ <div align="left">
+     <img height="400" src="./images/Gridded kriged estimates.jpg"><br />
+ </div>
+ <div align="left">
+     <img height="400" src="./images/Historgam of sample data from the data set.jpg"><br />
+ </div>
+ <div align="left">
+     <img height="400" src="./images/Simulated conditional realization in initial.jpg"><br />
+ </div>
+ <div align="left">
+     <img height="400" src="./images/Simulated conditional realization in normal-score space.jpg"><br />
+ </div>
+ <div align="left">
+     <img height="400" src="./images/Simulated grid of back tranformed values.jpg"><br />
+ </div>
+ <div align="left">
+     <img height="400" src="./images/Simulated grid of initial values.jpg"><br />
+ </div>
+
+ <h3> Problem 2:</h3>
+
+ <b> a) Program output: </b><br /><br />
+
+<pre>
+ Arithmetic variance: 3.23284634677<br />
+ Geometric variance: 3.26164002852<br />
+ Harmonic variance: 3.29291846535<br />
+ Point scale variance: 3.61991197546<br />
+ var_back_krigged_transformed_data: 3.82252807617<br />
+ The diff_variance between point scale and kriged values: -0.202616100712<br />
+ Sgs on arithmetic data variance: 2.6416104126<br />
+ The differential variance between point scale and simulated values: 0.978301562862<br />
+ 12.9032258065 % of the data lies above the threshold<br />
+ 4.0 % value of the kriged model falls above the threshold<br />
+ 10.0 % value of the simulated model falls above the threshold<br /><br />
+</pre>
+
+ <b> b) Plots: </b>
+
+ <div align="left">
+     <img height="400" src="./images/Cumulative kriged field from arithmetic averaging.jpg"><br />
+ </div>
+
+ <div align="left">
+     <img height="400" src="./images/Cumulative point-scale data.jpg"><br />
+ </div>
+
+ <div align="left">
+     <img height="400" src="./images/Cumulative simulated field from arithmetic averaging.jpg"><br />
+ </div>
+
+ <div align="left">
+     <img height="400" src="./images/imulated field from arithmetic averaging.jpg"><br />
+ </div>
+
+ <div align="left">
+     <img height="400" src="./images/Kriged field from arithmetic averaging.jpg"><br />
+ </div>
+
+ <div align="left">
+     <img height="400" src="./images/Kriged field from harmonic averaging.jpg"><br />
+ </div>
+
+ <div align="left">
+     <img height="400" src="./images/Simulated field from harmonic averaging.jpg"><br />
+ </div>
+
+ <a name="83"></a><h2>8.3. Indicator Simulation for Categorical Data</h2>
+
+ <div align="left">
+     <img height="400" src="./images/cdf.jpg"><br />
+ </div>
+
+ <div align="left">
+     <img height="400" src="./images/pdf.jpg"><br />
+ </div>
+
+
+ Note, that more scripts can be added at download section.
+
+
+</div>
+
+</body></html>
