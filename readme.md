@@ -2,7 +2,7 @@
 
 ## PROJECT SITE
 
-Look for updates and other information at [http://hpgl.mit-ufa.com/](http://hpgl.mit-ufa.com/)
+Look for updates and other information at [http://hpgl.github.io/hpgl/](http://hpgl.github.io/hpgl/)
 
 ## DESCRIPTION
 
