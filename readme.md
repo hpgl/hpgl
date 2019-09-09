@@ -14,6 +14,7 @@ HPGL utilizes some open-source components including:
 1. modified version of GsTL (see \GsTL-1.3 folder)
 2. TNT (Template Numerical Toolkit)
 3. boost libraries boost (i.e. boost::python)
+4. CLAPACK-3.1.1.1
 
 ## BUILD
 
