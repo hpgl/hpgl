@@ -27,7 +27,7 @@ You can build HPGL by starting scons script (like in *nix building), but if you 
 
 ## LICENSE
 
-For non-commercial use (research, education, etc) HPGL is distributed under GPL version 2 license.
+For non-commercial use (research, education, etc) HPGL is distributed under BSD license.
 For any questions on the possibilities of commercial distribution, please contact the Authors.
 
 ## THE AUTHORS
