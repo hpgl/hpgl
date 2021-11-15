@@ -247,7 +247,7 @@ namespace hpgl
 		
 		nl.find(index, defineds, node_coord, indices, coords);
 		if (indices.size() <= 0)
-			return KI_NO_NEIGHBOURS;
+			return ki_result_t::KI_NO_NEIGHBOURS;
 
 		select(mp, indices, means);
 		bool success = wc(node_coord, mp[index], coords, means, cov, weights);		
@@ -256,11 +256,11 @@ namespace hpgl
 			select(input_values, indices, values);					
 			result = combine<value_t, result_t>(values, weights, means, mp[index]);
 
-			return KI_SUCCESS;
+			return ki_result_t::KI_SUCCESS;
 		}
 		else
 		{			
-			return KI_SINGULARITY;			
+			return ki_result_t::KI_SINGULARITY;
 		}		
 	}
 
@@ -295,7 +295,7 @@ namespace hpgl
 
 		nl.find(index, defineds, node_coord, indices, coords);
 		if (indices.size() <= 0)
-			return KI_NO_NEIGHBOURS;
+			return ki_result_t::KI_NO_NEIGHBOURS;
 
 		select(mp, indices, means);
 		bool success = wc(node_coord, mp[index], coords, means, cov, weights, variance);		
@@ -304,11 +304,11 @@ namespace hpgl
 		{			
 			select(input_values, indices, values);					
 			result = combine<value_t, result_t>(values, weights, means, mp[index]);
-			return KI_SUCCESS;
+			return ki_result_t::KI_SUCCESS;
 		}
 		else
 		{			
-			return KI_SINGULARITY;			
+			return ki_result_t::KI_SINGULARITY;
 		}		
 	}
 

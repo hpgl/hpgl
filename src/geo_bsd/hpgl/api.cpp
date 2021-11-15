@@ -426,13 +426,11 @@ hpgl_sgs_simulation(
 	
 	if (mean != 0)
 		sgs_p.set_mean(*mean);
-	
 	sgs_p.m_lvm = 0;
 	sgs_p.m_mean_kind = mean != 0 ? e_mean_stationary : e_mean_stationary_auto;
-	
 	hpgl::sequential_gaussian_simulation(
 			grid,
-			sgs_p,
+		    sgs_p,
 			prop,
 			cdf,
 			simulation_mask != 0 ? simulation_mask->m_data : 0);	

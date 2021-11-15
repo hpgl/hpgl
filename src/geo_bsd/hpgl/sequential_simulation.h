@@ -98,7 +98,7 @@ namespace hpgl
 			ki_result_t ki_result = kriging_interpolation(property, is_informed_predicate_t<cont_property_array_t>(property), node, pcov, mp, 
 				neighbour_lookup, weight_calculator_sgs, mean, variance);			
 
-			double value = ki_result == KI_SUCCESS 
+			double value = ki_result == ki_result_t::KI_SUCCESS
 				? sample(gen, gaussian_cdf_t(mean, variance))
 				: sample(gen, gaussian_cdf_t());		
 			

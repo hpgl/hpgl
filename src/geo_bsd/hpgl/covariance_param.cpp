@@ -5,10 +5,10 @@
 namespace hpgl
 {
 	covariance_param_t::covariance_param_t()
-		: m_covariance_type(COV_SPHERICAL),
-		m_sill(0),
-		m_nugget(0)
 	{
+		m_sill = 0;
+		m_nugget = 0;
+		m_covariance_type = covariance_type_t::COV_SPHERICAL;
 		set_ranges(0, 0, 0);
 		set_angles(0, 0, 0);
 	}

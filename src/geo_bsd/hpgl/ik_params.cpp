@@ -78,7 +78,7 @@ namespace hpgl
 		for (int i = 0; i < p.m_category_count; ++i)
 		{
 			s 
-				<< "\t\tCovariance type: " << p.m_covariances[i] << "\n"
+				<< "\t\tCovariance type: " << (int)p.m_covariances[i] << "\n"
 				<< "\t\tRanges:	[" << p.m_ranges[i][0] << ", " << p.m_ranges[i][1] << ", " << p.m_ranges[i][2] << "]\n"
 				<< "\t\tAngles: [" << p.m_angles[i][0] << ", " << p.m_angles[i][1] << ", " << p.m_angles[i][2] << "]\n"
 				<< "\t\tSill: " << p.m_sills[i] << '\n'

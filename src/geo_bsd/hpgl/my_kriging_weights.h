@@ -14,9 +14,9 @@ extern "C" {
 };
 
 
-#include <sugarbox_grid.h>
-#include <property_array.h>
-#include <typedefs.h>
+#include "sugarbox_grid.h"
+#include "property_array.h"
+#include "typedefs.h"
 #include "gauss_solver.h"
 #include "logging.h"
 

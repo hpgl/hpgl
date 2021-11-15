@@ -37,7 +37,7 @@ namespace hpgl
 
 	void print_params(const covariance_param_t & p)
 	{
-		print_param("Covariance type", p.m_covariance_type);
+		print_param("Covariance type", (int)p.m_covariance_type);
 		print_param("Sill", p.m_sill);
 		print_param("Nugget", p.m_nugget);
 		print_param("Ranges", p.m_ranges);
@@ -46,7 +46,7 @@ namespace hpgl
 
 	void print_params(const ok_params_t & p)
 	{
-		print_param("Covariance type", p.m_covariance_type);
+		print_param("Covariance type", (int)p.m_covariance_type);
 		print_param("Sill", p.m_sill);
 		print_param("Nugget", p.m_nugget);
 		print_param("Ranges", p.m_ranges);
@@ -57,7 +57,7 @@ namespace hpgl
 
 	void print_params(const sk_params_t & p)
 	{
-		print_param("Covariance type", p.m_covariance_type);
+		print_param("Covariance type", (int)p.m_covariance_type);
 		print_param("Sill", p.m_sill);
 		print_param("Nugget", p.m_nugget);
 		print_param("Ranges", p.m_ranges);
@@ -71,7 +71,7 @@ namespace hpgl
 	}
 	void print_params(const sgs_params_t & p)
 	{
-		print_param("Covariance type", p.m_covariance_type);
+		print_param("Covariance type", (int)p.m_covariance_type);
 		print_param("Sill", p.m_sill);
 		print_param("Nugget", p.m_nugget);
 		print_param("Ranges", p.m_ranges);

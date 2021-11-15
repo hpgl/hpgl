@@ -11,7 +11,6 @@ namespace hpgl
 			public neighbourhood_param_t
 	{
 	public:
-
 		using neighbourhood_param_t::m_radiuses;
 		using neighbourhood_param_t::m_max_neighbours;
 
