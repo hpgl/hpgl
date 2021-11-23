@@ -4,9 +4,9 @@
 namespace hpgl
 {
 	sk_params_t::sk_params_t()
-		:m_mean(0),
-		m_calculate_mean(true)
 	{
+		m_mean = 0;
+		m_calculate_mean = true;
 	}
 
 

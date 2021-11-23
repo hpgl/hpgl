@@ -40,7 +40,7 @@ namespace blue_sky {
         STATE_KILL,                               //! terminate process
         STATE_BREAK,                              //! break into file where assertion failed
         STATE_IGNORE,                             //! ignore current assert
-        STATE_IGNORE_ALL                         //! ignore current and all following asserts
+        STATE_IGNORE_ALL,                         //! ignore current and all following asserts
       };
 
     public:

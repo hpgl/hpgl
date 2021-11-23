@@ -31,7 +31,7 @@ void lvm_kriging(
 
 	hpgl::cont_kriging(input, grid, params, mean_data, pcov, 
 		sk_weight_calculator_t(), 
-		output, reporter, stats, mean_on_failure); 
+		output, reporter, stats, kriging_failure_handling::mean_on_failure);
 
 	write(boost::format("%1%") % stats);	
 }

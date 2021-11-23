@@ -80,7 +80,7 @@ void do_sis(
 					ind_props[idx], is_informed_predicate_t<indicator_property_array_t>(property), 
 					node, covariances[idx], marginal_probs[idx], nblookups[idx], weight_calculator_sis, prob);
 
-				if (ki_result != KI_SUCCESS)
+				if (ki_result != ki_result_t::KI_SUCCESS)
 				{
 					prob = marginal_probs[idx][node];
 				}
@@ -101,7 +101,7 @@ void do_sis(
 					ind_props[idx], is_informed_predicate_t<indicator_property_array_t>(property), 
 					node, covariances[idx], marginal_probs[idx], nblookups[idx], weight_calculator_sis, prob);
 
-				if (ki_result != KI_SUCCESS)
+				if (ki_result != ki_result_t::KI_SUCCESS)
 				{
 					prob = marginal_probs[idx][node];
 				}

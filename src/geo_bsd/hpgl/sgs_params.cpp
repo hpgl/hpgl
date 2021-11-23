@@ -4,8 +4,7 @@
 namespace hpgl
 {
 	sgs_params_t::sgs_params_t()
-		: m_kriging_kind(KRIG_ORDINARY)
 	{
-
+		m_kriging_kind = kriging_kind_t::KRIG_ORDINARY;
 	}
 }

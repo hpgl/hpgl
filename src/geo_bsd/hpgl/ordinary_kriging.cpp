@@ -30,7 +30,7 @@ namespace hpgl
 
 			hpgl::cont_kriging(input, grid, params, no_mean_t(), covariance,
 				ok_weight_calculator_t(), 
-				output, report, stats, undefined_on_failure);
+				output, report, stats, kriging_failure_handling::undefined_on_failure);
 		}
 		else
 		{	
@@ -39,7 +39,7 @@ namespace hpgl
 
 			hpgl::cont_kriging(input, grid, params, no_mean_t(), pcov, 
 				ok_weight_calculator_t(), 
-				output, report, stats, undefined_on_failure);
+				output, report, stats, kriging_failure_handling::undefined_on_failure);
 		}
 
 		write(boost::format("%1%") % stats);

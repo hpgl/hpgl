@@ -1,0 +1,10 @@
+src/temp
+src/msvc
+src/.vs
+*.pdb
+*.pyc
+*.exp
+*.lib
+*.dblite
+*.dll
+src/geo/_cvariogram_d.dll

@@ -88,13 +88,13 @@ namespace hpgl
 		{
 			switch (m_params.m_covariance_type)
 			{
-			case COV_SPHERICAL:
+			case covariance_type_t::COV_SPHERICAL:
 				fun = &cov_model_t::spherical;
 				break;
-			case COV_EXPONENTIAL:
+			case covariance_type_t::COV_EXPONENTIAL:
 				fun = &cov_model_t::exponential;
 				break;
-			case COV_GAUSSIAN:
+			case covariance_type_t::COV_GAUSSIAN:
 				fun = &cov_model_t::gaussian;
 				break;
 			}

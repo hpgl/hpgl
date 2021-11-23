@@ -82,19 +82,19 @@ namespace hpgl
 				cont_value_t value;
 				switch(kriging_interpolation(input_property, is_informed_predicate_t<data_t>(input_property), idx, cov, means, neighbour_lookup, wc, value))
 				{
-				case KI_SUCCESS:
+				case ki_result_t::KI_SUCCESS:
 					output_property.set_at(idx, value);
 					points_calculated++;				
 					sum += value;
 					break;
-				case KI_NO_NEIGHBOURS:
+				case ki_result_t::KI_NO_NEIGHBOURS:
 					points_without_neighbours++;				
-					if (fh == mean_on_failure)
+					if (fh == kriging_failure_handling::mean_on_failure)
 						output_property.set_at(idx, means[idx]);
 						sum += means[idx];
 					break;
-				case KI_SINGULARITY:
-					if (fh == mean_on_failure)
+				case ki_result_t::KI_SINGULARITY:
+					if (fh == kriging_failure_handling::mean_on_failure)
 						output_property.set_at(idx, means[idx]);
 						sum += means[idx];
 					break;

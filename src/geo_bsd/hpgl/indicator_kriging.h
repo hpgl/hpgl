@@ -104,7 +104,7 @@ namespace hpgl
 
 					ki_result_t ki_result = kriging_interpolation(ind_props[idx], is_informed_predicate_t<indicator_property_array_t>(input_property), node_idx, covariances[idx], mps[idx], nblookups[idx], sk_weight_calculator_t(), prob);
 
-					if (ki_result != KI_SUCCESS)
+					if (ki_result != ki_result_t::KI_SUCCESS)
 					{
 						prob = mps[idx][node_idx];
 					}

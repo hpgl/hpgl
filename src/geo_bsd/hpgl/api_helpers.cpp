@@ -5,6 +5,7 @@
 #include "sgs_params.h"
 #include "ik_params.h"
 #include "hpgl_core.h"
+#include "api_helpers.hpp"
 
 namespace hpgl
 {

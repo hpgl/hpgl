@@ -12,7 +12,7 @@ namespace hpgl
 {
 void indicator_kriging(
 	const indicator_property_array_t & input,
-	const sugarbox_grid_t & grid,  //TODO: Сделать тип grid_size_t задающий размеры грида, и все функции перевода координат сделать свободными
+	const sugarbox_grid_t & grid,  //TODO: РЎРґРµР»Р°С‚СЊ С‚РёРї grid_size_t Р·Р°РґР°СЋС‰РёР№ СЂР°Р·РјРµСЂС‹ РіСЂРёРґР°, Рё РІСЃРµ С„СѓРЅРєС†РёРё РїРµСЂРµРІРѕРґР° РєРѕРѕСЂРґРёРЅР°С‚ СЃРґРµР»Р°С‚СЊ СЃРІРѕР±РѕРґРЅС‹РјРё
 	const ik_params_t & params,
 	indicator_property_array_t & output)
 {

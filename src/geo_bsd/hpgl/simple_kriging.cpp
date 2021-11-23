@@ -67,7 +67,7 @@ namespace hpgl
 
 		hpgl::cont_kriging(input, grid, params, single_mean_t(mean), pcov, 
 			sk_weight_calculator_t(), 
-			output, report, stats, mean_on_failure); 
+			output, report, stats, kriging_failure_handling::mean_on_failure);
 
 		write(boost::format("%1%") % stats);
 	}
