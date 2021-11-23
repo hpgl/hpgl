@@ -24,13 +24,15 @@ Global
 		{FDF030EA-03F1-4EF2-9D6C-375B29E1EB24}.Release|Win32.ActiveCfg = Release|Win32
 		{FDF030EA-03F1-4EF2-9D6C-375B29E1EB24}.Release|Win32.Build.0 = Release|Win32
 		{6A8F0309-17A4-440D-8FC0-F6DC7E82BD23}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6A8F0309-17A4-440D-8FC0-F6DC7E82BD23}.Debug|Win32.Build.0 = Debug|Win32
 		{6A8F0309-17A4-440D-8FC0-F6DC7E82BD23}.Release|Win32.ActiveCfg = Release|Win32
+		{6A8F0309-17A4-440D-8FC0-F6DC7E82BD23}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		AMDCaProjectFile = C:\blue_sky\hpgl\CodeAnalyst\hpgl.caw
 		SolutionGuid = {31D8F463-D8B3-4B6D-BD41-E9A21DA5DEAC}
+		AMDCaProjectFile = C:\blue_sky\hpgl\CodeAnalyst\hpgl.caw
 	EndGlobalSection
 EndGlobal
